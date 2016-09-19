@@ -1,6 +1,6 @@
 local THERMOSTAT_ID = 6
 local TEMP_SENSOR_ID = 63
-local TARGET_TEMP = 60
+local TARGET_TEMP = 70
 
 -- get thermostat temp
 
@@ -43,7 +43,7 @@ end
 -- check if we need to stop cooling
 
 if tonumber(sensorTemp) <= TARGET_TEMP then
-	local mode = luup.variable_get("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus")
+	local mode = luup.variable_get("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", THERMOSTAT_ID)
 	if mode ~= "Off" then
 		luup.call_action(
 			"urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "SetModeTarget",
