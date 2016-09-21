@@ -16,12 +16,12 @@ luup.log(LIGHT_ID .. "### current" .. current)
 if (prev == nil or prev == "0") and current == "1" then
   luup.log(LIGHT_ID .. "### start timer")
   local currentTime = os.date("*t")
-  state.prevTimeMin = currentTime.hour * 64 + currentTime.min
+  allStates[LIGHT_ID].prevTimeMin = currentTime.hour * 64 + currentTime.min
 end
 if current == "1" then
   local currentTime = os.date("*t")
   local currentTimeMin = currentTime.hour * 64 + currentTime.min
-  local deltaTime = currentTimeMin - state.prevTimeMin
+  local deltaTime = currentTimeMin - allStates[LIGHT_ID].prevTimeMin
   luup.log(LIGHT_ID .. "### delta time minutes " .. deltaTime)
   if deltaTime > TIMER_DURATION then
    luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "0"}, LIGHT_ID)
