@@ -1,7 +1,7 @@
 -- local LIGHT_ID = 143 -- guest
 -- local LIGHT_ID = 112 -- master
 
-local LIGHT_ID = 143
+local LIGHT_ID = 112
 local TIMER_DURATION = 10
 if allStates == nil then 
   allStates = {}
@@ -16,11 +16,11 @@ luup.log(LIGHT_ID .. "### current" .. current)
 if (prev == nil or prev == "0") and current == "1" then
   luup.log(LIGHT_ID .. "### start timer")
   local currentTime = os.date("*t")
-  allStates[LIGHT_ID].prevTimeMin = currentTime.hour * 64 + currentTime.min
+  allStates[LIGHT_ID].prevTimeMin = currentTime.hour * 60 - (-currentTime.min)
 end
 if current == "1" then
   local currentTime = os.date("*t")
-  local currentTimeMin = currentTime.hour * 64 + currentTime.min
+  local currentTimeMin = currentTime.hour * 60 - (-currentTime.min)
   local deltaTime = currentTimeMin - allStates[LIGHT_ID].prevTimeMin
   luup.log(LIGHT_ID .. "### delta time minutes " .. deltaTime)
   if deltaTime > TIMER_DURATION then

@@ -18,7 +18,7 @@ luup.log(TEMP_SENSOR_ID .. "### sensor temperature " .. sensorTemp)
 
 -- check if we need to start cooling
 
-if tonumber(sensorTemp) >= TARGET_TEMP + 1 then
+if tonumber(sensorTemp) >= TARGET_TEMP - (-1) then
 	local mode = luup.variable_get(
 		"urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", THERMOSTAT_ID)
 	if mode ~= "CoolOn" then
@@ -31,7 +31,7 @@ if tonumber(sensorTemp) >= TARGET_TEMP + 1 then
 	local currentSetpoint = luup.variable_get(
 		"urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", THERMOSTAT_ID) 
 
-	if tonumber(currentSetpoint) + 2 >= tonumber(thermostatTemp) then 
+	if tonumber(currentSetpoint) - (-2) >= tonumber(thermostatTemp) then 
 	  local targetTemp = tostring(tonumber(thermostatTemp)-5)
 	  luup.call_action(
 	  	"urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "SetCurrentSetpoint", 
