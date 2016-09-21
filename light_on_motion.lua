@@ -10,3 +10,4 @@ local lul_lux = luup.variable_get("urn:micasaverde-com:serviceId:LightSensor1","
 if (tonumber(lul_lux) > 40) then
  return false
 end
+return true

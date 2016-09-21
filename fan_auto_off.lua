@@ -1,7 +1,7 @@
 -- local LIGHT_ID = 143 -- guest
 -- local LIGHT_ID = 112 -- master
 
-local LIGHT_ID = 112
+local LIGHT_ID = 143
 local TIMER_DURATION = 10
 if allStates == nil then 
   allStates = {}
@@ -9,9 +9,8 @@ end
 if allStates[LIGHT_ID] == nil then
   allStates[LIGHT_ID] = {}
 end
-state = allStates[LIGHT_ID]
 
-local prev = state.prev
+local prev = allStates[LIGHT_ID].prev
 local current = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1", "Status",LIGHT_ID)
 luup.log(LIGHT_ID .. "### current" .. current)
 if (prev == nil or prev == "0") and current == "1" then
@@ -29,5 +28,5 @@ if current == "1" then
    luup.log(LIGHT_ID .. "### turning off light")
   end
 end
-state.prev=current  
+allStates[LIGHT_ID].prev=current  
 return true
