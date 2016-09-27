@@ -1,0 +1,361 @@
+{
+    "default_icon": "thermostat_device_default.png",
+    "state_icons": [
+        {
+            "img": "thermostat_mode_off.png",
+            "conditions": [
+                {
+                    "service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                    "variable": "ModeStatus",
+                    "operator": "==",
+                    "value": "Off"
+                }
+            ]
+        },
+        {
+            "img": "thermostat_mode_heating.png",
+            "conditions": [
+                {
+                    "service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                    "variable": "ModeStatus",
+                    "operator": "==",
+                    "value": "HeatOn"
+                }
+            ]
+        }
+    ],
+    "x": "2",
+    "y": "4",
+    "inScene": "1",
+    "ToggleButton": 1,
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "ui7_tabname_control",
+                "text": "Control"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "top_navigation_tab": 1,
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "scenegroup": "1"
+                }
+            ],
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "1",
+                    "left": "0",
+                    "x": "1",
+                    "y": "3"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "multi_state_button",
+                    "top": "0",
+                    "left": "1",
+                    "states": [
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_off",
+                                "text": "Off"
+                            },
+                            "ControlGroup": "1",
+                            "Display": {
+                                "Service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                                "Variable": "ModeStatus",
+                                "Value": "Off"
+                            },
+                            "Command": {
+                                "Service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                                "Action": "SetModeTarget",
+                                "Parameters": [
+                                    {
+                                        "Name": "NewModeTarget",
+                                        "Value": "Off"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "heater_off"
+                        },
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_heat",
+                                "text": "Heat"
+                            },
+                            "ControlGroup": "1",
+                            "Display": {
+                                "Service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                                "Variable": "ModeStatus",
+                                "Value": "HeatOn"
+                            },
+                            "Command": {
+                                "Service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                                "Action": "SetModeTarget",
+                                "Parameters": [
+                                    {
+                                        "Name": "NewModeTarget",
+                                        "Value": "HeatOn"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "heater_heat"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_settings",
+                "text": "Settings"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "simple_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_advanced",
+                "text": "Advanced"
+            },
+            "Position": "2",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_device_options",
+                "text": "Device Options"
+            },
+            "Position": "3",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_zwave_options"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_logs",
+                "text": "Logs"
+            },
+            "Position": "4",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_logs"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_notifications",
+                "text": "Notifications"
+            },
+            "Position": "5",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_device_scenes",
+                "text": "Scenes"
+            },
+            "Position": "6",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_scenes"
+        }
+    ],
+    "sceneList": {
+        "group_1": {
+            "cmd_1": {
+                "label": "Set Heat Setpoint",
+                "serviceId": "urn:upnp-org:serviceId:TemperatureSetpoint1",
+                "action": "SetCurrentSetpoint",
+                "argumentList": {
+                    "argument_1": {
+                        "dataType": "ui1",
+                        "defaultValue": "",
+                        "allowedValueRange": {
+                            "minimum": "0",
+                            "maximum": "100"
+                        },
+                        "prefix": "to",
+                        "suffix": "&deg;",
+                        "name": "NewCurrentSetpoint"
+                    }
+                }
+            }
+        }
+    },
+    "eventList2": [
+		{
+			"id": 14,
+			"label": {
+				"lang_tag": "ui7_heater_mode_changes",
+				"text": "Heater Mode Changes"
+			},
+			"serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "string",
+					"defaultValue": "",
+					"allowedValueList": [
+						{
+							"Off": "Off",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_off",
+								"text": "Whenever the _DEVICE_NAME_ is turned off"
+							}
+						},
+						{
+							"Heat": "HeatOn",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_heater_set_to_heat",
+								"text": "Whenever the _DEVICE_NAME_ is set to heat"
+							}
+						}
+					],
+					"name": "ModeStatus",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_mode",
+						"text": "Mode"
+					},
+					"suffix": {}
+				}
+			]
+		},
+        {
+            "id": 9,
+            "label": {
+                "lang_tag": "ui7_wh_energy_usage_24_goes_above",
+                "text": "Device energy usage for last 24 hours goes above"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "DayKWH",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "kwh",
+                        "text": "KWH"
+                    },
+                    "suffix": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_kwh_usage_goes_above_day_dev",
+                        "text": "Total energy usage for _DEVICE_NAME_ goes over _ARGUMENT_VALUE_ KWH in the last day"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "label": {
+                "lang_tag": "ui7_wh_energy_usage_7_goes_above",
+                "text": "Device energy usage for last week goes above"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "WeekKWH",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "kwh",
+                        "text": "KWH"
+                    },
+                    "suffix": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_kwh_usage_goes_above_day_dev",
+                        "text": "Total energy usage for _DEVICE_NAME_ goes over _ARGUMENT_VALUE_ KWH in the last day"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "label": {
+                "lang_tag": "ui7_wh_energy_usage_30_goes_below",
+                "text": "Device energy usage for last 30 days goes above"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "MonthKWH",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "kwh",
+                        "text": "KWH"
+                    },
+                    "suffix": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_kwh_usage_goes_below_month_dev",
+                        "text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last 30 days"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "label": {
+                "lang_tag": "ui7_wh_energy_usage_365_goes_below",
+                "text": "Device energy usage for last year goes above"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "YearKWH",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "kwh",
+                        "text": "KWH"
+                    },
+                    "suffix": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_kwh_usage_goes_below_year_dev",
+                        "text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last year"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "label": {
+                "lang_tag": "ui7_wh_energy_usage_life_goes_below",
+                "text": "Lifetime device energy usage goes above"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "LifeKWH",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "kwh",
+                        "text": "KWH"
+                    },
+                    "suffix": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_kwh_usage_goes_below_year_dev",
+                        "text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last year"
+                    }
+                }
+            ]
+        }
+    ],
+    "device_type": "urn:schemas-upnp-org:device:Heater:1"
+}

@@ -1,0 +1,615 @@
+{
+	"default_icon": "window_covering_default.png",
+	"state_icons": [
+		{
+			"img": "window_covering_100.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 91
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 100
+				}
+			]
+		},
+		{
+			"img": "window_covering_90.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 81
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 90
+				}
+			]
+		},
+		{
+			"img": "window_covering_80.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 71
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 80
+				}
+			]
+		},
+		{
+			"img": "window_covering_70.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 61
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 70
+				}
+			]
+		},
+		{
+			"img": "window_covering_60.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 51
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 60
+				}
+			]
+		},
+		{
+			"img": "window_covering_50.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 41
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 50
+				}
+			]
+		},
+		{
+			"img": "window_covering_40.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 31
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 40
+				}
+			]
+		},
+		{
+			"img": "window_covering_30.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 21
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 30
+				}
+			]
+		},
+		{
+			"img": "window_covering_20.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 11
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 20
+				}
+			]
+		},
+		{
+			"img": "window_covering_10.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 10
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 1
+				}
+			]
+		},
+		{
+			"img": "window_covering_off.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "==",
+					"value": 0
+				}
+			]
+		}
+	],
+	"x": "3",
+	"y": "4",
+	"inScene": "1",
+	"iconText": "1",
+	"DisplayStatus": {
+		"Service": "urn:upnp-org:serviceId:Dimming1",
+		"Variable": "LoadLevelStatus",
+		"MinValue": "0",
+		"MaxValue": "100"
+	},
+	"doc_url": {
+		"doc_language": 1,
+		"doc_manual": 1,
+		"doc_version": 1,
+		"doc_platform": 0,
+		"doc_page": "window_coverings"
+	},
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"scenegroup": "1"
+				},
+				{
+					"id": "2",
+					"isSingle": "1",
+					"scenegroup": "2"
+				},
+                {
+                    "id": "3",
+                    "scenegroup": "3"
+                }
+			],
+			"SceneGroup": [
+				{
+					"id": "1",
+					"top": "0.5",
+					"left": "0",
+					"x": "1",
+					"y": "3"
+				},
+				{
+					"id": "2",
+					"top": "0.5",
+					"left": "1",
+					"x": "2",
+					"y": "2.5"
+				},
+                {
+                    "id": "3",
+                    "top": "0.5",
+                    "left": "1",
+                    "x": "2",
+                    "y": "2.5"
+                }
+			],
+			"Control": [
+				{
+					"ControlGroup": "1",
+					"ControlType": "button",
+					"top": "1.5",
+					"left": "1",
+					"Label": {
+						"lang_tag": "ui7_cmd_open",
+						"text": "Open"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "100",
+						"Top": 60,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "100"
+							}
+						]
+					},
+					"ControlCode": "wc_open"
+				},
+				{
+					"ControlGroup": "1",
+					"ControlType": "button",
+					"top": "1.5",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_cmd_close",
+						"text": "Close"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "0",
+						"Top": 60,
+						"Left": 135,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "0"
+							}
+						]
+					},
+					"ControlCode": "wc_close"
+				},
+                {
+                    "ControlGroup": 1,
+                    "ControlType": "line_break"
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "slider",
+                    "Label": {
+                        "lang_tag": "ui7_cmd_on",
+                        "text": "On"
+                    },
+                    "Display": {
+                        "Service": "urn:upnp-org:serviceId:Dimming1",
+                        "Variable": "LoadLevelStatus",
+                        "MinValue": "0",
+                        "MaxValue": "100",
+                        "Top": 100,
+                        "Left": 50,
+                        "Width": 272,
+                        "Height": 16,
+                        "ID": "newLoadlevelTarget"
+                    },
+                    "Command": {
+                        "Service": "urn:upnp-org:serviceId:Dimming1",
+                        "Action": "SetLoadLevelTarget",
+                        "Parameters": [
+                            {
+                                "Name": "newLoadlevelTarget",
+                                "ID": "newLoadlevelTarget"
+                            }
+                        ]
+                    },
+                    "ControlCode": "wc_slider"
+                },
+                {
+                    "ControlGroup": 1,
+                    "ControlType": "line_break"
+                },
+				{
+					"ControlGroup": "1",
+					"ControlType": "button",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_cmd_up",
+						"text": "Up"
+					},
+					"Display": {
+						"Top": 160,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:WindowCovering1",
+						"Action": "Up",
+						"Parameters": []
+					},
+					"ControlCode": "wc_up"
+				},
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "button",
+                    "top": "1",
+                    "left": "0",
+                    "Label": {
+                        "lang_tag": "ui7_cmd_stop",
+                        "text": "Stop"
+                    },
+                    "Display": {
+                        "Top": 160,
+                        "Left": 135,
+                        "Width": 75,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:upnp-org:serviceId:WindowCovering1",
+                        "Action": "Stop",
+                        "Parameters": []
+                    },
+                    "ControlCode": "wc_stop"
+                },
+				{
+					"ControlGroup": "1",
+					"ControlType": "button",
+					"top": "2",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_cmd_down",
+						"text": "Down"
+					},
+					"Display": {
+						"Top": 160,
+						"Left": 220,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:WindowCovering1",
+						"Action": "Down",
+						"Parameters": []
+					},
+					"ControlCode": "wc_down"
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_logs",
+				"text": "Logs"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		}
+	],
+	"sceneList": {
+		"group_1": {
+			"cmd_1": {
+				"label": "OPEN",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "1"
+				}
+			},
+			"cmd_2": {
+				"label": "CLOSE",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "0"
+				}
+			},
+			"cmd_3": {
+				"label": "Set level",
+				"serviceId": "urn:upnp-org:serviceId:Dimming1",
+				"action": "SetLoadLevelTarget",
+				"argumentList": {
+					"argument_1": {
+						"dataType": "ui1",
+						"defaultValue": "",
+						"allowedValueRange": {
+							"minimum": "0",
+							"maximum": "100"
+						},
+						"prefix": "to",
+						"suffix": "%",
+						"name": "newLoadlevelTarget"
+					}
+				}
+			},
+			"cmd_4": {
+				"label": "Up",
+				"serviceId": "urn:upnp-org:serviceId:WindowCovering1",
+				"action": "Up"
+			},
+			"cmd_5": {
+				"label": "Down",
+				"serviceId": "urn:upnp-org:serviceId:WindowCovering1",
+				"action": "Down"
+			},
+			"cmd_6": {
+				"label": "Stop",
+				"serviceId": "urn:upnp-org:serviceId:WindowCovering1",
+				"action": "Stop"
+			}
+		}
+	},
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_a_device_is_turned_on_off",
+				"text": "A device is turned on or off"
+			},
+			"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "1",
+					"allowedValueList": [
+						{
+							"Off": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_off",
+								"text": "Whenever the _DEVICE_NAME_ is turned off"
+							}
+						},
+						{
+							"On": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_on",
+								"text": "Whenever the _DEVICE_NAME_ is turned on"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "ui7_energy_usage_goes_above",
+				"text": "Energy usage goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "Watts",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "ui7_general_ucase_watts",
+						"text": "Watts"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_energy_usage_goes_above",
+						"text": "Energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ Watts"
+					}
+				}
+			]
+		},
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "ui7_energy_usage_goes_below",
+				"text": "Energy usage goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "Watts",
+					"comparisson": "<",
+					"prefix": {
+						"lang_tag": "ui7_general_ucase_watts",
+						"text": "Watts"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_energy_usage_goes_below",
+						"text": "Whenever the energy usage for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_ Watts"
+					},
+					"minValue": 1
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:WindowCovering:1"
+}

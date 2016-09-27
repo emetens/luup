@@ -1,0 +1,355 @@
+{
+    "default_icon": "temp_leak_default.png",
+    "state_icons": [
+        {
+            "img": "flood_sensor_tripped.png",
+            "conditions": [
+                {
+                    "service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                    "variable": "Tripped",
+                    "operator": "==",
+                    "value": 1,
+                    "subcategory_num": 2
+                }
+            ]
+        },
+        {
+            "img": "flood_sensor_untripped.png",
+            "conditions": [
+                {
+                    "service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                    "variable": "Tripped",
+                    "operator": "==",
+                    "value": 0,
+                    "subcategory_num": 2
+
+                }
+            ]
+        }
+    ],
+    "x": "2",
+    "y": "3",
+    "inScene": "0",
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "ui7_tabname_control",
+                "text": "Control"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "top_navigation_tab": 1,
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "isSingle": "1",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "isSingle": "1",
+                    "scenegroup": "1"
+                }
+            ],
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "1.5",
+                    "left": "0.25",
+                    "x": "1.5",
+                    "y": "2"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "multi_state_button",
+                    "top": "1",
+                    "left": "0",
+                    "states": [
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_arm",
+                                "text": "Armed"
+                            },
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Variable": "Armed",
+                                "Value": "1"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Action": "SetArmed",
+                                "Parameters": [
+                                    {
+                                        "Name": "newArmedValue",
+                                        "Value": "1"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "arm_armed"
+                        },
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_bypass",
+                                "text": "Disarmed"
+                            },
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Variable": "Armed",
+                                "Value": "0"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Action": "SetArmed",
+                                "Parameters": [
+                                    {
+                                        "Name": "newArmedValue",
+                                        "Value": "0"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "arm_disarmed"
+                        }
+                    ]
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "top": "1",
+                    "left": "0",
+                    "Display": {
+                        "Service": "urn:upnp-org:serviceId:TemperatureSensor1",
+                        "Variable": "CurrentTemperature",
+                        "Top": 60,
+                        "Left": 145,
+                        "Width": 75,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "top": "0",
+                    "left": "0",
+                    "Label": {
+                        "lang_tag": "ui7_degree_sign",
+                        "text": "°"
+                    },
+                    "Display": {
+                        "Top": 60,
+                        "Left": 160,
+                        "Width": 75,
+                        "Height": 20
+                    }
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_settings",
+                "text": "Settings"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "simple_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_advanced",
+                "text": "Advanced"
+            },
+            "Position": "2",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_device_options",
+                "text": "Device Options"
+            },
+            "Position": "3",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_zwave_options"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_logs",
+                "text": "Logs"
+            },
+            "Position": "4",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_logs"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_notifications",
+                "text": "Notifications"
+            },
+            "Position": "5",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+        },
+        {
+            "Label": {
+                "lang_tag": "ui7_device_scenes",
+                "text": "Scenes"
+            },
+            "Position": "6",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_scenes"
+        }
+    ],
+    "eventList2": [
+        {
+            "id": 1,
+            "label": {
+                "lang_tag": "ui7_temperature_goes_above",
+                "text": "Temperature goes above"
+            },
+            "serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "CurrentTemperature",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_temperature",
+                        "text": "temperature"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_degrees",
+                        "text": "degrees"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "defaultValue": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_temperature_goes_above",
+                        "text": "_DEVICE_NAME_ temperature goes above _ARGUMENT_VALUE_ degrees"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": {
+                "lang_tag": "ui7_temperature_goes_below",
+                "text": "Temperature goes below"
+            },
+            "serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "CurrentTemperature",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_temperature",
+                        "text": "temperature"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_degrees",
+                        "text": "degrees"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "defaultValue": "",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_temperature_goes_below",
+                        "text": "_DEVICE_NAME_ temperature goes below _ARGUMENT_VALUE_ degrees"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "label": {
+                "lang_tag": "ui7_leak_is_detected",
+                "text": "Leak is detected"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:SecuritySensor1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "boolean",
+                    "defaultValue": "",
+                    "allowedValueList": [
+                        {
+                            "Yes": "1",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_hft_leak_is_detected",
+                                "text": "_DEVICE_NAME_ detect a leak"
+                            }
+                        },
+                        {
+                            "No": "0",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_hft_leak_is_not_detected",
+                                "text": "_DEVICE_NAME_ does not detect a leak"
+                            }
+                        }
+                    ],
+                    "name": "Tripped",
+                    "comparisson": "=",
+                    "prefix": {},
+                    "suffix": {}
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "label": {
+                "lang_tag": "ui7_battery_level_goes_below",
+                "text": "Battery level goes below"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "prefix": {
+                        "lang_tag": "ui7_level",
+                        "text": "Level"
+                    },
+                    "dataType": "i4",
+                    "name": "BatteryLevel",
+                    "comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+                    "suffix": {
+                        "lang_tag": "ui7_percent_sign",
+                        "text": "%"
+                    },
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_battery_level_goes_below",
+                        "text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "label": {
+                "lang_tag": "ui7_leak_alarm",
+                "text": "Leak alarm"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+            "serviceStateTable": {
+                "sl_Alarm": {
+                    "value": "WATER_LEAK",
+                    "comparisson": "="
+                }
+            }
+        }
+    ],
+    "device_type": "urn:schemas-micasaverde-com:device:TempLeakSensor:1"
+}

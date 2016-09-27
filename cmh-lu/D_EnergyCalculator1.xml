@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:EnergyCalculator:1</deviceType>
+    <invisible>1</invisible>
+    <configuration></configuration>
+    <xconfiguration>func:xyz</xconfiguration>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-com:service:EnergyCalculator:1</serviceType>
+        <serviceId>urn:upnp-org:serviceId:EnergyCalculator1</serviceId>
+        <SCPDURL>S_EnergyCalculator1.xml</SCPDURL>
+      </service>
+    </serviceList>
+    <implementationList>
+      <implementationFile>I_EnergyCalculator1.xml</implementationFile>
+    </implementationList>
+  </device>
+</root>

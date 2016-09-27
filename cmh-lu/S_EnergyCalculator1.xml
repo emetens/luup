@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>DaysOfWeek</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Time</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>LightsOn</name>
+      <dataType>ui1</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>ThermostatOn</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>MaxWatts</name>
+      <dataType>ui4</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Users</name>
+      <dataType>string</dataType>
+    </stateVariable>
+  </serviceStateTable>
+</scpd>

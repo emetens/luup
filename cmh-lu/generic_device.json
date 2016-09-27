@@ -1,0 +1,175 @@
+[
+    {
+        "flashicon": "icons/devices.swf",
+        "imgIconBody": "",
+        "imgIconDimmable": "",
+        "imgIconTurnable": "",
+        "imgIconMin": "",
+        "imgIconMax": "",
+        "halloIconsDir": "pics/hallo",
+        "DisplayStatus": {},
+        "doc_url": {
+            "doc_language": 1,
+            "doc_manual": 1,
+            "doc_version": 1,
+            "doc_platform": 0,
+            "doc_page": "devices"
+        },
+        "Tabs": [
+            {
+                "Label": {
+                    "lang_tag": "tabname_control",
+                    "text": "Control"
+                },
+                "Position": "0",
+                "TabType": "flash",
+                "Control": [
+                    {
+                        "ControlType": "label",
+                        "Label": {
+                            "lang_tag": "device_settings_page",
+                            "text": "Device settings"
+                        },
+                        "Display": {
+                            "Top": 50,
+                            "Left": 50,
+                            "Width": 120,
+                            "Height": 20
+                        }
+                    }
+                ]
+            },
+            {
+                "Label": {
+                    "lang_tag": "settings",
+                    "text": "Settings"
+                },
+                "Position": "1",
+                "TabType": "javascript",
+                "ScriptName": "shared.js",
+                "Function": "simple_device"
+            },
+            {
+                "Label": {
+                    "lang_tag": "advanced",
+                    "text": "Advanced"
+                },
+                "Position": "2",
+                "TabType": "javascript",
+                "ScriptName": "shared.js",
+                "Function": "advanced_device"
+            },
+            {
+                "Label": {
+                    "lang_tag": "device_options",
+                    "text": "Device Options"
+                },
+                "Position": "3",
+                "TabType": "javascript",
+                "ScriptName": "shared.js",
+                "Function": "device_zwave_options"
+            }
+        ],
+        "DeviceType": "generic_device"
+    },
+    {
+        "flashicon": "icons/plugins.swf",
+        "imgicon": "icons/plugins.png",
+        "DisplayStatus": {},
+        "doc_url": {
+            "doc_language": 1,
+            "doc_manual": 1,
+            "doc_version": 1,
+            "doc_platform": 0,
+            "doc_page": "plugins"
+        },
+        "Tabs": [
+            {
+                "Label": {
+                    "lang_tag": "plugin_control",
+                    "text": "Plugin control"
+                },
+                "Position": "0",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_info"
+            },
+            {
+                "Label": {
+                    "lang_tag": "reviews",
+                    "text": "Reviews"
+                },
+                "Position": "1",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_reviews"
+            },
+            {
+                "Label": {
+                    "lang_tag": "help",
+                    "text": "Help"
+                },
+                "Position": "3",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_instructions"
+            }
+        ],
+        "plugin_id": 0
+    },
+    {
+        "flashicon": "icons/plugins.swf",
+        "imgicon": "icons/plugins.png",
+        "DisplayStatus": {},
+        "doc_url": {
+            "doc_language": 1,
+            "doc_manual": 1,
+            "doc_version": 1,
+            "doc_platform": 0,
+            "doc_page": "plugins"
+        },
+        "Tabs": [
+            {
+                "Label": {
+                    "lang_tag": "plugin_control",
+                    "text": "Plugin control"
+                },
+                "Position": "0",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_info"
+            },
+            {
+                "Label": {
+                    "lang_tag": "reviews",
+                    "text": "Reviews"
+                },
+                "Position": "1",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_reviews"
+            },
+            {
+                "Label": {
+                    "lang_tag": "add_review",
+                    "text": "Add review"
+                },
+                "Position": "2",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "add_plugin_review"
+            },
+            {
+                "Label": {
+                    "lang_tag": "help",
+                    "text": "Help"
+                },
+                "Position": "3",
+                "TabType": "javascript",
+                "ScriptName": "plugins.js",
+                "Function": "plugin_instructions"
+            }
+        ],
+        "plugin_id": -1
+    }
+]

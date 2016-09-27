@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>PanID</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Duration</name>
+      <dataType>ui4</dataType>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+    <action>
+      <name>FormNetwork</name>
+      <argumentList>
+        <argument>
+          <name>Channel</name>
+          <direction>in</direction>
+          <relatedStateVariable>Duration</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>PanID</name>
+          <direction>in</direction>
+          <relatedStateVariable>Duration</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>OpenJoin</name>
+      <argumentList>
+        <argument>
+          <name>Duration</name>
+          <direction>in</direction>
+          <relatedStateVariable>Duration</relatedStateVariable>
+          <retval/>
+        </argument>
+      </argumentList>
+    </action>
+  </actionList>
+</scpd>

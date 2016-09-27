@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<serviceStateTable>
+		<stateVariable sendEvents="yes">
+			<name>UseCMS</name>
+			<dataType>boolean</dataType>
+			<defaultValue>0</defaultValue>
+			<shortCode>cms</shortCode>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>VideoURLs</name>
+			<dataType>string</dataType>
+			<shortCode>videourls</shortCode>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>URL</name>
+			<dataType>string</dataType>
+			<setDefaultValue>1</setDefaultValue>
+			<defaultValue></defaultValue>
+			<shortCode>url</shortCode>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>DirectStreamingURL</name>
+			<setDefaultValue>1</setDefaultValue>
+			<dataType>string</dataType>
+			<shortCode>streaming</shortCode>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>RtspURL</name>
+			<setDefaultValue>1</setDefaultValue>
+			<dataType>string</dataType>
+			<shortCode>rtsp</shortCode>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>RelatedSensors</name>
+			<dataType>string</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>SensorArchiveSeconds</name>
+			<dataType>ui4</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>RelatedLights</name>
+			<dataType>string</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>LightOptions</name>
+			<dataType>string</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>AutoArchiveSeconds</name>
+			<dataType>ui4</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>AutoArchivePreserveDays</name>
+			<dataType>ui4</dataType>
+		</stateVariable>
+		<stateVariable sendEvents="no">
+			<name>LoopRequest</name>
+			<dataType>boolean</dataType>
+		</stateVariable>
+	</serviceStateTable>
+	<actionList>
+		<action>
+			<name>ArchiveVideo</name>
+			<argumentList>
+				<argument>
+					<name>Format</name>
+					<direction>in</direction>
+					<relatedStateVariable>ui1</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>Duration</name>
+					<direction>in</direction>
+					<relatedStateVariable>ui1</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+		<action>
+			<name>SetPassword</name>
+			<argumentList>
+				<argument>
+					<name>username</name>
+					<direction>in</direction>
+					<relatedStateVariable>string</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>password</name>
+					<direction>in</direction>
+					<relatedStateVariable>string</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+		<action>
+			<name>GetWifiNetworks</name>
+			<argumentList></argumentList>
+		</action>
+		<action>
+			<name>SetWifiNetwork</name>
+			<argumentList>
+				<argument>
+					<name>enable</name>
+					<direction>in</direction>
+					<relatedStateVariable>boolean</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>ssid</name>
+					<direction>in</direction>
+					<relatedStateVariable>string</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>security</name>
+					<direction>in</direction>
+					<relatedStateVariable>string</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>passkey</name>
+					<direction>in</direction>
+					<relatedStateVariable>string</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+		<action>
+			<name>GeneratePassword</name>
+			<argumentList></argumentList>
+		</action>
+		<action>
+			<name>Reboot</name>
+			<argumentList></argumentList>
+		</action>
+	</actionList>
+</scpd>

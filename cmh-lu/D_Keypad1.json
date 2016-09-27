@@ -1,0 +1,276 @@
+{
+	"default_icon": "door_lock_default.png",
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_pin_codes",
+				"text": "Pin codes"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "pin_codes"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_add_pin_code",
+				"text": "Add pin code"
+			},
+			"top_navigation_tab": 1,
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "add_pin_code"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_add_keypad_badge",
+				"text": "Add badge"
+			},
+			"top_navigation_tab": 1,
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "add_keypad_badge"
+		},
+		{
+			"Label": {
+				"lang_tag": "settings",
+				"text": "Settings"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "device_options",
+				"text": "Device Options"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "logs",
+				"text": "Logs"
+			},
+			"Position": "7",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "notifications",
+				"text": "Notifications"
+			},
+			"Position": "8",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "device_notifications"
+		}
+	],
+	"sceneList": {
+	},
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "bad_pin_code_entered",
+				"text": "Bad PIN Code entered"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinFailed": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "a_pin_is_entered",
+				"text": "A PIN Code is entered"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "ui4",
+					"defaultValue": "",
+					"name": "sl_UserCode",
+					"tag": "UserID",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "what_pin_index_number",
+						"text": "What PIN code INDEX number?"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "hft_a_pin_is_entered",
+						"text": "PIN Code #_ARGUMENT_VALUE_ is entered on _DEVICE_NAME_"
+					}
+				}
+			]
+		},
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "lock_button_is_pressed",
+				"text": "Lock button is pressed"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LockButton": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 4,
+			"label": {
+				"lang_tag": "code_entered_outside_of_valid_date",
+				"text": "User code entered outside of valid date"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_UnauthUser": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 5,
+			"label": {
+				"lang_tag": "low_battery",
+				"text": "Low battery"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LowBattery": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 6,
+			"label": {
+				"lang_tag": "very_low_battery",
+				"text": "Very low battery"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_VeryLowBattery": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 7,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"minValue": "1",
+					"maxValue": "99",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		},
+		{
+			"id": 8,
+			"label": {
+				"lang_tag": "code_changed_at_lock",
+				"text": "A PIN code was added using lock keypad"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LockChanged": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 9,
+			"label": {
+				"lang_tag": "pin_program_success",
+				"text": "A PIN code was programmed into the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinProgramSuccess": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 10,
+			"label": {
+				"lang_tag": "pin_remove_success",
+				"text": "A PIN code was removed from the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinRemoveSuccess": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 11,
+			"label": {
+				"lang_tag": "pin_program_fail",
+				"text": "A PIN code failed to be programmed into the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinProgramFail": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		}
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:Keypad:1",
+	"device_type": "urn:schemas-micasaverde-com:device:Keypad:1"
+}

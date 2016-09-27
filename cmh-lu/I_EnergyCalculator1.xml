@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<implementation>
+  <functions>
+    function enca_Startup()
+      -- Get everytime the wattage changes -
+      --[[
+			luup.variable_watch("enca_WattageChanged","urn:micasaverde-com:serviceId:EnergyMetering1","Watt") -- leave device empty to get all devices
+
+
+      local lul_device_list = lu_GetDevicesByService("urn:micasaverde-com:serviceId:EnergyMetering1")
+      luup.log("Found " .. tostring(#lul_device_list) .. " devices for metering")
+      for k,v in pairs(lul_device_list) do
+	      local lul_actual = luup.variable_get( "urn:micasaverde-com:serviceId:EnergyMetering1","ActualUsage", k)
+	      if( lul_actual==nil or lul_actual==0 ) then
+		      if( lu_DeviceSupportsService("urn:upnp-org:serviceId:SwitchPower1",k) ) then
+			      luup.log("Device #" .. tostring(k) .. " supports SwitchPower1")
+			      luup.variable_watch("enca_SwitchChanged","urn:upnp-org:serviceId:SwitchPower1","Status",k)
+		      end
+		      if( lu_DeviceSupportsService("urn:upnp-org:serviceId:Dimming1",k) ) then
+			      luup.log("Device #" .. tostring(k) .. " supports Dimming1")
+			      luup.variable_watch("enca_DimmableChanged","urn:upnp-org:serviceId:Dimming1","LoadLevelStatus",k)
+		      end
+		      if( lu_DeviceSupportsService("urn:upnp-org:serviceId:HVAC_UserOperatingMode1",k) ) then
+			      luup.log("Device #" .. tostring(k) .. " supports HVAC_UserOperatingMode1")
+			      luup.variable_watch("enca_HVACChanged","urn:upnp-org:serviceId:HVAC_UserOperatingMode1","ModeStatus",k)
+		      end
+	      end
+      end
+      ]]
+    end
+    
+    function enca_SwitchChanged(lul_DeviceNum,lul_Service,lul_Variable,lul_OldValue,lul_NewValue)
+      --[[
+	    local lul_watts = 0
+	    if( tonumber(lul_NewValue)==1 ) then
+		    lul_watts = luup.variable_get( "urn:micasaverde-com:serviceId:EnergyMetering1","UserSuppliedWattage", lul_DeviceNum )
+		    if( lul_watts==nil ) then lul_watts=100 end
+	    end
+	    luup.log("enca_SwitchChanged: setting " .. lul_DeviceNum .. " to " .. lul_watts .. " watts")
+	    luup.variable_watch("urn:micasaverde-com:serviceId:EnergyMetering1","Watt",lul_watts,lul_DeviceNum)
+      ]]
+    end
+    
+    function enca_WattageChanged(lul_DeviceNum,lul_Service,lul_Variable,lul_OldValue,lul_NewValue)
+      --luup.log("enca_WattageChanged device #" .. lul_DeviceNum .. " is now using " .. lul_NewValue .. " watts")
+    end
+
+  </functions>
+  <startup>enca_Startup</startup>
+</implementation>

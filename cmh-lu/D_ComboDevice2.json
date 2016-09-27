@@ -1,0 +1,48 @@
+{
+	"default_icon":"zwave_default.png",
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "settings",
+				"text": "Settings"
+			},
+			"Position": "0",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "device_options",
+				"text": "Device Options"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "notifications",
+				"text": "Notifications"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		}
+	],
+	"eventList2": [
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:ComboDevice:1"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:micasaverde-org:device:SerialPort:1</deviceType>
+    <commProv>rs232</commProv>
+    <serviceList>
+      <service>
+        <serviceType>urn:micasaverde-org:service:SerialPort:1</serviceType>
+        <serviceId>urn:micasaverde-org:serviceId:SerialPort1</serviceId>
+        <SCPDURL>S_SerialPort1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

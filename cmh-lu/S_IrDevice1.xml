@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>Codesets</name>
+      <dataType>string</dataType>
+      <shortCode>codesets</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Codeset</name>
+      <dataType>string</dataType>
+      <shortCode>codeset</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Remote</name>
+      <dataType>int</dataType>
+      <shortCode>remote</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Scene</name>
+      <dataType>string</dataType>
+      <shortCode>scene</shortCode>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+    <action>
+    <name>SendCode</name>
+      <argumentList>
+        <argument>
+          <name>Codeset</name>
+          <direction>in</direction>
+          <relatedStateVariable>Codeset</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Button</name>
+          <direction>in</direction>
+          <relatedStateVariable>Remote</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Repeat</name>
+          <direction>in</direction>
+          <relatedStateVariable>Remote</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+  </actionList>
+</scpd>

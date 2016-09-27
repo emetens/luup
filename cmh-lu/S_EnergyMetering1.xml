@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes">
+      <name>Watts</name>
+      <dataType>ui4</dataType>
+      <shortCode>watts</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>ActualUsage</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>WholeHouse</name>
+      <dataType>boolean</dataType>
+      <shortCode>wholehouse</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Pulse</name>
+      <dataType>ui4</dataType>
+      <shortCode>pulse</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>UserSuppliedWattage</name>
+      <dataType>ui4</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>KWH</name>
+      <dataType>ui4</dataType>
+      <shortCode>kwh</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>DayKWH</name>
+      <dataType>number</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>WeekKWH</name>
+      <dataType>number</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>MonthKWH</name>
+      <dataType>number</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>YearKWH</name>
+      <dataType>number</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>LifeKWH</name>
+      <dataType>number</dataType>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+    <action>
+      <name>ResetKWH</name>
+    </action>
+  </actionList>
+</scpd>

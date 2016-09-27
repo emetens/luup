@@ -1,0 +1,306 @@
+{
+	"default_icon": "siren_default.png",
+    "state_icons": [
+        {
+            "img": "siren_off.png",
+            "conditions": [
+                {
+                    "service": "urn:upnp-org:serviceId:SwitchPower1",
+                    "variable": "Status",
+                    "operator": "==",
+                    "value": 0,
+                    "subcategory_num": 0
+                }
+            ]
+        },
+        {
+            "img": "siren_on.png",
+            "conditions": [
+                {
+                    "service": "urn:upnp-org:serviceId:SwitchPower1",
+                    "variable": "Status",
+                    "operator": "==",
+                    "value": 1,
+                    "subcategory_num": 0
+                }
+            ]
+        }
+    ],
+	"x": "2",
+	"y": "4",
+	"inScene": "1",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "1",
+					"scenegroup": "1"
+				},
+				{
+					"id": "2",
+					"isSingle": "1",
+					"scenegroup": "1"
+				}
+			],
+			"SceneGroup":[
+				{
+					"id": "1",
+					"top": "2",
+					"left": "0",
+					"x": "2",
+					"y": "1"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": "1",
+					"ControlType": "multi_state_button",
+					"top": "0",
+					"left": "1",
+					"states":[
+						{
+							"Label": {
+								"lang_tag": "ui7_cmd_on",
+								"text": "On"
+							},
+							"ControlGroup": "1",
+							"Display": {
+								"Service": "urn:upnp-org:serviceId:SwitchPower1",
+								"Variable": "Status",
+								"Value": "1"
+							},
+							"Command": {
+								"Service": "urn:upnp-org:serviceId:SwitchPower1",
+								"Action": "SetTarget",
+								"Parameters": [
+									{
+										"Name": "newTargetValue",
+										"Value": "1"
+									}
+								]
+							},
+							"ControlCode": "power_on"
+						},
+						{
+							"Label": {
+								"lang_tag": "ui7_cmd_off",
+								"text": "Off"
+							},
+							"ControlGroup": "1",
+							"Display": {
+								"Service": "urn:upnp-org:serviceId:SwitchPower1",
+								"Variable": "Status",
+								"Value": "0"
+							},
+							"Command": {
+								"Service": "urn:upnp-org:serviceId:SwitchPower1",
+								"Action": "SetTarget",
+								"Parameters": [
+									{
+										"Name": "newTargetValue",
+										"Value": "0"
+									}
+								]
+							},
+							"ControlCode": "power_off"
+						}
+					]
+				},
+				{
+                    "ControlGroup": "1",
+                    "ControlType": "multi_state_button",
+                    "top": "0",
+                    "left": "1",
+                    "states": [
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_arm",
+                                "text": "Armed"
+                            },
+                            "ControlGroup": "1",
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Variable": "Armed",
+                                "Value": "1"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Action": "SetArmed",
+                                "Parameters": [
+                                    {
+                                        "Name": "newArmedValue",
+                                        "Value": "1"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "arm"
+                        },
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_bypass",
+                                "text": "Disarmed"
+                            },
+                            "ControlGroup": "1",
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Variable": "Armed",
+                                "Value": "0"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:SecuritySensor1",
+                                "Action": "SetArmed",
+                                "Parameters": [
+                                    {
+                                        "Name": "newArmedValue",
+                                        "Value": "0"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "bypass"
+                        }
+                    ]
+                }
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+            "Label": {
+                "lang_tag": "ui7_logs",
+                "text": "Logs"
+            },
+            "Position": "4",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_logs"
+		},
+		{
+            "Label": {
+                "lang_tag": "ui7_notifications",
+                "text": "Notifications"
+            },
+            "Position": "5",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_a_device_is_turned_on_off",
+				"text": "A device is turned on or off"
+			},
+			"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "1",
+					"allowedValueList": [
+						{
+							"Off": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_off",
+								"text": "Whenever the _DEVICE_NAME_ is turned off"
+							}
+						},
+						{
+							"On": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_on",
+								"text": "Whenever the _DEVICE_NAME_ is turned on"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "ui7_level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:Siren:1"
+}

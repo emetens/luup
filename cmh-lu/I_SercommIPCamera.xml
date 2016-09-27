@@ -1,0 +1,2483 @@
+<?xml version="1.0"?>
+<!-- $Id: I_SercommIPCamera.xml 34317 2016-08-08 15:51:14Z florin $ -->
+<implementation>
+	<functions>
+		local CAM_SID = "urn:micasaverde-com:serviceId:Camera1"
+		local SES_SID = "urn:micasaverde-com:serviceId:SecuritySensor1"
+		local HAD_SID = "urn:micasaverde-com:serviceId:HaDevice1"
+
+		local MODEL_8021V = "RC8021V"
+		local MODEL_8026  = "RC8026"
+		local MODEL_8026D = "RC8026D"
+		local MODEL_8110  = "RC8110"
+		local MODEL_4551  = "RC4551"
+		local MODEL_OC431 = "OC431"
+		local MODEL_8522  = "RC8522"
+		local MODEL_OC830 = "OC830"
+		local DISPLAY_SECONDS_MESSAGE = 60
+		local CHECK_INTERVAL = 300 -- How often to check the communication status with the camera.
+
+		-- Possible default credentials
+		local CREDENTIALS = {
+			{
+				user = "",
+				pwd  = ""
+			},
+			{
+				user = "admin",
+				pwd  = ""
+			},
+			{
+				user = "admin",
+				pwd  = "admin"
+			},
+			{
+				user = "administrator",
+				pwd  = ""
+			},
+			{
+				user = "administrator",
+				pwd  = "admin"
+			}
+		}
+
+		-- The camera motion sensor stages.
+		local MS_CONF_STAGES = {
+			["DISABLED"]         = "0", -- Motion sensor is disabled
+			["CREATE_DEVICE"]    = "1", -- Create the motion sensor device
+			["CONFIGURE_CAMERA"] = "2", -- Configure the camera
+			["CONFIGURED"]       = "3"  -- Everything is configured OK
+		}
+
+		local WGET_TIMEOUT = 15 -- Default timeout (in seconds) for luup.inet.wget
+		local ON_TIME = 60      -- How many seconds a sensor stays tripped after it detected motion (5 minutes)
+		local MIN_ON_TIME = 60  -- The minimum value that OnTime can have
+
+		local SECURITY_MAP = {
+			["None-None"]     = "NONE",
+			["WEP-WEP"]       = "WEP",
+			["WPA-PSK-TKIP"]  = "WPA_TKIP",
+			["WPA-PSK-AES"]   = "WPA_AES",
+			["WPA2-PSK-AES"]  = "WPA2_AES",
+			["WPA2-PSK-TKIP"] = "WPA2_TKIP",
+			["WPA-PSK-Mixed(TKIP+AES)"]  = "WPA_AES",
+			["WPA2-PSK-Mixed(TKIP+AES)"] = "WPA2_AES",
+			["NONE"]       = "0",
+			["WEP"]        = "1",
+			["WPA_TKIP"]   = "2",
+			["WPA_AES"]    = "2",
+			["WPA2_TKIP"]  = "2",
+			["WPA2_AES"]   = "2",
+			["WPA_MIXED"]  = "2",
+			["WPA2_MIXED"] = "2"
+		}
+
+		local ENCRYPTION = {
+			["none"]      		= "NONE",
+			["wep"]       		= "WEP",
+			["psk+tkip"]  		= "WPA_TKIP",
+			["psk"]       		= "WPA_TKIP",
+			["psk+ccmp"]  		= "WPA_AES",
+			["psk+aes"]   		= "WPA_AES",
+			["psk2+ccmp"] 		= "WPA2_AES",
+			["psk2+aes"]  		= "WPA2_AES",
+			["psk2"]      		= "WPA2_AES",
+			["psk2+tkip"]		= "WPA2_TKIP",
+			["mixed-psk+ccmp"]	= "WPA2_AES",
+			["mixed-psk+aes"]  	= "WPA2_AES"
+		}
+
+		local TIMEZONE = {
+			["SST11"] = "1", 						 -- (GMT-11:00) Midway
+			["HST10"] = "2", 						 -- (GMT-10:00) Hawaii
+			["AKST9AKDT,M3.2.0,M11.1.0"] = "3",		 -- (GMT-09:00) Alaska
+			["PST8PDT,M3.2.0,M11.1.0"] = "4", 		 -- (GMT-08:00) Pacific Time (US,Canada), Tijuana
+			["MST7"] = "5",							 -- (GMT-07:00) Arizona
+			["MST7MDT,M4.1.0,M10.5.0"] = "6", 		 -- (GMT-07:00) Chihuahua, La Paz, Mazatlan
+			["MST7MDT,M3.2.0,M11.1.0"] = "7", 		 -- (GMT-07:00) Mountain Time (US,Canada)
+			["CST6"] = "8",						 -- (GMT-06:00) Central America
+			["CST6CDT,M3.2.0,M11.1.0"] = "9", 						 -- (GMT-06:00) Central Time (US,Canada)
+			["CST6CDT,M4.1.0,M10.5.0"] = "10",						 -- (GMT-06:00) Guadalajara, Mexico City,Monterrey
+			["CST6"] = "11",						 -- (GMT-06:00) Saskatchewan
+			["COT5"] = "12",						 -- (GMT-05:00) Bogota, Lima, Quito
+			["EST5EDT,M3.2.0,M11.1.0"] = "13",						 -- (GMT-05:00) Eastern Time (US,Canada)
+			["EST5EDT,M3.2.0,M11.1.0"] = "14",						 -- (GMT-05:00) Indiana (East)
+			["AST4"] = "15", 						 -- (GMT-04:00) Atlantic Time (Canada)
+			["AST4ADT,M3.2.0,M11.1.0"] = "15", 						 -- (GMT-04:00) Atlantic Time (Canada)
+			["PYT4PYST,M10.1.0/0,M4.2.0/0"] = "16", 						 --(GMT-04:00) Caracas, La Paz
+			["VET4:30"] = "16", 						 --(GMT-04:00) Caracas, La Paz
+			["BOT4"] = "17", 						 --(GMT-04:00) Santiago
+			["AST4ADT,M3.2.0,M11.1.0"] = "17", 						 --(GMT-04:00) Santiago
+			["AMT4"] = "17", 						 --(GMT-04:00) Santiago
+			["NST3:30NDT,M3.2.0,M11.1.0"] = "18", 						 --*(GMT-03:30) Newfoundland
+			["BRT3BRST,M10.3.0/0,M2.3.0/0"] = "19", 						 --(GMT-03:00) Brasilia
+			["ART3"] = "20", 						 -- (GMT-03:00) Buenos Aires, Georgetown
+			["BRT3"] = "20", 						 -- (GMT-03:00) Buenos Aires, Georgetown
+			["UYT3UYST,M10.1.0,M3.2.0"] = "20", 						 -- (GMT-03:00) Buenos Aires, Georgetown
+			["GFT3"] = "21", 						 --(GMT-03:00) Greenland
+			["GST2"] = "22", 						 --*(GMT-02:00) Mid-Atlantic
+			["AZOT1AZOST,M3.5.0/0,M10.5.0/1"] = "23", 						 --*(GMT-01:00) Azores
+			["CVT1"] = "24", 						 --(GMT-01:00) Cape Verde Is
+			["WET0"] = "25", 						 --(GMT) Casablanca, Monrovia
+			["GMT0"] = "26", 						 --(GMT) Greenwich Mean Time: Dublin, Edinburgh, Lisbon,London
+			["GMT0BST,M3.5.0/1,M10.5.0"] = "26", 						 --(GMT) Greenwich Mean Time: Dublin, Edinburgh, Lisbon,London
+			["CET-1CEST,M3.5.0,M10.5.0/3"] = "27", 						 --*(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+			["CET-1CEST,M3.5.0,M10.5.0/3"] = "28", 						 --(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+			["CET-1CEST,M3.5.0,M10.5.0/3"] = "29", 						 --*(GMT+01:00) Brussels, Copenhagen, Madrid, Paris
+			["CET-1CEST,M3.5.0,M10.5.0/3"] = "30", 						 --*(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb
+			["WAT-1"] = "31", 						 --(GMT+01:00) West Central Africa
+			["WAT-1WAST,M9.1.0,M4.1.0"] = "31", 						 --(GMT+01:00) West Central Africa
+			["EET-2EEST,M3.5.0/3,M10.5.0/4"] = "32", 						 --*(GMT+02:00) Athens, Istanbul, Minsk
+			["EET-2"] = "32", 						 --*(GMT+02:00) Athens, Istanbul, Minsk
+			["EET-2EEST,M3.5.0/0,M10.5.0/0"] = "32", 						 --*(GMT+02:00) Bucharest
+			["EET-2EEST,M4.1.5/0,M10.5.5/0"] = "32", 						 --*(GMT+02:00) Bucharest
+			["EET-2"] = "34", 						 --(GMT+02:00) Cairo
+			["SAST-2"] = "35", 						 --(GMT+02:00) Harare, Pretoria
+			["FET-3"] = "36", 						 --(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius
+			["AST-3"] = "38", 						 --*(GMT+03:00) Baghdad
+			["EAT-3"] = "38", 						 --*(GMT+03:00) Baghdad
+			["AST-3"] = "39", 						 --(GMT+03:00) Kuwait, Riyadh
+			["MSK-3"] = "40", 						 --*(GMT+03:00) Moscow, St. Petersburg, Volgograd
+			["EAT-3"] = "41", 						 --(GMT+03:00) Nairobi
+			["WAT-3:30"] = "42", 						 --(GMT+03:30) Tehran
+			["GST-4"] = "43", 						 --(GMT+04:00) Abu Dhabi, Muscat
+			["AZT-4AZST,M3.5.0/4,M10.5.0/5"] = "44", 						 --(GMT+04:00) Baku, Tbilisi, Yerevan
+			["AMT-4AMST,M3.5.0,M10.5.0/3"] = "44", 						 --(GMT+04:00) Baku, Tbilisi, Yerevan
+			["MUT-4"] = "44", 						 --(GMT+04:00) Baku, Tbilisi, Yerevan
+			["GET-4"] = "44", 						 --(GMT+04:00) Baku, Tbilisi, Yerevan
+			["AFT-4:30"] = "45", 						 --(GMT+04:30) Kabul
+			["YEKT-6"] = "46", 						 --(GMT+05:00) Ekaterinburg
+			["PKT-5"] = "47", 						 --(GMT+05:00) Islamabad, Karachi, Tashkent
+			["IST-5:30"] = "48", 						 --(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi
+			["NPT-5:45"] = "49", 						 --  (GMT+05:45) Kathmandu
+			["ALMT-6"] = "50", 						 --(GMT+06:00) Almaty, Novosibirsk
+			["BDT-6"] = "51", 						 --(GMT+06:00) Astana, Dhaka
+			["BDT-6"] = "52", 						 --  (GMT+06:00) Sri Jayawardenepura
+			["MMT-6:30"] = "53", 						 --(GMT+06:30) Rangoon
+			["ICT-7"] = "54", 						 --  (GMT+07:00) Bangkok, Hanoi,Jakarta
+			["KRAT-8"] = "55", 						 --(GMT+07:00) Krasnoyarsk
+			["HKT-8"] = "56", 						 --(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi
+			["IRKT-9"] = "57", 						 --(GMT+08:00) Irkutsk, Ulaan Bataa
+			["SGT-8"] = "58", 						 --(GMT+08:00) Kuala Lumpur, Singapore
+			["WST-8"] = "59", 						 --(GMT+08:00) Perth
+			["CST-8"] = "60", 						 --(GMT+08:00) Taipei
+			["JST-9"] = "61", 						 --(GMT+09:00) Osaka, Sapporo, Tokyo
+			["PWT-9"] = "61", 						 --(GMT+09:00) Osaka, Sapporo, Tokyo
+			["KST-9"] = "62", 						 --(GMT+09:00) Seoul
+			["YAKT-10"] = "63", 						 --(GMT+09:00) Yakutsk
+			["CST-9:30CST,M10.1.0,M4.1.0/3"] = "64", 						 --*(GMT+09:30) Adelaide
+			["CST-9:30"] = "65", 						 --(GMT+09:30) Darwin
+			["EST-10"] = "66", 						 --  (GMT+10:00) Brisbane
+			["EST-10EST,M10.1.0,M4.1.0/3"] = "67", 						 --(GMT+10:00) Canberra, Melbourne, Sydney
+			["ChST-10"] = "68", 						 --  (GMT+10:00) Guam, Port Moresby
+			["EST-10EST,M10.1.0,M4.1.0/3"] = "69", 						 --(GMT+10:00) Hobart
+			["VLAT-11"] = "70", 						 --(GMT+10:00) Vladivostok
+			["MAGT-12"] = "71", 						 --(GMT+11:00) Magadan, Solomon Is., New Caledonia
+			["VUT-11"] = "71", 						 --(GMT+11:00) Magadan, Solomon Is., New Caledonia
+			["NFT-11:30"] = "71", 						 --(GMT+11:00) Magadan, Solomon Is., New Caledonia
+			["NZST-12NZDT,M9.5.0,M4.1.0/3"] = "72", 						 --*(GMT+12:00) Auckland, Wellington
+			["FJT-12"] = "73", 						 --  (GMT+12:00) Fiji, Kamchatka, Marshall Is
+			["NZST-12NZDT,M9.5.0,M4.1.0/3"] = "73", 						 --  (GMT+12:00) Fiji, Kamchatka, Marshall Is
+			["TOT-13"] = "74" 						 --(GMT+13:00) Nuku'alofa
+
+		}
+
+		local LANGUAGE_TOKENS = {
+			["fr"] = {
+				["Reload Luup to create motion sensor"] = "Rechanger le moteur Luup pour créer le détecteur de mouvement",
+				["Failed to determine Gateway IP address"] = "Impossible d'obtenir adresse IP",
+				["Camera IP is missing"] = "Caméra IP manquant",
+				["Invalid credentials"] = "Les informations d'identification ne sont pas valides",
+				["Failed to communicate with camera"] = "Impossible de communiquer avec la caméra IP",
+				["Unsupported camera"] = "Caméra IP n'est plus supporté.",
+				["Please wait 3-5 for camera firmware upgrade"] = "Merci d'attendre la fin de la mise à jour. Cela peut prendre jusque 5 minutes",
+				["Luup Engine will reload to configure motion detection"] = "Luup moteur se recharge à configurer la détection de mouvement",
+				["Unable to secure camera!"] = "Incapable d'assurer l'appareil photo!"
+			}
+		}
+
+		local DEFAULT_NAME = "IP Camera"
+		local DEFAULT_NAMES = {
+			["fr"] = "Caméra IP"
+		}
+
+		-- Variables that contain the MJPEG streaming URL.
+		local MJPEG_VARIABLES = { "DirectStreamingURL", "RingBuffer", "VideoURLs" }
+
+		local FIRMWARE_URL = "http://download.mios.com/fixes/cameras/DAUVMND-101-1005R01.bin"
+
+		-- If we restart LuaUPnP from the plugin, create this file to mark this event,
+		-- to prevent the plugin from restarting LuaUPnP endlessly.
+		-- Don't restart LuaUPnP if this file exists.
+		local RESTART_LUUP_ONCE_FILE = "/tmp/sercomm_restart_luup_once"
+
+		--------------------------------------------------------------------------------
+
+		local lug_device
+		local lug_devName
+		local lug_ip
+		local lug_user
+		local lug_pwd
+		local lug_language
+		local lug_skinCRC32
+		local lug_motionSensitivity = "7"
+		local lug_lastTask = 0
+		local lug_port = ":3480"
+		local lug_model = ""
+		local lug_flag_pir = false
+		--------------------------------------------------------------------------------
+
+		--------------------------------------------------------------------------------
+
+		local function printArray(array, func,text)
+			for key,value in pairs(array) do
+				if type(value) == "table" then
+					luup.log("SercommIPCam:".. func .."- " .. text .. " " .. key .. " :" )
+					for k,v in pairs(value) do
+						if type(v) == "table" then
+							for i,j in pairs(v) do
+								if type(j) == "table" then
+									for p,q in pairs(j) do
+										luup.log("SercommIPCam:".. func .."- ".. text .. "[" .. tostring(key) .. "]." .. tostring(k) .. "[" .. tostring(i) .. "]." .. tostring(p) .. " = " .. tostring(q) )
+									end
+								else
+									luup.log("SercommIPCam:".. func .."- ".. text .. "[" .. tostring(key) .. "]." .. tostring(k) .. "[" .. tostring(i) .. "] = " .. tostring(j) )
+								end
+							end
+						else
+							luup.log("SercommIPCam:".. func .."- ".. text .. "[" .. tostring(key) .. "]." .. tostring(k) .. " = " .. tostring(v) )
+						end
+					end
+				else
+					luup.log("SercommIPCam:".. func .." - ".. text .. "[" .. tostring(key) .. "] = " .. tostring(value) )
+				end
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		function ShowSysMessage (message)
+			if LANGUAGE_TOKENS[lug_language] and LANGUAGE_TOKENS[lug_language][message] then
+				message = LANGUAGE_TOKENS[lug_language][message]
+			end
+			luup.task(message, 1, lug_devName, -1)
+			lug_lastTask = os.time()
+			luup.call_delay("ClearStatusMessage", DISPLAY_SECONDS_MESSAGE)
+		end
+
+		function ShowSysError (message)
+			if LANGUAGE_TOKENS[lug_language] and LANGUAGE_TOKENS[lug_language][message] then
+				message = LANGUAGE_TOKENS[lug_language][message]
+			end
+			luup.task(message, 2, lug_devName, -1)
+		end
+
+		function ClearStatusMessage()
+			if os.time() - lug_lastTask >= DISPLAY_SECONDS_MESSAGE then
+				if lug_language == "fr" then
+					luup.task("Effancer...", 4, lug_devName, -1)
+				else
+					luup.task("Clearing...", 4, lug_devName, -1)
+				end
+			end
+		end
+		--------------------------------------------------------------------------------
+
+		local function UrlEncode (s)
+			s = s:gsub("\n", "\r\n")
+			s = s:gsub("([^%w])", function (c)
+			                          return string.format("%%%02X", string.byte(c))
+			                      end)
+			return s
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function EscapeJson (json, dkjson)
+			local dkjson = dkjson
+			if not dkjson then
+				dkjson = require("dkjson")
+				if not dkjson or type(dkjson) ~= "table" then
+					luup.log("SercommIPCam:GetWifiNetworks- Failed to load dkjson.lua", 1)
+					return "{}"
+				end
+			end
+
+			return dkjson.quotestring(json):sub(2, -2)
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function ValidateIp (IP)
+			local functionName = debug.getinfo(2, "n").name or ""
+			if IP == "" then
+				luup.log("SercommIPCam:".. functionName .."- IP is missing. Return", 1)
+				return false, "Camera IP is missing"
+			end
+			return true
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function TestUserPass (username, password)
+			local status, content, code = luup.inet.wget("http://".. lug_ip .."/adm/sysinfo.cgi", WGET_TIMEOUT, username , password)
+			luup.log("SercommIPCam:TestUserPass- Code=".. code)
+			if code &lt; 100 or code >= 500 then
+				return 1 -- Camera is offline
+			elseif code == 404 then
+				return 4 -- Camera not supported
+			elseif content and content:lower():find("firmware version") then
+				return 0 -- OK
+			else
+				return 2 -- Credentials didn't work
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function IsDigit (ascii)
+			return (ascii>=48 and ascii&lt;=57)
+		end
+
+		local function IsUpper (ascii)
+			return (ascii>=65 and ascii&lt;=90)
+		end
+
+		local function IsLower (ascii)
+			return (ascii>=97 and ascii&lt;=122)
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function GeneratePassword()
+
+			local password=""
+
+			-- Password generation parameters
+			local NUM_CHARS  = 10 -- Password length
+			local MIN_DIGITS = 2  -- Minimum number of digits the password must contain
+			local MIN_LOWER  = 2  -- Minimum number of lowercase letters the password must contain
+			local MIN_UPPER  = 2  -- Minimum number of uppercase letters the password must contain
+			local MAX_DIGITS = NUM_CHARS - (MIN_LOWER + MIN_UPPER)
+			local MAX_UPPER  = NUM_CHARS - (MIN_LOWER + MIN_DIGITS)
+			local MAX_LOWER  = NUM_CHARS - (MIN_UPPER + MIN_DIGITS)
+			local MAX_LOOPS  = 100 -- Maximum number of loops allowed to generate password, to prevent infinite loops.
+
+			math.randomseed( os.time() )
+			-- Lua uses the C90 random generator, which is broken,
+			-- so we need to discard the first number in the sequence.
+			math.random()
+
+			local numLoops = 0
+
+			local ascii
+			local numDigits = 0
+			local numUpper  = 0
+			local numLower  = 0
+			local numCharsLeft = NUM_CHARS
+			local numDigitsRequired = MIN_DIGITS
+			local numUpperRequired  = MIN_UPPER
+			local numLowerRequired  = MIN_LOWER
+
+			while #password &lt; NUM_CHARS and numLoops &lt; MAX_LOOPS do
+				ascii = math.random(48, 122)
+				if IsDigit(ascii) and numDigits &lt; MAX_DIGITS and numCharsLeft > numLowerRequired and numCharsLeft > numUpperRequired then
+					password  = password .. string.char(ascii)
+					numDigits = numDigits + 1
+				elseif IsUpper(ascii) and numUpper &lt; MAX_UPPER and numCharsLeft > numLowerRequired and numCharsLeft > numDigitsRequired then
+					password = password .. string.char(ascii)
+					numUpper = numUpper + 1
+				elseif IsLower(ascii) and numLower &lt; MAX_LOWER and numCharsLeft > numDigitsRequired and numCharsLeft > numUpperRequired then
+					password = password .. string.char(ascii)
+					numLower = numLower + 1
+				end
+				numCharsLeft = NUM_CHARS - #password
+				numDigitsRequired = MIN_DIGITS - numDigits
+				numUpperRequired  = MIN_UPPER - numUpper
+				numLowerRequired  = MIN_LOWER - numLower
+				numLoops = numLoops + 1
+			end
+
+			return password
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function ChangeDefaultPassword()
+
+			local newPassword = GeneratePassword()
+
+			local url = "http://".. lug_ip .."/adm/set_group.cgi"
+
+			-- group=USER&amp;admin_name=administrator&amp;admin_password=
+			local curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=USER"'..
+				' -d "admin_name='.. lug_user ..'" -d "admin_password='.. newPassword ..'"'..
+				' -u "'.. lug_user ..':" "'.. url ..'"'
+
+			luup.log("SercommIPCam:ChangeDefaultPassword- Run curl: ".. curlCommand)
+			local stdout = io.popen(curlCommand)
+			local response = stdout:read("*a")
+			stdout:close()
+
+			luup.log("SercommIPCam:ChangeDefaultPassword- Got response: "..(response or "nil"))
+
+			if response and response:lower():find("ok") then
+				luup.log("SercommIPCam:ChangeDefaultPassword- Successfully changed default password to: ".. newPassword)
+				return newPassword
+			else
+				luup.log("SercommIPCam:ChangeDefaultPassword- Failed to change default password", 1)
+				return ""
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		function Untrip (sensorId)
+			sensorId = tonumber(sensorId, 10)
+			local lastTrip = luup.variable_get(SES_SID, "LastTrip", sensorId) or 0
+			local now = os.time()
+			if os.difftime(now, lastTrip) >= ON_TIME then
+				luup.variable_set(SES_SID, "Tripped", "0", sensorId)
+				local armedTripped = luup.variable_get(SES_SID, "ArmedTripped", sensorId)
+				if armedTripped ~= "0" then
+					luup.variable_set(SES_SID, "ArmedTripped", "0", sensorId)
+				end
+			end
+		end
+
+
+		function Trip (request, args)
+
+			local sensorId = tonumber(args.sensor_id, 10) or 0
+			if sensorId == 0 then
+				return "FAILED"
+			end
+
+			luup.variable_set(SES_SID, "Tripped", "1", sensorId)
+			luup.variable_set(SES_SID, "LastTrip", os.time(), sensorId)
+			-- The ArmedTripped variable is required to trigger video archiving from house modes.
+			local armed = luup.variable_get(SES_SID, "Armed", sensorId)
+			if armed == "1" then
+				luup.variable_set(SES_SID, "ArmedTripped", "1", sensorId)
+			end
+
+			luup.call_delay("Untrip", ON_TIME, sensorId)
+			return "OK"
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function Reboot(request, args)
+			luup.log("SercommIPCam:Reboot start")
+			if not lug_ip or lug_ip == "" then
+				luup.log("SercommIPCam:Reboot Cannot reboot, empty camera IP", 1)
+				return
+			end
+			local url = "http://".. lug_ip .."/adm/reboot.cgi"
+			local status, content, code = luup.inet.wget(url, WGET_TIMEOUT, lug_user or "", lug_pwd or "")
+			if content and content:lower():find("ok") then
+				luup.log("SercommIPCam:Reboot done")
+			else
+				luup.log("SercommIPCam:Reboot failed, status=".. status ..", code=".. tostring(code))
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		-- Get the Vera IP address based on the camera's IP address.
+		-- If the camera is not in Vera's LAN, assume it's in the Vera's WAN.
+		-- Currently works only if the netmask is 255.255.255.0.
+		-- If the IP address couldn't be detected, return empty string.
+		local function FindAddress()
+
+			local gatewayAddress = ""
+
+			-- Get the camera subnet.
+			local camSubnet = lug_ip:match("%d+%.%d+%.%d+%.")
+			luup.log("SercommIPCam:FindAddress- Subnet: ".. (camSubnet or "nil"))
+
+			if camSubnet ~= nil then
+
+				-- Get the WAN IP.
+				local stdout = io.popen("GetNetworkState.sh ip_wan")
+				local wanIp = stdout:read("*a")
+				stdout:close()
+				luup.log("SercommIPCam:FindAddress- WAN IP: ".. (wanIp or "nil"))
+
+				if wanIp and wanIp:find(camSubnet, 1, true) then
+					luup.log("SercommIPCam:FindAddress- Use WAN IP")
+					gatewayAddress = wanIp
+				else
+					-- Get the LAN IP.
+					stdout = io.popen("GetNetworkState.sh ip_lan")
+					local lanIp = stdout:read("*a")
+					stdout:close()
+					luup.log("SercommIPCam:FindAddress- LAN IP: ".. (lanIp or "nil"))
+
+					if lanIp and lanIp:find(camSubnet, 1, true) then
+						luup.log("SercommIPCam:FindAddress- Use LAN IP")
+						gatewayAddress = lanIp
+					elseif wanIp and wanIp:gsub("%d+", "") == "..." then
+						-- wanIp is a valid IP address.
+						luup.log("SercommIPCam:FindAddress- Default to WAN IP")
+						gatewayAddress = wanIp
+					elseif lanIp and lanIp:gsub("%d+", "") == "..." then
+						-- lanIp is a valid IP address.
+						luup.log("SercommIPCam:FindAddress- Default to LAN IP")
+						gatewayAddress = lanIp
+					end
+				end
+			end -- if camSubnet ~= nil
+
+			luup.log("SercommIPCam:FindAddress- Return address: ".. gatewayAddress)
+			return gatewayAddress
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function GetMotionSensorID (msConfStage)
+
+			local sensorId = 0
+
+			-- Get the motion sensor's device ID.
+			local altid = "camera_".. lug_device .."_sensor"
+			for dev, attr in pairs(luup.devices) do
+				if attr.id == altid then
+					sensorId = dev
+					break
+				end
+			end
+
+			if sensorId == 0 then
+				-- We haven't created the motion sensor.
+				luup.log("SercommIPCam:GetMotionSensorID-".. msConfStage .." Motion sensor doesn't exist")
+				return
+			end
+
+			luup.log("SercommIPCam:GetMotionSensorID-".. msConfStage .." Motion sensor is device #".. sensorId)
+			return sensorId
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function ConfigureMotionSensor()
+
+			local msConfStage = luup.variable_get(CAM_SID, "MSConfStage", lug_device) or ""
+			luup.log("SercommIPCam:ConfigureMotionSensor- MSConfStage=".. msConfStage)
+			if msConfStage == "" then
+				msConfStage = MS_CONF_STAGES.DISABLED
+				luup.log("SercommIPCam:ConfigureMotionSensor- Set MSConfStage to DISABLED(".. msConfStage ..")")
+				luup.variable_set(CAM_SID, "MSConfStage", msConfStage, lug_device)
+			end
+
+			----------------------------------------------------------------------------------------
+			-- Motion detection disabled
+			----------------------------------------------------------------------------------------
+			if msConfStage == MS_CONF_STAGES.DISABLED then -- Disable the motion detection.
+				return true
+
+			----------------------------------------------------------------------------------------
+			-- Motion sensor not created. Create the motion sensor.
+			----------------------------------------------------------------------------------------
+			elseif msConfStage == MS_CONF_STAGES.CREATE_DEVICE then -- Create the motion sensor.
+
+				-- We can't configure the camera for motion detection if we don't know its URL/IP address.
+				local gatewayAddress = FindAddress()
+				luup.variable_set(CAM_SID, "GatewayAddress", gatewayAddress, lug_device)
+				if gatewayAddress == "" then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." GatewayAddress is empty, disable motion sensor")
+					luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.DISABLED, lug_device)
+					luup.call_delay("ShowSysError", 2, "Failed to determine Gateway IP address")
+					return false
+				end
+
+				-- Set the State variable here, because no value can be saved in the user_data after luup.chdev.sync has run.
+				luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.CONFIGURE_CAMERA, lug_device)
+
+				local sensorName = ""
+
+				if lug_language == "fr" then
+					sensorName = " détecteur de mouvement"
+				else
+					sensorName = " Motion Sensor"
+				end
+
+				-- Create the motion sensor.
+				luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Create the motion sensor")
+				local ptr = luup.chdev.start(lug_device)
+				luup.chdev.append(lug_device, ptr,
+					"camera_".. lug_device .."_sensor", -- altid
+					lug_devName .. sensorName, -- name
+					"urn:schemas-micasaverde-com:device:MotionSensor:1", -- device type
+					"D_MotionSensor1.xml", -- UPnP device file
+					"", -- UPnP implementation file
+					SES_SID ..",Armed=1\n".. SES_SID ..",Tripped=0\n".. SES_SID ..",OnTime=".. ON_TIME, -- attributes and variables
+					true, -- embedded
+					false) -- invisible
+				luup.chdev.sync(lug_device, ptr)
+
+			----------------------------------------------------------------------------------------
+			-- Motion sensor created. Configure the camera for motion detection reporting.
+			----------------------------------------------------------------------------------------
+			elseif msConfStage == MS_CONF_STAGES.CONFIGURE_CAMERA then
+
+				local gatewayAddress = luup.variable_get(CAM_SID, "GatewayAddress", lug_device) or ""
+
+				-- Get the motion sensor's device ID.
+				local sensorId = GetMotionSensorID(msConfStage)
+				if not sensorId then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Disable motion sensor")
+					luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.DISABLED, lug_device)
+					return true
+				end
+
+				--
+				-- Get the current motion detection settings.
+				--
+				local mdMode = "0"
+				local pirMode = "0"
+				local pirNotification = "0"
+				local configureMotion = true
+
+				if lug_model == MODEL_OC830 then
+					-- get pir settings
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if PIR detection is enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=SYSTEM", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") == "" then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get PIR detection settings")
+					else
+						pirMode = content:match("pir_mode=(%d)") or "0"
+					end
+					-- get pir notifications settings
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if PIR notifications are enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=EVENT", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") == "" then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get PIR notifications settings")
+					else
+						if content:find("MIOSPIR") then
+							pirNotification = "1"
+						else
+							pirNotification = "0"
+						end
+					end
+					if pirMode == "1" and pirNotification == "1" then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." PIR detection already configured")
+						configureMotion = false
+					end
+				else
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if motion detection is enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=MOTION", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") == "" then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get motion detection settings")
+					else
+						mdMode = content:match("md_mode=(%d)") or "0"
+					end
+
+					if mdMode == "1" then
+						-- The camera has been configured by the user. Check if it's configured correctly.
+						local mdSwitch1 = content:match("md_switch1=(%d)")
+						local mdSwitch2 = content:match("md_switch2=(%d)")
+						local mdSwitch3 = content:match("md_switch3=(%d)")
+						local mdSwitch4 = content:match("md_switch4=(%d)")
+						if mdSwitch == "1" or mdSwitch2 == "1" or mdSwitch3 == "1" or mdSwitch4 == "1" then
+							luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Motion detection already configured")
+							configureMotion = false
+						end
+					end
+				end
+
+				if configureMotion then
+
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Start configuring motion detection")
+
+					-- Enable event trigger.
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Enable event trigger")
+					url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event_trigger=1"
+					status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+					if status ~= 0 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to enable event trigger")
+						return false, "Failed to enable event trigger", luup.devices[lug_device].description
+					end
+
+					-- Create an event of type motion trigger.
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Create event of type pir/motion trigger")
+					if lug_model == MODEL_8021V then
+						url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event_mt=email:0;ftpu:0;httpn:1;httppost:0&amp;event_interval=1"
+					elseif lug_model ~= MODEL_OC830 then
+						url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event2_entry=is=1|es=0,|et=2|acts=op1:0;op2:0;email:0;ftpu:0;im:0;httpn:1;httppost:0;wlled:0;smbc:0;sd:0;op3:0;op4:0;smbc_rec:0;sd_rec:0|ei=0|ea=mp4,5,5,1|en=MIOSMOTION"
+					else
+						url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event2_entry=is=1|es=0,|et=3|acts=op1:0;op2:0;email:0;ftpu:0;im:0;httpn:1;httppost:0;wlled:0;smbc:0;sd:0;op3:0;op4:0;smbc_rec:0;sd_rec:0|ei=0|ea=mp4,5,10,1|en=MIOSPIR"
+					end
+					status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+					if status ~= 0 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to create event of type pir/motion trigger")
+						return false, "Failed to configure motion detection trigger", luup.devices[lug_device].description
+					end
+
+					-- Configure motion detection parameters if needed
+					if lug_model ~= MODEL_OC830 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Configure motion detection parameters")
+						if lug_model == MODEL_8021V then
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_name1=VeraPlugin&amp;md_window1=0,0,639,479&amp;md_threshold1=100&amp;md_sensitivity1=" .. lug_motionSensitivity
+						else
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_name4=VeraPlugin&amp;md_window4=0,0,639,479&amp;md_threshold4=100&amp;md_sensitivity4=" .. lug_motionSensitivity
+						end
+						status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+						if status ~= 0 then
+							luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to configure motion detection parameters")
+							return false, "Failed to configure motion detection parameters", luup.devices[lug_device].description
+						end
+					end
+
+					-- Enable motion detection or PIR detection based on camera model.
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Enable PIR/motion detection")
+					if lug_model ~= MODEL_OC830 then
+						if lug_model == MODEL_8021V then
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_mode=1&amp;md_switch1=1"
+						else
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_mode=1&amp;md_switch4=1"
+						end
+					else
+						url = "http://".. lug_ip .."/adm/set_group.cgi?group=SYSTEM&amp;pir_mode=1" --&amp;pir_range=5"
+					end
+					status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+					if status ~= 0 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to enable PIR/motion detection")
+						return false, "Failed to enable motion detection", luup.devices[lug_device].description
+					end
+				end
+
+				-- Enable and configure HTTP notification.
+				luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Enable and configure HTTP notification")
+				url = "http://".. gatewayAddress .. lug_port .."/data_request?id=lr_sercomm_tripped&amp;sensor_id=".. sensorId
+				status = luup.inet.wget("http://".. lug_ip .."/adm/set_group.cgi?group=HTTP_NOTIFY&amp;http_notify=1&amp;http_url=".. UrlEncode(url) .."&amp;http_proxy=&amp;http_proxy_no=80&amp;http_method=1", 15, lug_user, lug_pwd)
+				if status ~= 0 then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to configure the camera")
+					local msg  = "Failed to configure camera"
+					if LANGUAGE_TOKENS[lug_language].msg then
+						msg = LANGUAGE_TOKENS[lug_language].msg
+					end
+					return false, msg, luup.devices[lug_device].description
+				end
+				--to do maybe
+				-- Enable motion detection event.
+				luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Enable motion detection event")
+				os.execute('curl -m '.. WGET_TIMEOUT ..' -u '.. lug_user ..':'.. lug_pwd ..' -d "h_trig_md=1&amp;todo=save" "http://'.. lug_ip ..'/adm/file.cgi"')
+
+				-- Initialize OnTime variable, which is the time until the sensor is considered untripped.
+				local tripped = luup.variable_get(SES_SID, "OnTime", sensorId) or ""
+				if tripped == "" then
+					luup.variable_set(SES_SID, "OnTime", tostring(ON_TIME), sensorId)
+				else
+					ON_TIME = tonumber(tripped) or 60
+					luup.variable_set(SES_SID, "OnTime", tostring(ON_TIME), sensorId)
+				end
+
+				-- Run the 'Trip' function when notified.
+				luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Register handler")
+				luup.register_handler("Trip", "sercomm_tripped")
+
+				-- The configuration was successful.
+				luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.CONFIGURED, lug_device)
+
+			----------------------------------------------------------------------------------------
+			-- Camera configured
+			----------------------------------------------------------------------------------------
+			else
+				-- Get the motion sensor's device ID.
+				local sensorId = GetMotionSensorID(msConfStage)
+				if not sensorId then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Disable motion sensor")
+					luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.DISABLED, lug_device)
+					return true
+				end
+
+				--
+				-- Sometimes the camera doesn't configure, so we must check if the motion sensor is configured.
+				--
+				local mdMode = ""
+				local pirUpdate = ""
+				if lug_model == MODEL_OC830 then
+					-- get pir enabled settings
+					local pirMode = ""
+					local pirNotification = ""
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if PIR detection is enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=SYSTEM", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") ~= "" then
+						pirMode = content:match("pir_mode=(%d)") or "0"
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get PIR detection settings")
+					end
+					-- get pir notifications settings
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if PIR notifications are enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=EVENT", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") == "" then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get PIR notifications settings")
+					else
+						if content:find("MIOSPIR") then
+							pirNotification = "1"
+						else
+							pirNotification = "0"
+						end
+					end
+					if pirMode == "1" and pirNotification == "1" then
+						pirUpdate = "1"
+					else
+						pirUpdate = "0"
+					end
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." pirUpdate=".. pirUpdate)
+				else
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Check if motion detection is enabled")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=MOTION", WGET_TIMEOUT, lug_user, lug_pwd)
+					if (content or "") ~= "" then
+						mdMode = content:match("md_mode=(%d)") or "0"
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get motion detection settings")
+					end
+
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." mdMode=".. mdMode)
+				end
+
+				if mdMode == "0" or pirUpdate == "0" then
+					-- The motion sensor is not configured.
+					luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.CONFIGURE_CAMERA, lug_device)
+					local fh = io.open(RESTART_LUUP_ONCE_FILE, "r")
+					if fh then
+						-- The file exists, which means we already restarted LuaUPnP once.
+						-- We won't restart LuaUPnP more than once.
+						local luupRestartDate = fh:read("*a")
+						fh:close()
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." LuaUPnP already restarted by plugin on: ".. luupRestartDate ..", don't restart LuaUPnP again")
+					else
+						-- The file doesn't exist, we can restart LuaUPnP.
+						fh = io.open(RESTART_LUUP_ONCE_FILE, "w")
+						if fh then
+							luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Restart LuaUPnP to configure motion detection")
+							ShowSysMessage("Luup will reload to configure motion detection")
+							fh:write(os.date())
+							fh:close()
+							luup.reload()
+							return true
+						else
+							luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to mark LuaUPnP restart, won't restart LuaPnP", 1)
+						end
+					end
+				else
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Motion detection is configured")
+				end
+
+				-- TODO: check if we should update the port 13480 -> 3480; 3480 -> 13480 on camera
+				local flag_portUpdate = false
+				local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=HTTP_NOTIFY", WGET_TIMEOUT, lug_user, lug_pwd)
+				if not content then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get camera notifications settings")
+				else
+					if content:find(lug_port) then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Port notifications setting are OK")
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Port notifications setting need to be updated")
+						flag_portUpdate = true
+					end
+				end
+
+				-- Check if the gateway IP address is different than the one in the GatewayAddress variable. Update notification port if it is the case
+				-- check alos if http motion detection url is correct
+				local gatewayAddress_var = luup.variable_get(CAM_SID, "GatewayAddress", lug_device) or ""
+				local gatewayAddress_actual = FindAddress()
+				local flag_gatewayUpdate = false
+				if content then
+					if content:find(gatewayAddress_actual) then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." HTTP motion notifications setting are OK")
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." HTTP motion notifications setting needs to be updated")
+						flag_gatewayUpdate = true
+					end
+				else
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to get camera notifications settings, unable to check HTTP motion notification settings")
+				end
+				if gatewayAddress_var == "" or gatewayAddress_var ~= gatewayAddress_actual or flag_portUpdate or flag_gatewayUpdate then
+					-- Update the unit's IP/PORT address on the camera.
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Current IP addr is different than the one in the variable or port number is different. Update them")
+					local url = "http://".. gatewayAddress_actual .. lug_port .."/data_request?id=lr_sercomm_tripped&amp;sensor_id=".. sensorId
+					status = luup.inet.wget("http://".. lug_ip .."/adm/set_group.cgi?group=HTTP_NOTIFY&amp;http_notify=1&amp;http_url=".. UrlEncode(url) .."&amp;http_proxy=&amp;http_proxy_no=80&amp;http_method=1", WGET_TIMEOUT, lug_user, lug_pwd)
+					if status ~= 0 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to configure the camera", 1)
+						return false
+					end
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Camera configuration updated successfully")
+					luup.variable_set(CAM_SID, "GatewayAddress", gatewayAddress_actual, lug_device)
+				end
+
+				-- Get and update the time until the sensor is considered untripped.
+				local onTime = luup.variable_get(SES_SID, "OnTime", sensorId) or ""
+				if onTime:find("^%d+$") ~= nil then
+					ON_TIME = tonumber(onTime, 10) or ON_TIME
+				else
+					luup.variable_set(SES_SID, "OnTime", tostring(ON_TIME), sensorId)
+				end
+
+				-- Untrip the sensor if the OnTime has passed.
+				local lastTrip = luup.variable_get(SES_SID, "LastTrip", sensorId) or "0"
+				if lastTrip ~= "0" and os.difftime(os.time(), lastTrip) >= ON_TIME then
+					luup.variable_set(SES_SID, "Tripped", "0", sensorId)
+				end
+
+				-- Run the 'Trip' function when notified.
+				luup.log("SercommIPCam:State=".. msConfStage .." Register handler")
+				luup.register_handler("Trip", "sercomm_tripped")
+			end
+
+			-- Update motion sensitivity on camera
+			-- Update motion window on camera
+			local status, content = luup.inet.wget("http://".. lug_ip .."/adm/get_group.cgi?group=MOTION", WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content then
+				luup.log("SercommIPCam:ConfigureMotionSensor- Failed to get motion detection settings")
+			else
+				local cameraSensitivity = ""
+				if lug_model == MODEL_8021V then
+					cameraSensitivity = content:match("md_sensitivity1=(%d*)") or ""
+				else
+					cameraSensitivity = content:match("md_sensitivity4=(%d*)") or ""
+				end
+				if cameraSensitivity == "" then
+					luup.log("SercommIPCam:ConfigureMotionSensor- Could not get camera's motion sensitivity, using default value!")
+				else
+					if lug_motionSensitivity ~= cameraSensitivity then
+						-- Configure motion detection parameters.
+						luup.log("SercommIPCam:ConfigureMotionSensor- Reconfigure motion detection parameters")
+						if lug_model == MODEL_8021V then
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_name1=VeraPlugin&amp;md_window1=0,0,639,479&amp;md_threshold1=100&amp;md_sensitivity1=" .. lug_motionSensitivity
+						else
+							url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_name4=VeraPlugin&amp;md_window4=0,0,639,479&amp;md_threshold4=100&amp;md_sensitivity4=" .. lug_motionSensitivity
+						end
+						status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+						if status ~= 0 then
+							luup.log("SercommIPCam:ConfigureMotionSensor- Failed to configure motion detection parameters")
+							return false, "Failed to configure motion detection parameters"
+						else
+							luup.log("SercommIPCam:ConfigureMotionSensor- Motion sensitivity updated on camera!")
+						end
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor- Camera sensitivity is up to date!")
+					end
+				end
+				local mdSwitch1 = content:match("md_switch1=(%d)")
+				local mdSwitch2 = content:match("md_switch2=(%d)")
+				local mdSwitch3 = content:match("md_switch3=(%d)")
+				local mdSwitch4 = content:match("md_switch4=(%d)")
+				local configureMotionWindow = false
+				if mdSwitch == "1" or mdSwitch2 == "1" or mdSwitch3 == "1" or mdSwitch4 == "1" then
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Motion window/s already configured")
+				else
+					luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Motion window needs to be configured")
+					configureMotionWindow = true
+				end
+				if configureMotionWindow then
+					local url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_mode=1&amp;md_switch4=1"
+					if lug_model == MODEL_8021V then
+						url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_mode=1&amp;md_switch1=1"
+					end
+					status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+					if status ~= 0 then
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Failed to enable motion window")
+					else
+						luup.log("SercommIPCam:ConfigureMotionSensor-".. msConfStage .." Motion window reconfigured")
+					end
+				end
+			end
+		end
+
+
+		--------------------------------------------------------------------------------------------------
+		-- Check camera firmware version and upgrade it if necessary.
+		--------------------------------------------------------------------------------------------------
+		local function CheckFirmwareVersion()
+
+			-- Version can look like this: 1.0.04R5 or 1.0.05
+			-- if there is no revision, we add by default revision 0.
+			local REQUIRED_VERSION = {1,0,5,1}
+
+			local model = luup.attr_get("model", lug_device)
+			if model ~= MODEL_8110 then
+				luup.log("SercommIPCam:CheckFirmwareVersion- Camera is not a RC8110")
+				return
+			end
+
+			local url = "http://".. lug_ip .."/adm/sysinfo.cgi"
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content then
+				luup.log("SercommIPCam:CheckFirmwareVersion- Failed to get firmware version", 1)
+				return
+			end
+
+			local fwVersion = content:match("Firmware Version: V([^%s]+)")
+			if not fwVersion then
+				luup.log("SercommIPCam:CheckFirmwareVersion- Failed to get firmware version from string: ".. content, 1)
+				return
+			end
+			if not fwVersion:match("R%d*$") then
+				fwVersion = fwVersion .. "R00"
+			end
+			luup.log("SercommIPCam:CheckFirmwareVersion- Camera has firmware version: ".. fwVersion)
+
+			local upgradeRequired = false
+			local currentVersion
+			local i = 1
+			for word in fwVersion:gmatch("%d+") do
+				if REQUIRED_VERSION[i] then
+					currentVersion = tonumber(word, 10) or 999 -- Disable upgrade by default, because the upgrade process is not without risk.
+					if currentVersion &lt; REQUIRED_VERSION[i] then
+						upgradeRequired = true
+						break
+					end
+				else
+					break
+				end
+				i = i + 1
+			end
+
+			if not upgradeRequired then
+				luup.log("SercommIPCam:CheckFirmwareVersion- Firmware upgrade not required")
+				local firmwareVersion = luup.variable_get(CAM_SID, "FirmwareVersion", lug_device) or ""
+				if firmwareVersion == "" or firmwareVersion ~= fwVersion then
+					luup.variable_set(CAM_SID, "FirmwareVersion", fwVersion, lug_device)
+				end
+				return
+			end
+
+			luup.log("SercommIPCam:CheckFirmwareVersion- Upgrade required, send upgrade command")
+			url = "http://".. lug_ip .."/adm/auto_upgrade.cgi?new_fw_url=".. FIRMWARE_URL
+			status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if content and content:lower():find("ok") then
+				luup.log("SercommIPCam:CheckFirmwareVersion- Firmware upgrade command sent")
+				luup.call_delay("ShowSysMessage", 2, "Please wait 3-5 minutes for camera firmware upgrade")
+			else
+				luup.log("SercommIPCam:CheckFirmwareVersion- Failed to upgrade firmware", 1)
+			end
+		end
+
+
+		--------------------------------------------------------------------------------------------------
+		-- Configure the camera to POST mp4 video to the unit when triggered, for video archiving purpose.
+		--------------------------------------------------------------------------------------------------
+		local function ConfigureEvent()
+
+			local unitIp = FindAddress()
+			if unitIp == "" then
+				luup.log("SercommIPCam:ConfigureEvent- Failed to detect unit IP", 1)
+				return false
+			end
+
+			-- Enable events.
+			local url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event_trigger=1"
+
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content or not content:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureEvent- Failed to configure camera", 1)
+				return false
+			end
+
+			local model = luup.attr_get("model", lug_device)
+			local ea
+			if model == MODEL_8110 or model == MODEL_4551 then
+				ea = "mp4,5,15,1"
+			elseif model == MODEL_OC431 or model == MODEL_OC830 then
+				ea = "mp4,5,10,1" -- vistacam 1100 supports 15 seconds video
+			elseif model == MODEL_8021V then
+				ea = "1,4,1"
+			else
+				ea = "mp4,5,5,1"
+			end
+
+			-- Add event.
+			if model == MODEL_8021V then
+				url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event_httpc=email:0;ftpu:0;httpn:0;httppost:1&amp;event_mpeg4=".. ea .."&amp;event_interval=0"
+			else
+				url = "http://".. lug_ip .."/adm/set_group.cgi?group=EVENT&amp;event1_entry=is=1|es=0,|et=5|acts=op1:0;op2:0;email:0;ftpu:0;im:0;httpn:0;httppost:1;wlled:0;smbc:0;sd:0;op3:0;op4:0;smbc_rec:0;sd_rec:0|ei=0|ea=".. ea .."|en=http"
+			end
+
+			local status, content = luup.inet.wget(url, 15, lug_user, lug_pwd)
+			if not content or not content:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureEvent- Failed to configure camera", 1)
+				return false
+			end
+
+			-- Enable HTTP POST.
+			url = "http://".. lug_ip .."/adm/set_group.cgi?group=HTTP_EVENT&amp;http_event_en=1"
+
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content or not content:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureEvent- Failed to configure camera", 1)
+				return false
+			end
+
+			-- Configure HTTP POST action.
+			url = "http://".. lug_ip .."/adm/set_group.cgi?group=HTTP_EVENT&amp;http_post_en=1&amp;http_post_url=http://".. unitIp .. lug_port .. "/data_request?id=add_alert%26device=".. lug_device .."%26type=2%26source=3%26severity=0%26argument=%26code=camtrigger%26value=%26description=%26users=%26format=3%26icon="
+
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content or not content:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureEvent- Failed to configure camera", 1)
+				return false
+			end
+
+			luup.log("SercommIPCam:ConfigureEvent- Successfully configured event")
+
+			-- Configure video archive variables.
+			luup.variable_set(CAM_SID, "ArchiveVideoURL", "http://".. lug_ip .."/adm/http_trigger.cgi", lug_device)
+			luup.variable_set(CAM_SID, "RingBuffer", "", lug_device)
+
+			return true
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function SetWifiNetwork (enable, ssid, passkey, security)
+
+			luup.log("SercommIPCam:SetWifiNetwork- Start")
+
+			if not enable then
+				luup.log("SercommIPCam:SetWifiNetwork- Missing arg: enable", 1)
+				return false
+			end
+
+			if enable == "1" then
+				if not ssid then
+					luup.log("SercommIPCam:SetWifiNetwork- Missing arg: ssid", 1)
+					return false
+				elseif not security then
+					luup.log("SercommIPCam:SetWifiNetwork- Missing arg: security", 1)
+					return false
+				elseif security ~= "NONE" and not passkey then
+					luup.log("SercommIPCam:SetWifiNetwork- Missing arg: passkey", 1)
+					return false
+				end
+			else
+				-- Sercomm cameras don't support disabling WiFi, so just return.
+				luup.log("SercommIPCam:SetWifiNetwork- Disabling WiFi not supported by Sercomm cameras")
+				return true
+			end
+
+			local IP = luup.attr_get("ip", lul_device) or ""
+			local username = luup.attr_get("username", lul_device) or ""
+			if not ValidateIp(IP) then
+				return false
+			end
+
+			local password = luup.attr_get("password", lul_device) or ""
+
+			local authAscii = ""
+			if security == "WEP" then
+				authAscii = "wep_ascii"
+			elseif security ~= "NONE" then
+				authAscii = "wpa_ascii"
+			end
+
+			local url="http://".. IP .."/adm/set_group.cgi"
+
+			-- group=WIRELESS&amp;wlan_type=1&amp;wlan_essid=vera_30004106&amp;wlan_domain=12&amp;wlan_channel=11&amp;wlan_security=2&amp;wep_authtype=1&amp;wep_mode=1&amp;wep_index=1
+			local curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=WIRELESS" -d "wlan_type=1"'..
+				' --data-urlencode "wlan_essid='.. ssid ..'" -d "wlan_security='.. SECURITY_MAP[security] ..'"'
+			if authAscii ~= "" then
+				curlCommand = curlCommand ..' --data-urlencode "'.. authAscii ..'='.. passkey ..'"'
+			end
+			curlCommand = curlCommand ..' -u "'.. username ..':'.. password ..'" "'.. url ..'"'
+
+			luup.log("SercommIPCam:SetWifiNetwork- Run curl: ".. curlCommand)
+			local stdout = io.popen(curlCommand)
+			local response = stdout:read("*a")
+			stdout:close()
+
+			luup.log("SercommIPCam:SetWifiNetwork- Got response: "..(response or "nil"))
+
+			if response and response:lower():find("ok") then
+				luup.variable_set(CAM_SID, "WifiSSID", ssid, lug_device)
+				luup.log("SercommIPCam:SetWifiNetwork- Request sent OK")
+				return true
+			else
+				luup.log("SercommIPCam:SetWifiNetwork- Failed to set WiFi", 1)
+				return false
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function CheckWifiValues()
+
+			luup.log("SercommIPCam:CheckWifiValues- Start")
+			local url = "http://".. lug_ip .."/adm/get_group.cgi?group=WIRELESS"
+			local status, content = luup.inet.wget(url, 15, lug_user, lug_pwd)
+			if not content then
+				luup.log("SercommIPCam:CheckWifiValues- Failed to get camera's WiFi values", 1)
+				return false
+			else
+				local str = content:match("wlan_essid=([^\r\n]+)")
+				if str == "ANY" then
+					return true
+				else
+					return false
+				end
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function SetWifiValues()
+
+			local AP = ""
+			local SSID = ""
+			local Pass = ""
+			local Enc = ""
+
+			local stdout = io.popen("GetNetworkState.sh wifi")
+			AP = stdout:read("*a")
+			stdout:close()
+
+			if AP:find("ap") then
+				local line
+				local file = io.popen("uci show wireless")
+				local index
+				if file then
+					local ssid, pwd, enc
+					for line in file:lines() do
+						index = line:match("wireless.@wifi%-iface%[(%d)%].ifname=ra0")
+						if index then break end
+					end
+					--print(index)
+					for line in file:lines() do
+						ssid = line:match("wireless.@wifi%-iface%[".. index .. "%].ssid=(.*)$")
+						enc = line:match("wireless.@wifi%-iface%[".. index .. "%].encryption=(.*)$")
+						pwd = line:match("wireless.@wifi%-iface%[".. index .. "%].key=(.*)$")
+						if ssid then SSID = ssid end
+						if pwd then Pass = pwd end
+						if enc then Enc = enc end
+					end
+					file:close()
+
+					local response = CheckWifiValues()
+					if response then
+						luup.log("SercommIPCam:SetWifiValues- Set WiFi values on camera")
+						SetWifiNetwork("1", SSID, Pass, ENCRYPTION[Enc])
+					else
+						luup.log("SercommIPCam:SetWifiValues- WiFi values already set")
+					end
+				else
+					luup.log("SercommIPCam:SetWifiValues- uci show wireless error,  WiFi not set")
+				end -- if file
+			else
+				luup.log("SercommIPCam:SetWifiValues- WiFi disabled or not an Access Point")
+			end -- if AP:find("ap")
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function EnableSecureAccess()
+
+			local url = "http://".. lug_ip .."/adm/set_group.cgi?group=USER&amp;login_check=1&amp;group=VIDEO&amp;video_schedule=1"
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if not content or not content:lower():find("ok") then
+				luup.log("SercommIPCam:EnableSecureAccess- Failed to enable secure access", 1)
+				return false
+			else
+				luup.log("SercommIPCam:EnableSecureAccess- Request sent OK")
+				return true
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function ConfigureStream (model)
+			local url = "http://".. lug_ip .."/adm/set_group.cgi"
+			if model == MODEL_8021V then
+				url = "http://".. lug_ip .."/adm/set_group.cgi?group=AUDIO&amp;audio_in=1&amp;in_audio_type=1"
+				status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+				if status ~= 0 then
+					luup.log("SercommIPCam:ConfigureStream-Failed to configure audio stream for VistaCam Classic")
+					return false
+				else
+					luup.log("SercommIPCam:ConfigureStream-Audio stream for VistaCam Classic was configured")
+				end
+			end
+			local curlCommand = ""
+			if model == MODEL_8522 then
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode=1" -d "resolution=5" -d "quality_type=1" -d "quality_level=3" -d "bit_rate=2000" -d "frame_rate=30" -d "gov_length2=30" -d "sp_uri2="'
+			elseif model == MODEL_8021V then
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=MPEG4" -d "resolution=3" -d "quality_type=0" -d "quality_level=3" -d "bit_rate=2048" -d "frame_rate=30" -d "mode=1"'
+			else
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode=1" -d "resolution=4" -d "quality_type=1" -d "quality_level=3" -d "bit_rate=2000" -d "frame_rate=30" -d "gov_length2=30" -d "sp_uri2="'
+			end
+			curlCommand = curlCommand ..' -u "'.. lug_user ..':'.. lug_pwd ..'" "'.. url ..'"'
+			luup.log("SercommIPCam:ConfigureStream- Run curl: ".. curlCommand)
+			local stdout = io.popen(curlCommand)
+			local response = stdout:read("*a")
+			stdout:close()
+			luup.log("SercommIPCam:ConfigureStream- Got response: "..(response or "nil"))
+			if response and response:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureStream- Request sent OK - stream 1")
+			else
+				luup.log("SercommIPCam:ConfigureStream- Failed to configure stream 1", 1)
+				return false
+			end
+
+			-- Configure channel 2 to be low bandwidth H264 stream (640x480, 10 FPS, low quality video).
+			curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=3" -d "quality_type2=0" -d "bit_rate2=384" -d "frame_rate2=10" -d "sp_uri2="'
+			if model == MODEL_8522 then
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=4" -d "quality_type2=0" -d "bit_rate2=384" -d "frame_rate2=10" -d "sp_uri2="'
+			elseif model == MODEL_8021V then
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=MPEG4" -d "resolution2=2" -d "quality_type2=1" -d "quality_level2=3" -d "bit_rate2=4" -d "frame_rate2=20"'
+			else
+				curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=3" -d "quality_type2=0" -d "bit_rate2=384" -d "frame_rate2=10" -d "sp_uri2="'
+			end
+			if lug_skinCRC32 == -1745509393 or lug_skinCRC32 == -631433117 then
+				-- Sercomm 8110 has only one MJPEG channel: channel 3.
+				-- Configure channel 3: set it to MJPEG, resolution to 320x240 and FPS to 5, to reduce stream size.
+				if model == MODEL_8522 then
+					curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=4" -d "quality_type2=0" -d "bit_rate2=256" -d "frame_rate2=10" -d "sp_uri2="'
+					curlCommand = curlCommand ..' -d "group=JPEG" -d "mode3=1" -d "resolution3=3" -d "quality_level3=3" -d "frame_rate3=5" -d "sp_uri3="'
+				else
+					curlCommand = curlCommand ..' -d "group=JPEG" -d "mode3=1" -d "resolution3=2" -d "quality_level3=3" -d "frame_rate3=5" -d "sp_uri3="'
+				end
+			elseif lug_skinCRC32 == 117989485 then
+				if model == MODEL_8522 then
+					curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=3" -d "quality_type2=0" -d "bit_rate2=128" -d "frame_rate2=8" -d "gov_length2=20" -d "sp_uri2="'
+				else
+					curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=H264" -d "mode2=1" -d "resolution2=2" -d "quality_type2=0" -d "bit_rate2=128" -d "frame_rate2=8" -d "gov_length2=20" -d "sp_uri2="'
+				end
+			end
+			curlCommand = curlCommand ..' -u "'.. lug_user ..':'.. lug_pwd ..'" "'.. url ..'"'
+
+			luup.log("SercommIPCam:ConfigureStream- Run curl: ".. curlCommand)
+			local stdout = io.popen(curlCommand)
+			local response = stdout:read("*a")
+			stdout:close()
+
+			luup.log("SercommIPCam:ConfigureStream- Got response: "..(response or "nil"))
+
+			if response and response:lower():find("ok") then
+				luup.log("SercommIPCam:ConfigureStream- Request sent OK - stream 2")
+				if lug_skinCRC32 == -1745509393 or lug_skinCRC32 == -631433117 then
+					luup.log("SercommIPCam:ConfigureStream- Update MJPEG streaming variables")
+					-- Set all the variables that have the MJPEG streaming URL to use stream 3.
+					for _, variable in pairs(MJPEG_VARIABLES) do
+						local value = luup.variable_get(CAM_SID, variable, lug_device)
+						if value:find("video%.mjpeg") and not value:find("stream=") then
+							value = value:gsub("video%.mjpeg", "video.mjpeg?stream=3")
+							luup.log("SercommIPCam:ConfigureStream- Set ".. variable .."=".. value)
+							luup.variable_set(CAM_SID, variable, value, lug_device)
+						end
+					end
+				end
+				return true
+			else
+				luup.log("SercommIPCam:ConfigureStream- Failed to configure stream 2", 1)
+				return false
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function SetPasswordOnCamera (username, password, newUsername, newPassword)
+
+			luup.log("SercommIPCam:SetPasswordOnCamera- Start")
+
+			local IP = luup.attr_get("ip", lul_device) or ""
+			if not ValidateIp(IP) then
+				return false
+			end
+
+			local url = "http://".. IP .."/adm/set_group.cgi"
+
+			-- group=USER&amp;admin_name=administrator&amp;admin_password=
+			local curlCommand = 'curl -m '.. WGET_TIMEOUT ..' -s -S -d "group=USER"'..
+				' -d "admin_name='.. newUsername ..'" -d "admin_password='.. newPassword ..'"'..
+				' -u "'.. username ..':'.. password ..'" "'.. url ..'"'
+
+			luup.log("SercommIPCam:SetPasswordOnCamera- Run curl: ".. curlCommand)
+			local stdout = io.popen(curlCommand)
+			local response = stdout:read("*a")
+			stdout:close()
+
+			luup.log("SercommIPCam:SetPasswordOnCamera- Got response: "..(response or "nil"))
+
+			if response and response:lower():find("ok") then
+				luup.log("SercommIPCam:SetPasswordOnCamera- Request sent OK")
+				if newUsername and newUsername ~= username then
+					luup.attr_set("username", newUsername, lul_device)
+					lug_user = newUsername
+				end
+				if newPassword and newPassword ~= password then
+					luup.attr_set("password", newPassword, lul_device)
+					lug_pwd = newPassword
+				end
+
+				--
+
+				local defaultCredentials = "0"
+				for _, val in pairs(CREDENTIALS) do
+					if val.user == lug_user and val.pwd == lug_pwd then
+						defaultCredentials = "1"
+						break
+					end
+				end
+
+				local usesDefaultCredentialsOld = luup.variable_get(CAM_SID, "UsesDefaultCredentials", lug_device) or ""
+				if defaultCredentials ~=  usesDefaultCredentialsOld then
+					luup.variable_set(CAM_SID, "UsesDefaultCredentials", defaultCredentials, lug_device)
+				end
+
+				return true
+			else
+				luup.log("SercommIPCam:SetPasswordOnCamera- Failed to change credentials", 1)
+				return false
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function SetPassword (username, password, newUsername, newPassword)
+
+			-- We use "_EMPTY_STRING_" placeholder for an empty string because an empty string received in request was interpreted as a "nil" value.
+			if username == "_EMPTY_STRING_" then
+				username = ""
+			end
+			if password == "_EMPTY_STRING_" then
+				password = ""
+			end
+			if newUsername == "_EMPTY_STRING_" then
+				newUsername = ""
+			end
+			if newPassword == "_EMPTY_STRING_" then
+				newPassword = ""
+			end
+
+			if newUsername	~= nil then
+				local code = TestUserPass(username, password)
+				if code == 1 or code == 4 then
+					luup.log("SercommIPCam:SetPassword- Camera is offline or not supported. Return")
+					return false
+				elseif code == 2 then
+					local user = luup.attr_get("username", lul_device)
+					local pass = luup.attr_get("password", lul_device)
+
+					code = TestUserPass(user, pass)
+					if code == 1 or code == 4 then
+						luup.log("SercommIPCam:SetPassword -2- Camera is offline or not supported. Return")
+						return false
+					elseif code == 2 then
+						for _, crd in pairs(CREDENTIALS) do
+							if TestUserPass(crd.user, crd.pwd) == 0 then
+								username = crd.user
+								password = cdr.pass
+								luup.log("SercommIPCam:SetPassword- Default credential are working")
+								break
+							end
+						end
+					else
+						luup.log("SercommIPCam:SetPassword- Working credentials")
+						username = user
+						password = pass
+					end
+
+				else
+					luup.log("SercommIPCam:SetPassword- Credentials received are working")
+				end
+
+				return SetPasswordOnCamera(username, password, newUsername, newPassword)
+
+			else
+				luup.log("SercommIPCam:SetPassword- Username is nil", 1)
+				return false
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function RequireUpdateName()
+
+			if lug_skinCRC32 ~= -2073602173 then -- mios
+				return false
+			end
+
+			local model = luup.attr_get("model", lug_device)
+			if model ~= MODEL_8110 and model ~= MODEL_OC431 and model ~= MODEL_4551 and model ~= MODEL_OC830 and model ~= MODEL_8021V then
+				return false
+			end
+
+			-- Don't update the name if it's not the default one.
+			if lug_devName ~= (DEFAULT_NAMES[lug_language] or DEFAULT_NAME) then
+				return false
+			end
+
+			return true
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function GetSkinCRC32()
+
+			local DEFAULT_SKIN_CRC32 = -2073602173 -- CRC32 for "mios"
+
+			local nixio = require("nixio")
+			if not nixio then
+				luup.log("SercommIPCam:GetSkinCRC32- Failed to load nixio", 1)
+				return DEFAULT_SKIN_CRC32
+			end
+
+			local skin = ""
+
+			local file = io.open("/etc/cmh/ui_skin", "r")
+			if file then
+				skin = file:read()
+				file:close()
+			else
+				luup.log("SercommIPCam:GetSkinCRC32- Failed to open ui_skin", 1)
+				return DEFAULT_SKIN_CRC32
+			end
+
+			local skinCRC32 = nixio.bin.crc32(skin)
+			luup.log("SercommIPCam:GetSkinCRC32- Got skin from file: ".. tostring(skin) ..", crc32: ".. skinCRC32)
+
+			return skinCRC32
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function GetLanguage()
+			local file = io.open("/etc/cmh/language")
+			if file then
+				local language = file:read("*a")
+				file:close()
+				language = language:match("%a+")
+				luup.log("SercommIPCam:GetLanguage- Got language: ".. language)
+				return language
+			else
+				luup.log("SercommIPCam:GetLanguage- Cannot open /etc/cmh/language")
+				return "en"
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+
+		local function GetHotZones(hotZoneType)
+			local hotZoneArray = {}
+			local url = "http://localhost:3480/data_request?id=user_data&amp;output_format=json"
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT)
+
+			if not content or status ~= 0 then
+				luup.log("SercommIPCam:GetHotZones- unable to get hotzone information")
+				return false, "ERROR : unable to get hotzone information"
+			else
+				local dkjson = require("dkjson")
+				if not dkjson or type(dkjson) ~= "table" then
+					luup.log("SercommIPCam:GetHotZones- Failed to load dkjson.lua")
+					return false, "Failed to load dkjson.lua"
+				end
+				content = dkjson.decode(content) or false
+				--luup.log("(Alpha)::(GetHotZones) : content = [" .. content .. "]")
+				if content == false then
+					luup.log("SercommIPCam:GetHotZones- error when decoding the hot zones!")
+					return false, "ERROR when decoding hot zones"
+				else
+					--printArray(content.devices, "GetHotZones", "content.devices")
+					local flag_hot_zones = false
+					for k,v in pairs(content.devices) do
+						--luup.log("(Alpha)::(GetHotZones) : v= [" .. tostring(v) .. "]")
+						if v.id == lug_device then
+							--luup.log("(Alpha)::(GetHotZones) : WOWWWWWWWW!")
+							if v.hotzones then
+								hotZoneArray = v.hotzones
+								flag_hot_zones = true
+							end
+							--printArray(v.hotzones, "GetHotZones", "hotzones")
+							--printArray(hotZoneArray, "GetHotZones", "hotZoneArray")
+						end
+					end
+					if flag_hot_zones then
+						if hotZoneType == "window" then -- camera supports window hotzoning setup
+							-- we will pass the hotzone information without alterating it. Any aditional changes required for setting the camera will be done externaly
+							return true, hotZoneArray
+						elseif hotZoneType == "macro" then -- camera supports a macro hotzoning setup
+							local macro = {}
+							local resolution = luup.variable_get(CAM_SID, "AVProfilesArray", lug_device) or ""
+							local hotZonesNumber = luup.variable_get(CAM_SID, "HotZonesNumber", lug_device) or ""
+							local hotZonesMatrix = luup.variable_get(CAM_SID, "HotZonesMatrix", lug_device) or ""
+							if resolution == "" or hotZonesNumber == "" or hotZonesMatrix == "" then
+								luup.log("SercommIPCam:GetHotZones- unable to get resolution or hot zones properties")
+								return false, "ERROR : unable to get resolution or hot zones properties"
+							else
+								--printArray(hotZoneArray, "GetHotZones", "hotzones")
+								local w,h = resolution:match("(%d+),(%d+),")
+								local zoneNo = hotZonesNumber:match("(%d+),%d+")
+								local l,c = hotZonesMatrix:match("(%d+),(%d+)")
+								w = tonumber(w)
+								h = tonumber(h)
+								l = tonumber(l)
+								c = tonumber(c)
+								zoneNo = tonumber(zoneNo)
+								local xOffset =  math.floor(w/c)
+								local yOffset = math.floor(h/l)
+								for i = 1,l do
+									macro[i] = {}
+									for j= 1,c do
+										macro[i][j] = false
+									end
+								end
+								for key, val in pairs(hotZoneArray) do
+									local vertX = {}
+									local vertY = {}
+									for v in val.path:gmatch("%d+,%d+") do
+										local px,py = v:match("(%d+),(%d+)")
+										px = tonumber(px)
+										py = tonumber(py)
+										table.insert(vertX,px)
+										table.insert(vertY,py)
+									end
+									for i = 1,l do
+										for j = 1,c do
+											if pnpoly(#vertX, vertX, vertY, (j-1)*xOffset, (i-1)*yOffset) then
+												macro[i][j] = true
+											end
+										end
+									end
+								end
+								local stringMacro = ""
+								for i = 1, l do
+									local line = ""
+									for j = 1, c do
+										if macro[i][j] == true then
+											stringMacro = stringMacro .. "1"
+											line = line .. " 1"
+										else
+											stringMacro = stringMacro .. "0"
+											line = line .. " 0"
+										end
+									end
+									--luup.log(line)
+									--luup.log("(Alpha)::(GetHotZones) : Bin2Hex(line) = [" .. Bin2Hex(line) .. "]")
+								end
+								return true, stringMacro
+							end
+						else
+							--this can be used for different hotzone implementation for cameras with other configuration then macro or window
+							luup.log("SercommIPCam:GetHotZones-wrong hot zone type provided!")
+							return false, "ERROR : wrong hot zone type provided"
+						end
+					else
+						luup.log("SercommIPCam:GetHotZones-there are no hotzone set!")
+						return false, "there are no hotzone set, continuing..."
+					end
+				end
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function GetAreaPoints(width, height, zone)
+			-- hotzones needs to be scale to 640x480 resolution
+			luup.log("SercommIPCam:GetAreaPoints- zone = " .. zone)
+			if width == 640 and height == 480 then
+				local index = 1
+				local zoneString = ""
+				for v in zone:gmatch("(%d+,%d+);") do
+					local px,py = v:match("(%d+),(%d+)")
+					if index == 1 or index ==3 then
+						if tonumber(px) == 640 then
+							px = "639"
+						end
+						if tonumber(py) == 480 then
+							py = "479"
+						end
+						zoneString = zoneString .. px .. "," .. py .. ","
+					end
+					index = index + 1
+				end
+				luup.log("SercommIPCam:GetAreaPoints- zoneString(1) = " .. zoneString)
+				return zoneString:sub(1, #zoneString -1)
+			else
+				local index = 1
+				local zoneString = ""
+				for v in zone:gmatch("(%d+,%d+);") do
+					local px,py = v:match("(%d+),(%d+)")
+					px = math.floor((tonumber(px) * 639) / width)
+					py = math.floor((tonumber(py) * 479) / height)
+					if px == 640 then
+						px = "639"
+					end
+					if py == 480 then
+						py = "479"
+					end
+					if index == 1 or index ==3 then
+						zoneString = zoneString .. px .. "," .. py .. ","
+					end
+					index = index + 1
+				end
+				luup.log("SercommIPCam:GetAreaPoints- zoneString(2) = " .. zoneString)
+				return zoneString:sub(1, #zoneString -1)
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function DeleteDevice(id)
+			local url = "http://localhost:3480/data_request?id=device&amp;action=delete&amp;device=" .. id
+			local status, content = luup.inet.wget(url, WGET_TIMEOUT)
+			if not content or status ~= 0 then
+				return false
+			else
+				return true
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function DisableNormalMotionDetection()
+			local msConfStage = luup.variable_get(CAM_SID, "MSConfStage", lug_device) or ""
+			local sensorID = GetMotionSensorID(msConfStage)
+			if not msConfStage or msConfStage == "0" then
+				luup.log("SercommIPCam:DisableNormalMotionDetection- motion sensor disabled, nothing to do")
+				return true
+			else
+				if not sensorID then
+					luup.log("SercommIPCam:DisableNormalMotionDetection- ERROR unable to get motion sensor id")
+					return false
+				else
+					if DeleteDevice(sensorID) then
+						luup.variable_set(CAM_SID, "MSConfStage", "0", lug_device)
+						luup.log("SercommIPCam:DisableNormalMotionDetection- motion sensor device deleted")
+						return true
+						-- reload nor required because engine will be reloaded when hotzone devices are created
+					else
+						luup.log("SercommIPCam:DisableNormalMotionDetection- ERROR when tried to delete motion sensor device")
+						return false
+					end
+				end
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function SetZoneOnCamera(id, name, areaPointsString, sensitivity)
+			-- Configure motion detection parameters.
+			luup.log("SercommIPCam:SetZoneOnCamera- Configure hotzone " .. id .. " : " .. name .. " parameters")
+			url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_switch"..id.."=1&amp;md_name"..id.."="..name.."&amp;md_window"..id.."="..areaPointsString.."&amp;md_threshold"..id.."=100&amp;md_sensitivity"..id.."=".. sensitivity
+			status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+			if status ~= 0 then
+				luup.log("SercommIPCam:SetZoneOnCamera- Failed to configure hotzone " .. id .. " : " .. name .. " parameters")
+				return false
+			else
+				luup.log("SercommIPCam:SetZoneOnCamera- hotzone " .. id .. " : " .. name .. " parameters set")
+				return true
+			end
+		end
+		--------------------------------------------------------------------------------
+
+		local function getPermissions()
+			local permJson
+			local file  = "/tmp/tokens/d" .. luup.pk_accesspoint
+			if io.open(file) then
+				local count = 1
+				for line in io.lines(file) do
+					if count == 2 then
+						local mime = require ("mime")
+						if mime then
+							permJson = mime.unb64(line)
+						else
+							luup.log("SercommIPCam:getPermissions- unable to decode permissions")
+							return false
+						end
+					end
+					count = count + 1
+				end
+				local dkjson = require("dkjson")
+				if dkjson and type(dkjson) == "table" then
+					permJson = dkjson.decode(permJson)
+					for k,v in pairs(permJson.Permissions) do
+						--luup.log("SercommIPCam:getPermissions- k = " .. tostring(k))
+						--luup.log("SercommIPCam:getPermissions- v.PK_Permission = " .. tostring(v.PK_Permission))
+						--luup.log("SercommIPCam:getPermissions- v.Mode = " .. tostring(v.Mode))
+						if v.PK_Permission == 1628 and v.Mode == 1 then
+							luup.log("SercommIPCam:getPermissions- ACM permission found!")
+							return true
+						end
+					end
+					luup.log("SercommIPCam:getPermissions- ACM permission not found or not enabled")
+					return false
+				else
+					luup.log("SercommIPCam:getPermissions- unable to parse permissions")
+					return false
+				end
+			else
+				luup.log("SercommIPCam:getPermissions- unable to open permissions file", 1)
+				return false
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function Reconfigure()
+
+			-- Check if we know the camera IP.
+			lug_ip = luup.attr_get("ip", lug_device) or ""
+			if lug_ip == "" then
+				luup.log("SercommIPCam:Reconfigure- IP is missing", 1)
+				luup.variable_set(HAD_SID, "Configured", "0", lug_device)
+				luup.set_failure(1, lug_device)
+				luup.call_delay("ShowSysError", 2, "Camera IP is missing")
+				return false
+			end
+
+			local configured  = "1"
+			local commFailure = 0
+
+			-- Check if the username and password are working.
+			lug_user = luup.attr_get("username", lug_device) or ""
+			lug_pwd  = luup.attr_get("password", lug_device) or ""
+			local code = TestUserPass(lug_user, lug_pwd)
+			if code == 2 then
+				luup.log("SercommIPCam:Reconfigure- Existing credentials don't work: user=".. lug_user ..", pwd=".. lug_pwd ..", try default credentials")
+				lug_user = nil
+				lug_pwd  = nil
+				for _, crd in pairs(CREDENTIALS) do
+					if TestUserPass(crd.user, crd.pwd) == 0 then
+						luup.log("SercommIPCam:Reconfigure- Found working credentials: user=".. crd.user ..", pwd=".. crd.pwd)
+						luup.attr_set("username", crd.user, lug_device)
+						luup.attr_set("password", crd.pwd, lug_device)
+						lug_user = crd.user
+						lug_pwd  = crd.pwd
+						break
+					end
+				end
+				if not lug_user then
+					luup.log("SercommIPCam:Reconfigure- No valid credentials found", 1)
+					configured = "0"
+					commFailure = 2
+					luup.call_delay("ShowSysError", 2, "Invalid credentials")
+				end
+			elseif code == 1 then
+				luup.log("SercommIPCam:Reconfigure- Failed to communicate with camera", 1)
+				configured = "0"
+				commFailure = 1
+				luup.call_delay("ShowSysError", 2, "Failed to communicate with camera")
+			elseif code == 4 then
+				luup.log("SercommIPCam:Reconfigure- Unsupported camera", 1)
+				configured = "0"
+				commFailure = 1
+				luup.call_delay("ShowSysError", 2, "Unsupported camera")
+			end
+
+			if configured == "1" then
+
+				if lug_user == "" or lug_pwd == "" then
+					luup.log("SercommIPCam:Reconfigure- Username or password is empty, set them to default value")
+					local newUsername = (lug_user == "") and "admin" or lug_user
+					local newPassword = (lug_pwd == "") and "admin" or lug_pwd
+					SetPasswordOnCamera(lug_user, lug_pwd, newUsername, newPassword)
+				end
+
+				-- check if camera uses default credentials
+				local defaultCredentials = "0"
+				for _, val in pairs(CREDENTIALS) do
+					--luup.log("SercommIPCam:Reconfigure-  val.user = " .. val.user)
+					--luup.log("SercommIPCam:Reconfigure-  val.pwd = " .. val.pwd)
+					if val.user == lug_user and val.pwd == lug_pwd then
+						defaultCredentials = "1"
+						break
+					end
+				end
+
+				local usesDefaultCredentialsOld = luup.variable_get(CAM_SID, "UsesDefaultCredentials", lug_device) or ""
+				if defaultCredentials ~=  usesDefaultCredentialsOld then
+					luup.variable_set(CAM_SID, "UsesDefaultCredentials", defaultCredentials, lug_device)
+				end
+
+				-- Check if we know the model, and find it if we don't.
+				local model = luup.attr_get("model", lug_device) or "IP Camera"
+				lug_model = model
+				luup.log("SercommIPCam:Reconfigure- Model is '".. model .."'")
+				if model == "IP Camera" or model == "" then
+					luup.log("SercommIPCam:Reconfigure- Get camera info")
+					local status, content = luup.inet.wget("http://".. lug_ip .."/util/query.cgi", WGET_TIMEOUT)
+					if content then
+						model = content:match("model_number=([^%s]+)")
+						if model then
+							luup.log("SercommIPCam:Reconfigure- Got new model from camera: ".. model)
+							luup.attr_set("model", model, lug_device)
+						end
+					else
+						luup.log("SercommIPCam:Reconfigure- Failed to get camera info", 1)
+					end
+				end
+
+				luup.log("SercommIPCam:Reconfigure- Configure event")
+				ConfigureEvent()
+
+				luup.log("SercommIPCam:Reconfigure- Configure stream")
+				ConfigureStream(model)
+
+				SetWifiValues()
+
+				if lug_skinCRC32 ~= -1745509393 and lug_skinCRC32 ~= -631433117 then
+					local motion = luup.variable_get(CAM_SID, "MSConfStage", lug_device) or  ""
+					if motion == "" or motion == MS_CONF_STAGES.DISABLED then
+						luup.variable_set(CAM_SID, "MSConfStage", MS_CONF_STAGES.CREATE_DEVICE, lug_device)
+					end
+				end
+
+				-- Get motion sensor sensitivity
+				local sensitivity = luup.variable_get(CAM_SID, "MotionSensorSensitivity", lug_device) or ""
+				if sensitivity == "" then
+					luup.variable_set(CAM_SID, "MotionSensorSensitivity", lug_motionSensitivity, lug_device)
+				else
+					if tonumber(sensitivity,10) >= 1 and tonumber(sensitivity,10) &lt;= 10 then
+						lug_motionSensitivity = sensitivity
+					else
+						luup.variable_set(CAM_SID, "MotionSensorSensitivity", lug_motionSensitivity, lug_device)
+					end
+				end
+
+				ConfigureMotionSensor()
+
+				luup.log("SercommIPCam:Reconfigure- Check firmware version")
+				CheckFirmwareVersion()
+
+				if model == MODEL_8026 or model == MODEL_8026D or model == MODEL_8110 or model == MODEL_4551 or model == MODEL_OC830 or model == MODEL_8522 then
+					luup.log("SercommIPCam:Reconfigure- Secure camera")
+					local enabled = EnableSecureAccess()
+					if not enabled then
+						configured = "0"
+						commFailure = 1
+						luup.call_delay("ShowSysError", 2, "Unable to secure camera!")
+					end
+				end
+
+				-- configure Date, Time and Timezone
+
+				-- enable NTP sync
+				local url = "http://".. lug_ip .."/adm/set_group.cgi?group=SYSTEM&amp;ntp_mode=1&amp;ntp_server=clock.via.net&amp;ntp_date=0&amp;ntp_hour=0&amp;ntp_min=0"
+				local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+				if not content or not content:lower():find("ok") then
+					luup.log("SercommIPCam:Reconfigure- failed to enable NTP syncronization", 1)
+				else
+					luup.log("SercommIPCam:Reconfigure- NTP syncronization set")
+				end
+
+				-- set data and time
+				local stdout = io.popen("date '+%d/%m/%Y %H:%M:%S'")
+				local version = stdout:read("*a")
+				stdout:close()
+				local day,month,year,hour,minute,second = version:match("(.-)/(.-)/(.-)%s(.-):(.-):([^\r\n]+)")
+				local url = "http://".. lug_ip .."/adm/date.cgi?action=set&amp;year=" .. year .. "&amp;month=" .. month .. "&amp;day=" .. day .. "&amp;hour=" .. hour .."&amp;minute=" .. minute .. "&amp;second=" .. second
+				local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+				if not content or not content:lower():find("ok") then
+					luup.log("SercommIPCam:Reconfigure- failed to set date and time", 1)
+				else
+					luup.log("SercommIPCam:Reconfigure- date and time set")
+				end
+
+
+				-- set timezone
+				local stdout = io.popen("cat /etc/TZ")
+				local timezone = stdout:read("*a")
+				timezone  = timezone :match("([^\r\n]+)")
+				stdout:close()
+				if TIMEZONE[timezone] then
+					local url = "http://".. lug_ip .."/adm/set_group.cgi?group=SYSTEM&amp;time_zone=" .. TIMEZONE[timezone]
+					local status, content = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+					if not content or not content:lower():find("ok") then
+						luup.log("SercommIPCam:Reconfigure- failed to set timezone", 1)
+					else
+						luup.log("SercommIPCam:Reconfigure- timezone set")
+					end
+				else
+					luup.log("SercommIPCam:Reconfigure- timezone note found, unable to set")
+				end
+
+				-- discussion needed regarding hotzone access in plugin
+				-- used HotZoneEnable state variable for development and testing until final solution is provided
+				--local hotZoneEnabled = luup.variable_get(CAM_SID, "HotZoneEnabled", lug_device) or "0"
+				local hotZoneEnabled = getPermissions()
+				if hotZoneEnabled == true and lug_model == MODEL_8110 then
+					local multipleNotificationSupport = false
+					local hotZonesNumber = luup.variable_get(CAM_SID, "HotZonesNumber", lug_device) or ""
+					if hotZonesNumber == "" then
+						luup.log("SercommIPCam:Reconfigure- HotZone properties were not found, chosing defaul")
+					else
+						local notificationNumber = hotZonesNumber:match("%d+,(%d+)")
+						if tonumber(notificationNumber) > 1 then
+							multipleNotificationSupport = true
+							luup.log("SercommIPCam:Reconfigure- multiple notifications supported")
+						else
+							luup.log("SercommIPCam:Reconfigure- multiple notifications unsupported")
+						end
+					end
+					if multipleNotificationSupport then
+						--delete existing motion sensors ->local disableNormalMotion = DisableNormalMotionDetection()
+						--set hotzones on camera;
+						-- create motion sensors for each zone
+					else
+						local value, hotzone = GetHotZones("window")
+						if value == false then
+							luup.log("SercommIPCam:Reconfigure- Getting hotzone info: " .. tostring(hotzone))
+						else
+							--luup.log("SercommIPCam:Reconfigure- Bin2Hex(hotzone) = [" .. Bin2Hex(hotzone) .. "]")
+							local hotZoneActiveArea = luup.variable_get(CAM_SID, "HotZoneActiveArea", lug_device) or ""
+							if hotZoneActiveArea == "" then
+								luup.log("SercommIPCam:Reconfigure- unable to get hotZoneActiveArea, unable to configure hotzones", 1)
+							else
+								--printArray(hotZoneArray, "Reconfigure", "hotzones")
+								local width, height = hotZoneActiveArea:match("(%d+),(%d+)")
+								local width = tonumber(width)
+								local height = tonumber(height)
+								local zonesSet = {0,0,0,0}
+								local flag_conf_zones = false
+								local motionArea = 1 -- used until back-end implementation for hotzones is finished and zone ID is provided correctly
+								local flag_global_sensitivity = false
+								local gSensitivity = luup.variable_get(CAM_SID, "GlobalSensitivity", lug_device) or ""
+								if gSensitivity == "" then
+									flag_global_sensitivity = false
+								else
+									flag_global_sensitivity = true
+								end
+								for k,v in pairs(hotzone) do
+									local id = v.id
+									local name = v.name
+									local sensitivity
+									if flag_global_sensitivity then
+										sensitivity = gSensitivity
+									else
+										sensitivity = v.sensitivity
+									end
+									local areaPointsString = GetAreaPoints(width, height, v.path)
+									--if SetZoneOnCamera(id, name, areaPointsString, sensitivity) then
+									if SetZoneOnCamera(tostring(motionArea), name, areaPointsString, math.floor(sensitivity/10)) then
+										-- only configure motion areas untill camera API allows us to configure multiple motion notification
+										-- we will need to create motion devices for each motion area.
+										--CreateHotZoneDevice(id, name)
+										zonesSet[motionArea] = 1
+										flag_conf_zones = true
+									end
+									motionArea = motionArea + 1
+								end
+								-- if not all zones are set, we need to disable the rest of them
+								for i = 1, 4 do
+									if zonesSet[i] == 0 then
+										url = "http://".. lug_ip .."/adm/set_group.cgi?group=MOTION&amp;md_switch"..i.."=0"
+										status = luup.inet.wget(url, WGET_TIMEOUT, lug_user, lug_pwd)
+										if status ~= 0 then
+											luup.log("SercommIPCam:Reconfigure- Failed to deactivate window" .. i)
+										else
+											luup.log("SercommIPCam:Reconfigure- window " .. i .. " deactivated")
+										end
+									end
+								end
+								local msConfStage = luup.variable_get(CAM_SID, "MSConfStage", lug_device) or ""
+								local sensorId = GetMotionSensorID(msConfStage)
+								if not flag_conf_zones or not sensorId or msConfStage ~= "3" then
+									-- enable normal motion detection in case of hotzone failure???
+									-- create motion sensor device if it doesn't exist
+									luup.variable_set(CAM_SID, "MSConfStage", "1", lug_device)
+									ConfigureMotionSensor()
+								end
+							end
+						end
+					end
+				else
+					luup.log("SercommIPCam:Reconfigure- HotZone disabled or unsupported camera model")
+				end
+			else
+				luup.log("SercommIPCam:Reconfigure- Set watch after failed startup")
+				luup.variable_watch("ConfigureAfterFailedStart","urn:micasaverde-com:serviceId:HaDevice1","CommFailure",lug_device)
+			end
+
+			luup.variable_set(HAD_SID, "Configured", configured, lug_device)
+			luup.set_failure(commFailure, lug_device)
+
+			return (configured == "1")
+		end
+
+		--------------------------------------------------------------------------------
+
+		function ConfigureAfterFailedStart(device,service,var,old,new)
+			local configured = luup.variable_get(HAD_SID, "Configured", lug_device) or ""
+			if new == "0" and (configured == "0" or configured == "") then
+				luup.log("SercommIPCam:ConfigureAfterFailedStart- Reconfigure the camera after a failed startup")
+				Reconfigure()
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		local function CheckBasicCameraVariables(model)
+			luup.log("SercommIPCam:CheckBasicCameraVariables- starting")
+			luup.log("SercommIPCam:CheckBasicCameraVariables- model = " .. model)
+			if model == MODEL_8110 or model == MODEL_OC431 or model == MODEL_8522 or model == MODEL_OC830 or model == MODEL_8021V then --  or model == MODEL_4551 then
+				local urlval  = luup.variable_get(CAM_SID, "URL", lug_device) or ""
+				if urlval == "" or urlval ~= "/img/snapshot.cgi" then
+					luup.variable_set(CAM_SID, "URL", "/img/snapshot.cgi", lug_device)
+				end
+				local directstreaming  = luup.variable_get(CAM_SID, "DirectStreamingURL", lug_device) or ""
+				if directstreaming == "" or directstreaming ~= "/img/video.mjpeg" then
+					luup.variable_set(CAM_SID, "DirectStreamingURL", "/img/video.mjpeg", lug_device)
+				end
+				local authenticationType  = luup.variable_get(CAM_SID, "AuthenticationMethod", lug_device) or ""
+				if authenticationType == "" or authenticationType ~= "basic" then
+					luup.variable_set(CAM_SID, "AuthenticationMethod", "basic", lug_device)
+				end
+				-- Add HasWifi variable for displaying "Switch to WiFi" tab
+				local hasWifi = luup.variable_get(CAM_SID, "HasWifi", lug_device) or ""
+				if hasWifi == "" or hasWifi == "0" then
+					luup.variable_set(CAM_SID, "HasWifi", "1", lug_device)
+				end
+
+				local proxyStream = luup.variable_get(CAM_SID, "ProxyStream", lug_device) or ""
+				if proxyStream == "" then
+					luup.variable_set(CAM_SID, "ProxyStream", "1", lug_device)
+				end
+
+				local streams = luup.variable_get(CAM_SID, "Streams", lug_device) or ""
+				if model == MODEL_8021V then
+					if streams == "" or streams ~= "rtsp,rtsp,/img/media.sav;rtsp_low,rtsp,/img/media.sav?stream=2" then
+						luup.variable_set(CAM_SID, "Streams", "rtsp,rtsp,/img/media.sav;rtsp_low,rtsp,/img/media.sav?stream=2", lug_device)
+					end
+				else
+					if streams == "" or streams ~= "flv,http,/img/media.flv;rtsp,rtsp,/img/media.sav;flv_low,http,/img/media.flv?stream=2;rtsp_low,rtsp,/img/media.sav?stream=2" then
+						luup.variable_set(CAM_SID, "Streams", "flv,http,/img/media.flv;rtsp,rtsp,/img/media.sav;flv_low,http,/img/media.flv?stream=2;rtsp_low,rtsp,/img/media.sav?stream=2", lug_device)
+					end
+				end
+
+				-- Check if we have the correct category number.
+				if luup.attr_get("category_num", lug_device) ~= "6" then
+					luup.attr_set("category_num", "6", lug_device)
+				end
+
+				-- Disable all buttons.
+				local commands = luup.variable_get(HAD_SID, "Commands", lug_device) or""
+				if (commands or "") == "" then
+					commands = "camera_full_screen,camera_archive_snapshot"
+					luup.variable_set(HAD_SID, "Commands", commands, lug_device)
+				end
+
+				-- sanpshot URL check
+				local sanpurl  = luup.variable_get(CAM_SID, "URL", lug_device) or ""
+				if sanpurl == "" or sanpurl ~= "/img/snapshot.cgi" then
+					luup.variable_set(CAM_SID, "URL", "/img/snapshot.cgi", lug_device)
+				end
+				local sanpurlHigh  = luup.variable_get(CAM_SID, "URL_high", lug_device) or ""
+				if sanpurlHigh == "" or sanpurlHigh ~= "/img/snapshot.cgi?size=4&amp;quality=1" then
+					luup.variable_set(CAM_SID, "URL_high", "/img/snapshot.cgi?size=4&amp;quality=1", lug_device)
+				end
+				local sanpurlMed  = luup.variable_get(CAM_SID, "URL_med", lug_device) or ""
+				if sanpurlMed == "" or sanpurlMed ~= "/img/snapshot.cgi?size=3&amp;quality=1" then
+					luup.variable_set(CAM_SID, "URL_med", "/img/snapshot.cgi?size=3&amp;quality=1", lug_device)
+				end
+				local sanpurlLow  = luup.variable_get(CAM_SID, "URL_low", lug_device) or ""
+				if sanpurlLow == "" or sanpurlLow ~= "/img/snapshot.cgi?size=2&amp;quality=1" then
+					luup.variable_set(CAM_SID, "URL_low", "/img/snapshot.cgi?size=2&amp;quality=1", lug_device)
+				end
+
+				--check hotzone variables
+				-- local avProfilesArray  = luup.variable_get(CAM_SID, "AVProfilesArray", lug_device) or ""
+				-- if avProfilesArray == "" or avProfilesArray ~= "1280,720,/img/snapshot.cgi;640,480,/img/snapshot.cgi" then
+					-- luup.variable_set(CAM_SID, "AVProfilesArray", "1280,720,/img/snapshot.cgi;640,480,/img/snapshot.cgi", lug_device)
+				-- end
+				local hotZoneActiveArea  = luup.variable_get(CAM_SID, "HotZoneActiveArea", lug_device) or ""
+				if hotZoneActiveArea == "" or hotZoneActiveArea ~= "640,480" then
+					luup.variable_set(CAM_SID, "HotZoneActiveArea", "640,480", lug_device)
+				end
+				local hotZoneHasBlindAreas  = luup.variable_get(CAM_SID, "HotZoneHasBlindAreas", lug_device) or ""
+				if hotZoneHasBlindAreas == "" or hotZoneHasBlindAreas ~= "0" then
+					luup.variable_set(CAM_SID, "HotZoneHasBlindAreas", "0", lug_device)
+				end
+				local hotzonesNumber  = luup.variable_get(CAM_SID, "HotZonesNumber", lug_device) or ""
+				if hotzonesNumber == "" or hotzonesNumber ~= "3,1" then
+					luup.variable_set(CAM_SID, "HotZonesNumber", "3,1", lug_device)
+				end
+				local hotZonesSensitivity  = luup.variable_get(CAM_SID, "HotZonesSensitivity", lug_device) or ""
+				if hotZonesSensitivity == "" or hotZonesSensitivity ~= "1,1" then
+					luup.variable_set(CAM_SID, "HotZonesSensitivity", "1,1", lug_device)
+				end
+				local hotZonesMatrix  = luup.variable_get(CAM_SID, "HotZonesMatrix", lug_device) or ""
+				if hotZonesMatrix == "" or hotZonesMatrix ~= "30,40" then
+					luup.variable_set(CAM_SID, "HotZonesMatrix", "30,40", lug_device)
+				end
+				--perform record with RTSP record tool instead of camera push
+				if model == MODEL_8021V then
+					local recordWidth  = luup.variable_get(CAM_SID, "RecordWidth", lug_device) or ""
+					if recordWidth == "" or recordWidth ~= "640" then
+						luup.variable_set(CAM_SID, "RecordWidth", "640", lug_device)
+					end
+					local recordHeight  = luup.variable_get(CAM_SID, "RecordHeight", lug_device) or ""
+					if recordHeight == "" or recordHeight ~= "480" then
+						luup.variable_set(CAM_SID, "RecordHeight", "480", lug_device)
+					end
+					local recordDuration  = luup.variable_get(CAM_SID, "RecordDuration", lug_device) or ""
+					if recordDuration == "" or recordDuration ~= "20" then
+						luup.variable_set(CAM_SID, "RecordDuration", "20", lug_device)
+					end
+					local recordFrameRate  = luup.variable_get(CAM_SID, "RecordFrameRate", lug_device) or ""
+					if recordFrameRate == "" or recordFrameRate ~= "30" then
+						luup.variable_set(CAM_SID, "RecordFrameRate", "30", lug_device)
+					end
+					local supportsHttpPush  = luup.variable_get(CAM_SID, "SupportsHttpPush", lug_device) or ""
+					if supportsHttpPush == "" or supportsHttpPush ~= "0" then
+						luup.variable_set(CAM_SID, "SupportsHttpPush", "0", lug_device)
+					end
+				end
+			end
+		end
+
+		--------------------------------------------------------------------------------
+
+		function lug_startup (lul_devNum)
+
+			lug_device  = lul_devNum
+			lug_devName = luup.attr_get("name", lug_device)
+
+			local pluginRevision="$Rev: 143 $" -- Replaced by SVN with the revision version when commiting a change.
+			pluginRevision = pluginRevision:match("%d+")
+
+			luup.log("Sercomm IP Camera plugin rev ".. pluginRevision ..", device #".. lug_device .."-".. lug_devName)
+			local pluginRevisionVar = luup.variable_get(CAM_SID, "PluginRevision", lug_device)
+			if pluginRevisionVar ~= pluginRevision then
+				luup.variable_set(CAM_SID, "PluginRevision", pluginRevision, lug_device)
+			end
+
+			-- Sometimes when the camera is detected via UPnP, it's added with a wrong device type.
+			local deviceType = luup.attr_get("device_type", lug_device) or ""
+			if deviceType == "" or deviceType == "urn:schemas-upnp-org:device:Wireless Network Camera:1" then
+				luup.log("SercommIPCam:Startup- Device type found: " .. deviceType .. ", replace it with: urn:schemas-upnp-org:device:DigitalSecurityCamera:2")
+				luup.attr_set("device_type", "urn:schemas-upnp-org:device:DigitalSecurityCamera:2", lug_device)
+				--luup.attr_set("device_file", "D_DigitalSecurityCamera2.xml", lug_device)
+				luup.reload()
+			end
+
+			lug_language = GetLanguage()
+			lug_skinCRC32 = GetSkinCRC32()
+
+			local file = io.open("/etc/lighttpd_oem.conf", "r")
+			if file then
+				lug_port = ":13480"
+				file:close()
+			end
+			local model = luup.attr_get("model", lug_device) or "IP Camera"
+			if RequireUpdateName() then
+				if model == MODEL_8110 then
+					lug_devName = "VistaCam 700"
+				elseif model == MODEL_OC431 then
+					lug_devName = "VistaCam 1100"
+				elseif model == MODEL_4551 then
+					lug_devName = "Vistacam Premium"
+				elseif model == MODEL_OC830 then
+					lug_devName = "VistaCam 1200"
+				elseif model == MODEL_8522 then
+					lug_devName = "VistaCam 900"
+				elseif model == MODEL_8021V then
+					lug_devName = "VistaCam Classic"
+				end
+				luup.log("SercommIPCam:Startup- Set name to: ".. lug_devName)
+				luup.attr_set("name", lug_devName, lug_device)
+
+				-- Update the name of the motion sensors too.
+				local sensorId = GetMotionSensorID("startup")
+				if sensorId then
+					if lug_language == "fr" then
+						luup.attr_set("name", lug_devName .." Détecteur de Mouvement", sensorId)
+					else
+						luup.attr_set("name", lug_devName .." Motion Sensor", sensorId)
+					end
+				end
+			end
+
+			CheckBasicCameraVariables(model)
+
+			Reconfigure()
+
+			luup.log("SercommIPCam:Startup- Startup OK")
+
+		end
+	</functions>
+
+	<startup>lug_startup</startup>
+
+	<actionList>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:HaDevice1</serviceId>
+			<name>Reconfigure</name>
+			<job>
+				Reconfigure()
+			</job>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:Camera1</serviceId>
+			<name>SetPassword</name>
+			<run>
+				SetPassword(lul_settings.username, lul_settings.password, lul_settings.newUsername, lul_settings.newPassword)
+			</run>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:Camera1</serviceId>
+			<name>GetWifiNetworks</name>
+			<run>
+				luup.log("SercommIPCam:GetWifiNetworks- Start")
+
+				luup.variable_set(CAM_SID, "WifiNetworks", "", lul_device)
+
+				local IP = luup.attr_get("ip", lul_device) or ""
+				local username = luup.attr_get("username", lul_device) or ""
+
+				if not ValidateIp(IP) then
+					luup.variable_set(CAM_SID, "WifiNetworks", "{}", lul_device)
+					return false
+				end
+
+				local lxp = require("lxp")
+				if not lxp or type(lxp) ~= "table" then
+					luup.log("SercommIPCam:GetWifiNetworks- Failed to load lxp", 1)
+					luup.variable_set(CAM_SID, "WifiNetworks", "{}", lul_device)
+					return false
+				end
+
+				local dkjson = require("dkjson")
+				if not dkjson or type(dkjson) ~= "table" then
+					luup.log("SercommIPCam:GetWifiNetworks- Failed to load dkjson.lua", 1)
+					luup.variable_set(CAM_SID, "WifiNetworks", "{}", lul_device)
+					return false
+				end
+
+				local password = luup.attr_get("password", lul_device) or ""
+
+				luup.log("SercommIPCam:GetWifiNetworks- Get access points")
+				local url = "http://".. IP .."/adm/site_survey.cgi?timestamp=".. os.time()
+				local status, content = luup.inet.wget(url, 30, username, password)
+				if not content or not content:find("SiteList") then
+					luup.log("SercommIPCam:GetWifiNetworks- Failed to get access points", 1)
+					luup.variable_set(CAM_SID, "WifiNetworks", "{}", lul_device)
+					return false
+				end
+
+				local networksTable = {}
+				networksTable["networks"] = {}
+
+				local id = 1
+				local infraNetwork -- This is 'true' if the network type is infrastructure,
+								   -- and 'false' if it's ad-hoc or other type.
+				local ssid, security, encType, authMode
+
+				local tempTable = {}
+
+				callbacks = {
+					StartElement = function (parser, name)
+						if name == "Site" then
+							tempTable = {}
+						elseif name ~= "SiteList" then
+							callbacks.CharacterData = function (parser, str)
+								tempTable[name] = str
+							end
+						end
+					end,
+
+					EndElement = function (parser, name)
+						if name == "Site" then
+							local secToken = tempTable["Security"] .."-".. tempTable["Encryption"]
+							luup.log("SercommIPCam:GetWifiNetworks- DEBUG secToken=".. secToken)
+							if tempTable["Mode"] == "Infrastructure" and SECURITY_MAP[secToken] then
+								networksTable["networks"][id] = {}
+								networksTable["networks"][id]["ssid"] = tempTable["SSID"]
+								networksTable["networks"][id]["security"] = SECURITY_MAP[secToken]
+								id = id + 1
+							end
+						else
+							callbacks.CharacterData = false
+						end
+					end,
+
+					CharacterData = false -- Placeholder
+				}
+
+				luup.log("SercommIPCam:GetWifiNetworks- Parse xml")
+				local parser = lxp.new(callbacks)
+				parser:parse(content)
+				parser:close()
+
+				networksTable["num_networks"] = id - 1
+
+				local json = dkjson.encode(networksTable) or ""
+				if json ~= "" then
+					luup.variable_set(CAM_SID, "WifiNetworks", EscapeJson(json, dkjson), lul_device)
+				else
+					luup.variable_set(CAM_SID, "WifiNetworks", EscapeJson('{"num_networks":0}', dkjson), lul_device)
+				end
+
+				luup.log("SercommIPCam:GetWifiNetworks- OK")
+				return true
+			</run>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:Camera1</serviceId>
+			<name>SetWifiNetwork</name>
+			<run>
+				SetWifiNetwork(lul_settings.enable,lul_settings.ssid,lul_settings.passkey,lul_settings.security)
+			</run>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:Camera1</serviceId>
+			<name>GeneratePassword</name>
+			<run>
+				luup.log("SercommIPCam:GeneratePassword- Start")
+
+				lug_ip = luup.attr_get("ip", lul_device) or ""
+				lug_user = luup.attr_get("username", lul_device) or ""
+
+				-- Check that the username and IP are not empty.
+				if not ValidateIp(lug_ip) then
+					return false
+				end
+
+				-- Check if the password is empty.
+				local code = TestUserPass(lug_user, "")
+				if code == 1 or code == 4 then
+					luup.log("SercommIPCam:GeneratePassword- Camera is offline or not supported. Return")
+					luup.set_failure(1, lug_device)
+					return false
+				elseif code == 2 then
+					luup.log("SercommIPCam:GeneratePassword- Username not valid, or password is not empty. Return")
+					return false
+				end
+
+				luup.log("SercommIPCam:GeneratePassword- Password is empty, generate one")
+				lug_pwd = ChangeDefaultPassword()
+				if lug_pwd ~= "" then
+					luup.attr_set("password", lug_pwd, lul_device)
+					return true
+				else
+					return false
+				end
+			</run>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:Camera1</serviceId>
+			<name>Reboot</name>
+			<run>
+				Reboot()
+			</run>
+		</action>
+
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:SecuritySensor1</serviceId>
+			<name>SetArmed</name>
+			<run>
+				local newArmedValue = lul_settings.newArmedValue or 0
+				local tripped = luup.variable_get(SES_SID, "Tripped", lul_device) or 0
+				luup.variable_set(SES_SID, "Armed", lul_settings.newArmedValue, lul_device)
+				luup.variable_set(SES_SID, "ArmedTripped", tostring(newArmedValue * tripped), lul_device)
+			</run>
+		</action>
+
+	</actionList>
+</implementation>

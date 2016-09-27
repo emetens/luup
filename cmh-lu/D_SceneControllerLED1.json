@@ -1,0 +1,185 @@
+{
+	"default_icon": "scene_controller_default.png",
+    "flashicon": "icons/SceneController.png",
+    "imgIconBody": "",
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics/hallo",
+    "inScene": "0",
+    "ToggleButton": 1,
+    "DisplayStatus": {},
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "lighting_devices"
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Control"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "Control": [
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "scenes",
+                        "text": "Scenes"
+                    },
+                    "Display": {
+                        "Top": 60,
+                        "Left": 50,
+                        "Width": 75,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:micasaverde-com:serviceId:SceneController1",
+                        "Variable": "Scenes",
+                        "Top": 60,
+                        "Left": 145,
+                        "Width": 75,
+                        "Height": 20
+                    }
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "settings",
+                "text": "Settings"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "simple_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "2",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "device_options",
+                "text": "Device Options"
+            },
+            "Position": "3",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_zwave_options"
+        },
+        {
+            "Label": {
+                "lang_tag": "scenes",
+                "text": "Scenes"
+            },
+            "Position": "4",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "scene_controller"
+        }
+    ],
+    "sceneList": {
+        "group_1": {
+            "cmd_1": {
+                "label": "Light Level",
+                "serviceId": "urn:micasaverde-com:serviceId:SceneControllerLED1",
+                "action": "SetLight",
+                "argumentList": {
+                    "argument_1": {
+                        "dataType": "ui1",
+                        "defaultValue": "",
+                        "allowedValueRange": {
+                            "minimum": "0",
+                            "maximum": "100"
+                        },
+                        "prefix": "LED indicator number",
+                        "suffix": "",
+                        "name": "Indicator"
+                    },
+                    "argument_2": {
+                        "dataType": "ui1",
+                        "defaultValue": "",
+                        "allowedValueRange": {
+                            "minimum": "0",
+                            "maximum": "100"
+                        },
+                        "prefix": "LED indicator value",
+                        "suffix": "",
+                        "name": "newValue"
+                    }
+                }
+            }
+        }
+    },
+    "eventList2": [
+        {
+            "id": 1,
+            "label": {
+                "lang_tag": "ui7_scene_controller_button_is_pressed",
+                "text": "A button is pressed"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:SceneController1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "ui2",
+                    "defaultValue": "",
+                    "name": "sl_SceneActivated",
+                    "comparisson": "=",
+                    "prefix": {
+                        "lang_tag": "ui7_scene_controller_which_button_number",
+                        "text": "Which button number"
+                    },
+                    "suffix": {},
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_scene_controller_button_number_is_pressed",
+                        "text": "_DEVICE_NAME_: button number _ARGUMENT_VALUE_ is pressed"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": {
+                "lang_tag": "a_scene_is_deactivated",
+                "text": "A scene is de-activated"
+            },
+            "serviceId": "urn:micasaverde-com:serviceId:SceneController1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "ui2",
+                    "defaultValue": "",
+                    "name": "sl_SceneDeactivated",
+                    "comparisson": "=",
+                    "prefix": {
+                        "lang_tag": "which_scene_number",
+                        "text": "Which scene number"
+                    },
+                    "suffix": {},
+                    "HumanFriendlyText": {
+                        "lang_tag": "hft_scene_number_is_deactivated",
+                        "text": "Whenever the _DEVICE_NAME_: scene number _ARGUMENT_VALUE_ is deactivated"
+                    }
+                }
+            ]
+        }
+    ],
+    "DeviceType": "urn:schemas-micasaverde-com:device:SceneControllerLED:1",
+    "device_type": "urn:schemas-micasaverde-com:device:SceneControllerLED:1"
+}

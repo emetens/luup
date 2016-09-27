@@ -1,0 +1,234 @@
+{
+	"default_icon": "nodon_soft_default.png",
+	"state_icons":[
+		{
+			"img": "nodon_soft_no_config.png",
+			"conditions": [
+				{
+					"pnp": 5211
+				},
+				{
+                    "service": "urn:micasaverde-com:serviceId:SceneController1",
+                    "variable": "SceneShortcuts",
+                    "operator": "==",
+                    "value": "1=0-0,2=0-0,3=0-0,4=0-0,5=0-0,6=0-0,7=0-0,8=0-0"
+                }
+			]
+		},
+        {
+			"img": "nodon_soft_config.png",
+			"conditions": [
+				{
+					"pnp": 5211
+				},
+				{
+                    "service": "urn:micasaverde-com:serviceId:SceneController1",
+                    "variable": "SceneShortcuts",
+                    "operator": "!=",
+                    "value": "1=0-0,2=0-0,3=0-0,4=0-0,5=0-0,6=0-0,7=0-0,8=0-0"
+                }
+			]
+		}
+	],
+	"inScene": "0",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_settings",
+				"text": "settings"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"Control": [
+				{
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "ui7_scenes",
+						"text": "Scenes"
+					},
+					"Display": {
+						"Top": 60,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "variable",
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:SceneController1",
+						"Variable": "Scenes",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_nodon_octan_scene_association",
+				"text": "Modes and scenes associated with remote’s buttons"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "scene_controller"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		}
+	],
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_a_scene_is_activated",
+				"text": "A scene is activated"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:SceneController1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "ui2",
+					"defaultValue": "",
+					"name": "sl_CentralScene",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag":"ui7_which_scene_number",
+						"text":"Which scene number"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_scene_number_is_activated",
+						"text": "_DEVICE_NAME_: scene number _ARGUMENT_VALUE_ is activated"
+					}
+				},
+				{
+					"id": 2,
+					"dataType": "ui2",
+					"defaultValue": "0",
+					"allowedValueList": [
+						{
+							"Once": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_key_pressed_one_time",
+								"text": "The key is pressed 1 time"
+							}
+						},
+						{
+							"Release": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_key_released",
+								"text": "The key is released"
+							}
+						},
+						{
+							"Held": "2",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_key_held",
+								"text": "The key is being held"
+							}
+						},
+						{
+							"Twice": "3",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_key_pressed_twice",
+								"text": "The key is pressed twice (double click)"
+							}
+						},
+						{
+							"Triple": "4",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_key_pressed_triple",
+								"text": "The key is pressed 3 times (triple click)"
+							}
+						}
+					],
+					"name": "sl_CentralSceneAttr",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag":"ui7_scene_attributes",
+						"text":"How is the button pressed"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_scene_attributes",
+						"text": "_DEVICE_NAME_: button attribute _ARGUMENT_VALUE_"
+					}
+				}
+			]
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "ui7_level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:SceneController:1"
+}

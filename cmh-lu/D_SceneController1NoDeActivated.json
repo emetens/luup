@@ -1,0 +1,161 @@
+{
+	"default_icon": "scene_controller_default.png",
+	"inScene": "0",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"Control": [
+				{
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "ui7_scenes",
+						"text": "Scenes"
+					},
+					"Display": {
+						"Top": 60,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "variable",
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:SceneController1",
+						"Variable": "Scenes",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_scene_controller_asignment",
+				"text": "Select scenes for device buttons"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "scene_controller"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_scene_controller_button_is_pressed",
+				"text": "A button is pressed"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:SceneController1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "ui2",
+					"defaultValue": "",
+					"name": "sl_SceneActivated",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag":"ui7_scene_controller_which_button_number",
+						"text":"Which button number"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_scene_controller_button_number_is_pressed",
+						"text": "_DEVICE_NAME_: button number _ARGUMENT_VALUE_ is pressed"
+					}
+				}
+			]
+		},		
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "ui7_level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:SceneController:1"
+}

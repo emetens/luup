@@ -1,0 +1,519 @@
+{
+	"default_icon": "dimmable_light_default.png",
+	"state_icons": [
+		{
+			"img": "dimmable_light_100.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 91
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 100
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_90.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 81
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 90
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_80.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 71
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 80
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_70.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 61
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 70
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_60.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 51
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 60
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_50.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 41
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 50
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_40.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 31
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 40
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_30.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 21
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 30
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_20.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 11
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 20
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_10.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "<=",
+					"value": 10
+				},
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": ">=",
+					"value": 1
+				}
+			]
+		},
+		{
+			"img": "dimmable_light_off.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"operator": "==",
+					"value": 0
+				}
+			]
+		}
+	],
+	"x": "2",
+	"y": "4",
+	"iconText": "1",
+	"inScene": "1",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "1",
+					"scenegroup": "1"
+				},
+				{
+					"id": "2",
+					"isSingle": "1",
+					"scenegroup": "1"
+				},
+				{
+					"id": "3",
+					"isSingle": "1",
+					"scenegroup": "1"
+				}
+			],
+			"SceneGroup": [
+				{
+					"id": "1",
+					"top": "0.5",
+					"left": "0",
+					"x": "2",
+					"y": "2.5"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": "1",
+					"ControlType": "multi_state_button",
+					"top": "0",
+					"left": "1",
+					"states":[
+						{
+							"Label": {
+								"lang_tag": "ui7_cmd_on",
+								"text": "On"
+							},
+							"ControlGroup": "1",
+							"Display": {
+								"Service": "urn:upnp-org:serviceId:Dimming1",
+								"Variable": "LoadLevelStatus",
+								"Value": "100"
+							},
+							"Command": {
+								"Service": "urn:upnp-org:serviceId:Dimming1",
+								"Action": "SetLoadLevelTarget",
+								"Parameters": [
+									{
+										"Name": "newLoadlevelTarget",
+										"Value": "100"
+									}
+								]
+							},
+							"ControlCode": "power_on"
+						},
+						{
+							"Label": {
+								"lang_tag": "ui7_cmd_off",
+								"text": "Off"
+							},
+							"ControlGroup": "1",
+							"Display": {
+								"Service": "urn:upnp-org:serviceId:Dimming1",
+								"Variable": "LoadLevelStatus",
+								"Value": "0"
+							},
+							"Command": {
+								"Service": "urn:upnp-org:serviceId:Dimming1",
+								"Action": "SetLoadLevelTarget",
+								"Parameters": [
+									{
+										"Name": "newLoadlevelTarget",
+										"Value": "0"
+									}
+								]
+							},
+							"ControlCode": "power_off"
+						}
+					]
+				},
+				{
+					"ControlGroup": "3",
+					"ControlType": "slider",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_cmd_on",
+						"text": "On"
+					},
+					"Style": "numeric",
+					"LabelMin": {
+							"lang_tag": "ui7_dimmable_light_label_min",
+							"text": "off"
+						},
+						"LabelMax": {
+							"lang_tag": "ui7_dimmable_light_label_max",
+							"text": "on"
+						},
+						"LabelSymbol": {
+							"lang_tag": "ui7_dimmable_light_label_symbol",
+							"text": "%"
+						},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"MinValue": "0",
+						"MaxValue": "100",
+						"Top": 100,
+						"Left": 50,
+						"Width": 100,
+						"Height": 25,
+						"ID": "newLoadlevelTarget"
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"ID": "newLoadlevelTarget"
+							}
+						],
+						"HumanFriendlyText": {
+								"lang_tag": "ui7_cmd_dimmable_light_level",
+								"text": "Level"
+							},
+						"Sufix": "%",
+						"Validation": {
+							"Type": "number",
+							"Min": "0",
+							"Max": "100"
+						},
+						"Description": {
+							"lang_tag": "ui7_cmd_dimmable_light_level_description",
+							"text": "Enter a value between 0 and 100"
+						}
+					},
+					"ControlCode": "dim"
+				}
+			],
+            "Conditions": [
+                {
+                    "Trigger": {
+                        "Operands": [
+                            {
+                                "Service": "urn:upnp-org:serviceId:Dimming1",
+                                "Variable": "LoadLevelStatus",
+                                "Value": {
+                                    "Min": "1",
+                                    "Max": "100"
+                                }
+                            }
+                        ]
+                    },
+                    "Actions": [
+                        {
+                            "Action": "set_value",
+                            "ActionArgument": "100",
+                            "Target": "power_on"
+                        }
+                    ]
+                }
+            ]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_logs",
+				"text": "Logs"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"sceneList": {
+		"group_1": {
+			"cmd_1": {
+				"label": "ON",
+				"serviceId": "urn:upnp-org:serviceId:Dimming1",
+				"action": "SetLoadLevelTarget",
+				"arguments": {
+					"newLoadlevelTarget": "100"
+				},
+				"display": {
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"value": "100"
+				}
+			},
+			"cmd_2": {
+				"label": "OFF",
+				"serviceId": "urn:upnp-org:serviceId:Dimming1",
+				"action": "SetLoadLevelTarget",
+				"arguments": {
+					"newLoadlevelTarget": "0"
+				},
+				"display": {
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus",
+					"value": "0"
+				}
+			},
+			"cmd_3": {
+				"label": "Set level",
+				"serviceId": "urn:upnp-org:serviceId:Dimming1",
+				"action": "SetLoadLevelTarget",
+				"argumentList": {
+					"argument_1": {
+						"dataType": "ui1",
+						"defaultValue": "",
+						"allowedValueRange": {
+							"minimum": "0",
+							"maximum": "100"
+						},
+						"prefix": "to",
+						"suffix": "%",
+						"name": "newLoadlevelTarget"
+					}
+				},
+				"display": {
+					"service": "urn:upnp-org:serviceId:Dimming1",
+					"variable": "LoadLevelStatus"
+				}
+			}
+		}
+	},
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_a_device_is_turned_on_off",
+				"text": "A device is turned on or off"
+			},
+			"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "1",
+					"allowedValueList": [
+						{
+							"Off": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_off",
+								"text": "Whenever the _DEVICE_NAME_ is turned off"
+							}
+						},
+						{
+							"On": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_device_turned_on",
+								"text": "Whenever the _DEVICE_NAME_ is turned on"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-upnp-org:device:DimmableLight:1"
+}

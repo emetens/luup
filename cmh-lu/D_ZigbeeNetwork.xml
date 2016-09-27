@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:ZigbeeNetwork:1</deviceType>
+    <friendlyName>Zigbee Network</friendlyName>
+    <manufacturer>Mi Casa Verde</manufacturer>
+    <manufacturerURL>http://www.micasaverde.com</manufacturerURL>
+    <modelDescription>Zigbee Network</modelDescription>
+    <modelName>GC100</modelName>
+    <modelNumber>1.0</modelNumber>
+    <UDN>uuid:2ff93ec0-c2f8-11dd-ad8b-0800210c9a66</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-org:service:ZigbeeNetwork:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:ZigbeeNetwork1</serviceId>
+        <controlURL>/upnp/control/ZigbeeNetwork1</controlURL>
+        <eventSubURL>/upnp/event/ZigbeeNetwork1</eventSubURL>
+        <SCPDURL>S_ZigbeeNetwork1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

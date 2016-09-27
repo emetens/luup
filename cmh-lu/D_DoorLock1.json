@@ -1,0 +1,458 @@
+{
+	"default_icon": "door_lock_default.png",
+    "state_icons": [
+        {
+            "img": "door_lock_locked.png",
+            "conditions": [
+                {
+                    "service": "urn:micasaverde-com:serviceId:DoorLock1",
+                    "variable": "Status",
+                    "operator": "==",
+                    "value": 1
+                }
+            ]
+        },
+        {
+            "img": "door_lock_unlocked.png",
+            "conditions": [
+                {
+                    "service": "urn:micasaverde-com:serviceId:DoorLock1",
+                    "variable": "Status",
+                    "operator": "==",
+                    "value": 0
+                }
+            ]
+        }
+    ],
+	"x": "2",
+	"y": "4",
+	"inScene": "1",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "1",
+					"scenegroup": "1"
+				},
+				{
+					"id": "2",
+					"isSingle": "1",
+					"scenegroup": "1"
+				}
+			],
+			"SceneGroup": [
+				{
+					"id": "1",
+					"top": "2",
+					"left": "0",
+					"x": "2",
+					"y": "1"
+				}
+			],
+			"Control": [
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "multi_state_button",
+                    "top": "0",
+                    "left": "0",
+                    "states": [
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_unlock",
+                                "text": "Unlocked"
+                            },
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:DoorLock1",
+                                "Variable": "Status",
+                                "Value": "0"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:DoorLock1",
+                                "Action": "SetTarget",
+                                "Parameters": [
+                                    {
+                                        "Name": "newTargetValue",
+                                        "Value": "0"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "lock_unlocked"
+                        },
+                        {
+                            "Label": {
+                                "lang_tag": "ui7_cmd_lock",
+                                "text": "Locked"
+                            },
+                            "Display": {
+                                "Service": "urn:micasaverde-com:serviceId:DoorLock1",
+                                "Variable": "Status",
+                                "Value": "1"
+                            },
+                            "Command": {
+                                "Service": "urn:micasaverde-com:serviceId:DoorLock1",
+                                "Action": "SetTarget",
+                                "Parameters": [
+                                    {
+                                        "Name": "newTargetValue",
+                                        "Value": "1"
+                                    }
+                                ]
+                            },
+                            "ControlCode": "lock_locked"
+                        }
+                    ]
+                }
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_pin_codes",
+				"text": "Pin codes"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "pin_codes"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_add_pin_code",
+				"text": "Add pin code"
+			},
+			"top_navigation_tab": 1,
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "interface.js",
+			"Function": "add_pin_code"
+		},		
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_logs",
+				"text": "Logs"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "7",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"sceneList": {
+		"group_1": {
+			"cmd_1": {
+				"label": "Lock",
+				"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "1"
+				}
+			},
+			"cmd_2": {
+				"label": "Unlock",
+				"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "0"
+				}
+			}
+		}
+	},
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_a_door_is_locked_or_unlocked",
+				"text": "A door is locked or unlocked"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "",
+					"allowedValueList": [
+						{
+							"Opened": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_door_lock_opened",
+								"text": "_DEVICE_NAME_ is opened"
+							}
+						},
+						{
+							"Closed": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_door_lock_closed",
+								"text": "_DEVICE_NAME_ is closed"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "ui7_bad_pin_code_entered",
+				"text": "Bad PIN Code entered"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinFailed": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "ui7_a_pin_is_entered",
+				"text": "A PIN Code is entered"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "ui4",
+					"defaultValue": "",
+					"name": "sl_UserCode",
+					"tag": "UserID",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_what_pin_index_number",
+						"text": "What PIN code INDEX number?"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_a_pin_is_entered",
+						"text": "PIN Code #_ARGUMENT_VALUE_ is entered on _DEVICE_NAME_"
+					}
+				}
+			]
+		},
+		{
+			"id": 4,
+			"label": {
+				"lang_tag": "ui7_lock_button_is_pressed",
+				"text": "Lock button is pressed"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LockButton": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 5,
+			"label": {
+				"lang_tag": "ui7_lock_fail_to_operate",
+				"text": "Lock fails to operate"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LockFailure": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 6,
+			"label": {
+				"lang_tag": "ui7_code_entered_outside_of_valid_date",
+				"text": "A PIN code entered outside of valid date"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_UnauthUser": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 7,
+			"label": {
+				"lang_tag": "ui7_low_battery",
+				"text": "Low battery"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LowBattery": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 8,
+			"label": {
+				"lang_tag": "ui7_very_low_battery",
+				"text": "Very low battery"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_VeryLowBattery": {
+					"value": "1",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 9,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "ui7_level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"minValue": "1",
+                    "maxValue": "99",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		},
+		{
+			"id": 10,
+			"label": {
+				"lang_tag": "ui7_code_changed_at_lock",
+				"text": "A PIN code was changed using the lock keypad"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_LockChanged": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 11,
+			"label": {
+				"lang_tag": "ui7_pin_program_success",
+				"text": "A PIN code was programmed into the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinProgramSuccess": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 12,
+			"label": {
+				"lang_tag": "ui7_pin_remove_success",
+				"text": "A PIN code was removed from the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinRemoveSuccess": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		},
+		{
+			"id": 13,
+			"label": {
+				"lang_tag": "ui7_pin_program_fail",
+				"text": "A PIN code failed to be programmed into the lock"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:DoorLock1",
+			"serviceStateTable": {
+				"sl_PinProgramFail": {
+					"value": "*",
+					"comparisson": "="
+				}
+			}
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:DoorLock:1"
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:Scene:1</deviceType>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-com:service:Scene:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:Scene1</serviceId>
+        <SCPDURL>S_Scene1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

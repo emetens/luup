@@ -1,0 +1,240 @@
+{
+	"flashicon": "icons\/Binary_Light.swf",
+	"imgIconBody": "",
+	"imgIconDimmable": "",
+	"imgIconTurnable": "",
+	"imgIconMin": "icons/default_device.png",
+	"imgIconMax": "icons/default_device.png",
+	"halloIconsDir": "pics\/hallo",
+	"x":"2",
+	"y":"4",
+	"inScene":"1",
+	"DisplayStatus": {
+		"Service": "urn:upnp-org:serviceId:SwitchPower1",
+		"Variable": "Status",
+		"MinValue": "0",
+		"MaxValue": "1"
+	},
+	"doc_url": {
+		"doc_language": 1,
+		"doc_manual": 1,
+		"doc_version": 1,
+		"doc_platform": 0,
+		"doc_page": "lighting_devices"
+	},
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup":[
+				{
+					"id":"1",
+					"isSingle":"1",
+					"scenegroup":"1"
+				},
+				{
+					"id":"2",
+					"isSingle":"1",
+					"scenegroup":"1"
+				}
+			],
+			"SceneGroup":[
+				{
+					"id":"1",
+					"top": "2",
+					"left": "0",
+					"x":"2",
+					"y":"1"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup":"2",
+					"ControlType": "button",
+					"top": "0",
+					"left": "1",
+					"Label": {
+						"lang_tag": "cmd_close",
+						"text": "Close"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:SwitchPower1",
+						"Variable": "Status",
+						"Value": "1",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:SwitchPower1",
+						"Action": "SetTarget",
+						"Parameters": [
+							{
+								"Name": "newTargetValue",
+								"Value": "1"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup":"1",
+					"ControlType": "button",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "cmd_open",
+						"text": "Open"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:SwitchPower1",
+						"Variable": "Status",
+						"Value": "0",
+						"Top": 60,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:upnp-org:serviceId:SwitchPower1",
+						"Action": "SetTarget",
+						"Parameters": [
+							{
+								"Name": "newTargetValue",
+								"Value": "0"
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+					"Label": {
+						"lang_tag": "logs",
+						"text": "Logs"
+					},
+					"Position": "4",
+					"TabType": "javascript",
+					"ScriptName": "shared.js",
+					"Function": "device_logs"
+		},
+		{
+					"Label": {
+						"lang_tag": "notifications",
+						"text": "Notifications"
+					},
+					"Position": "5",
+					"TabType": "javascript",
+					"ScriptName": "shared.js",
+					"Function": "device_notifications"
+		}
+	],
+	"sceneList": {
+		"group_1": {
+			"cmd_1": {
+				"label": "CLOSE",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "1"
+				},
+				"display": {
+					"service": "urn:upnp-org:serviceId:SwitchPower1",
+					"variable": "Status",
+					"value": "1"
+				}
+			},
+			"cmd_2": {
+				"label": "OPEN",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "0"
+				},
+				"display": {
+					"service": "urn:upnp-org:serviceId:SwitchPower1",
+					"variable": "Status",
+					"value": "0"
+				}
+			}
+		}
+	},
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "a_device_is_opened_or_closed",
+				"text": "A device is opened or closed"
+			},
+			"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "1",
+					"allowedValueList": [
+						{
+							"Opened": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_device_opened",
+								"text": "_DEVICE_NAME_ is opened"
+							}
+						},
+						{
+							"Closed": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_device_closed",
+								"text": "_DEVICE_NAME_ is closed"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		}
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:Relay:1",
+	"device_type": "urn:schemas-micasaverde-com:device:Relay:1"
+}

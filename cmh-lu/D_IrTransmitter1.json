@@ -1,0 +1,93 @@
+{
+	"state_icons":[],
+	"x": "2",
+	"y": "3",
+	"inScene": "1",
+	"Tabs": [		
+		{
+			"Label": {
+				"lang_tag": "tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"scenegroup": "1",
+					"isSingle": "1"
+				},
+				{
+					"id": "2",
+					"scenegroup": "1",
+					"isSingle": "1"
+				}
+			],
+			"SceneGroup": [
+				{
+					"id": "1",
+					"top": "2",
+					"left": "0",
+					"x": "2",
+					"y": "1"
+				}
+			],
+			"Control": [ ]
+		},
+		{
+			"Label": {
+				"lang_tag": "settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "logs",
+				"text": "Logs"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		}
+	],
+	"sceneList": { },
+	"eventList2": [	],	
+	"DeviceType": "urn:schemas-micasaverde-com:service:IrTransmitter:1",
+	"device_type": "urn:schemas-micasaverde-com:service:IrTransmitter:1"
+}

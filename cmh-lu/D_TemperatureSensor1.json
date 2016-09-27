@@ -1,0 +1,221 @@
+{
+	"default_icon": "temperature_sensor_default.png",
+	"x": "2",
+	"y": "3",
+	"inScene": "0",
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "1",
+					"scenegroup": "1"
+				}
+			],
+			"SceneGroup": [
+				{
+					"id": "1",
+					"top": "1.5",
+					"left": "0.25",
+					"x": "1.5",
+					"y": "2"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": "1",
+					"ControlType": "variable",
+					"top": "1",
+					"left": "0",
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:TemperatureSensor1",
+						"Variable": "CurrentTemperature",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlGroup": "1",
+					"ControlType": "label",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_degree_sign",
+						"text": "°"
+					},
+					"Display": {
+						"Top": 60,
+						"Left": 160,
+						"Width": 75,
+						"Height": 20
+					}
+				}				
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_logs",
+				"text": "Logs"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "ui7_temperature_goes_above",
+				"text": "Temperature goes above"
+			},
+			"serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "CurrentTemperature",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "ui7_temperature",
+						"text": "temperature"
+					},
+					"suffix": {
+						"lang_tag": "ui7_degrees",
+						"text": "degrees"
+					},
+					"minValue": "-35",
+                    "maxValue": "95",
+                    "defaultValue": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_temperature_goes_above",
+						"text": "_DEVICE_NAME_ temperature goes above _ARGUMENT_VALUE_ degrees"
+					}
+				}
+			]
+		},
+		{
+			"id": 2,
+			"label": {
+				"lang_tag": "ui7_temperature_goes_below",
+				"text": "Temperature goes below"
+			},
+			"serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "CurrentTemperature",
+					"comparisson": "<",
+					"prefix": {
+						"lang_tag": "ui7_temperature",
+						"text": "temperature"
+					},
+					"suffix": {
+						"lang_tag": "ui7_degrees",
+						"text": "degrees"
+					},
+					"minValue": "-35",
+                    "maxValue": "95",
+                    "defaultValue": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_temperature_goes_below",
+						"text": "_DEVICE_NAME_ temperature goes below _ARGUMENT_VALUE_ degrees"
+					}
+				}
+			]
+		},
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "ui7_battery_level_goes_below",
+				"text": "Battery level goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:HaDevice1",
+			"argumentList": [
+				{
+					"id": 1,
+					"prefix": {
+						"lang_tag": "ui7_level",
+						"text": "Level"
+					},
+					"dataType": "i4",
+					"name": "BatteryLevel",
+					"comparisson": "<",
+                    "minValue": "1",
+                    "maxValue": "99",
+					"suffix": {
+						"lang_tag": "ui7_percent_sign",
+						"text": "%"
+					},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_battery_level_goes_below",
+						"text": "Battery level for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_%"
+					}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-micasaverde-com:device:TemperatureSensor:1"
+}

@@ -1,0 +1,628 @@
+,
+"overview_tabs":[],
+"SetupDevices": [
+        {
+            "DeviceType": "dashboard",
+            "name": "Dashboard",
+            "Label": {
+                "lang_tag": "ui7_dashboard",
+                "text": "Dashboard"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_dashboard",
+            "Icon": "icons/menu_dashboard.png",
+            "DisplayStatus": {},
+            "Tabs": [
+				{
+                    "Label": {
+                        "lang_tag": "ui7_dashboard",
+                        "text": "Dashboard"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "view_dashboard",
+					"Permission": "ui_view_dashboard"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "dashboard"
+                ]
+            }
+        },
+        {
+            "DeviceType": "devices",
+            "name": "Devices",
+            "Label": {
+                "lang_tag": "ui7_devices",
+                "text": "Devices"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_devices",
+            "Icon": "icons/menu_devices.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_devices",
+                        "text": "Devices"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "list_devices",
+                    "Parameters": [
+                        -1
+                    ],
+					"Permission": "ui_view_devices_all"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "devices"
+                ]
+            }
+        },
+		{
+            "DeviceType": "cameras",
+            "name": "Cameras",
+            "Label": {
+                "lang_tag": "ui7_Cameras",
+                "text": "Cameras"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_cameras",
+            "Icon": "icons/menu_cameras.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_cameras",
+                        "text": "Cameras"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "Function": "view_cameras",
+                    "Parameters": [
+                        -1
+                    ],
+					"Permission": "ui_view_cameras_all"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "cameras"
+                ]
+            }
+        },
+		{
+            "DeviceType": "scenes",
+            "name": "Scenes",
+            "Label": {
+                "lang_tag": "ui7_scenes",
+                "text": "Scenes"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_scenes",
+            "Icon": "icons/menu_scenes.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_scenes",
+                        "text": "Scenes"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "view_scenes",
+                    "Parameters": [
+                        -1
+                    ],
+					"Permission": "ui_view_scenes_all"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "scenes"
+                ]
+            }
+        },
+		{
+            "DeviceType": "energy",
+            "name": "Energy",
+            "Label": {
+                "lang_tag": "ui7_energy",
+                "text": "Energy"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_energy",
+            "Icon": "icons/menu_energy.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_lang_current_usage",
+                        "text": "Current usage"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "ScriptName": "interface.js",
+                    "Function": "energy_current_usage",
+					"Permission": "ui_view_energy_current_usage"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_lang_device_usage",
+                        "text": "Device usage"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "ScriptName": "interface.js",
+                    "Function": "energy_device_usage",
+					"Permission": "ui_view_energy_device_usage"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_lang_home_usage",
+                        "text": "Home usage"
+                    },
+                    "Position": "2",
+                    "TabType": "javascript",
+                    "ScriptName": "interface.js",
+                    "Function": "energy_home_usage",
+					"Permission": "ui_view_energy_home_usage"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_lang_export_as_csv",
+                        "text": "Report"
+                    },
+                    "Position": "3",
+                    "TabType": "javascript",
+                    "ScriptName": "interface.js",
+                    "Function": "energy_export_as_csv",
+					"Permission": "ui_view_energy_export_as_csv"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_lang_energy_profile",
+                        "text": "Energy Profile"
+                    },
+                    "Position": "4",
+                    "TabType": "javascript",
+                    "ScriptName": "interface.js",
+                    "Function": "energy_profile",
+					"Permission": "ui_view_energy_profile"
+                }
+            ]
+        },
+		{
+            "DeviceType": "settings",
+            "Label": {
+                "lang_tag": "ui7_settings",
+                "text": "Settings"
+            },
+            "name": "settings",
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_settings",
+            "Icon": "icons/settings.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_rooms",
+                        "text": "Rooms"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "ScriptName": "shared.js",
+                    "Function": "room_actions_info",
+					"Permission": "ui_view_setup_rooms"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_tech_support",
+                        "text": "Customer Care"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "Function": "tech_support",
+					"Permission": "ui_view_account_tech_support"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_location",
+                        "text": "Location"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "get_location",
+					"Permission": "ui_view_setup_location"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_net_and_wifi",
+                        "text": "Net & Wi-fi"
+                    },
+                    "Position": "3",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "net_wifi",
+					"Permission": "ui_view_setup_net_wifi"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_backup",
+                        "text": "Backup"
+                    },
+                    "Position": "4",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "form_backup",
+					"Permission": "ui_view_setup_backup"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_logs",
+                        "text": "Logs"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "logs",
+					"Permission": "ui_view_setup_logs"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_z_wave_settings",
+                        "text": "Z-Wave Settings"
+                    },
+                    "Position": "6",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "zwave_settings",
+					"Permission": "ui_view_setup_zwave_settings"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_zigbee_settings",
+                        "text": "ZigBee Settings"
+                    },
+                    "Position": "6",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "zigbee_settings",
+                    "Permission": "ui_view_setup_zigbee_settings"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_bluetooth_settings",
+                        "text": "Bluetooth Settings"
+                    },
+                    "Position": "6",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "bluetooth_settings",
+                    "Permission": "ui_view_setup_bluetooth_settings"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_insteon_settings",
+                        "text": "Insteon Settings"
+                    },
+                    "Position": "7",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "insteon_settings",
+					"Permission": "ui_view_setup_insteon_settings"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_firmware",
+                        "text": "Firmware"
+                    },
+                    "Position": "8",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "downloads",
+					"Permission": "ui_view_setup_firmware"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_setup_wizard",
+                        "text": "Setup Wizard"
+                    },
+                    "Position": "5",
+                    "TabType": "javascript",
+                    "ScriptName": "toolbox.js",
+                    "Function": "start_setup_wizard",
+                    "Parameters": [
+                        -1
+                    ],
+					"Permission": "ui_view_setup_wizard"
+                }
+            ]
+        },
+		{
+            "DeviceType": "apps",
+            "name": "Apps",
+            "Label": {
+                "lang_tag": "ui7_apps",
+                "text": "Apps"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_apps",
+            "Icon": "icons/menu_apps.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_my_apps",
+                        "text": "My apps"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "my_installed_apps",
+					"Permission": "ui_view_my_installed_apps"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_install_apps",
+                        "text": "Install apps"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "Function": "open_marketplace",
+					"Permission": "ui_view_open_marketplace"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_develop_apps",
+                        "text": "Develop apps"
+                    },
+                    "Position": "2",
+                    "TabType": "javascript",
+                    "Function": "develop_apps",
+					"Permission": "ui_view_develop_apps"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "users"
+                ]
+            }
+        },
+        {
+            "DeviceType": "users",
+            "name": "Users",
+            "Label": {
+                "lang_tag": "ui7_accounts",
+                "text": "Users & Account Info"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_account",
+            "Icon": "icons/menu_users.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_account_info",
+                        "text": "Account Info"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "get_account_info",
+					"Permission": "ui_view_account_my_account_info"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_user_info",
+                        "text": "User Info"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "get_user_info",
+					"Permission": "ui_view_account_my_user_info"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_contact_notification_limits",
+                        "text": "Notifications Limits"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "get_user_notification_limits",
+					"Permission": "ui_view_account_notifications_limits"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_contact_notification_settings",
+                        "text": "Notifications Settings"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "get_user_notification_settings",
+					"Permission": "ui_view_account_notifications_settings"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_change_password",
+                        "text": "Change Password"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "Function": "change_password",
+					"Permission": "ui_view_account_change_password"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_alerts",
+                        "text": "Alerts"
+                    },
+                    "Position": "2",
+                    "TabType": "javascript",
+                    "Function": "get_alerts_canvas",
+					"Permission": "ui_view_account_alerts"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_other_users",
+                        "text": "Other Users"
+                    },
+                    "Position": "3",
+                    "TabType": "javascript",
+                    "Function": "get_unit_users",
+					"Permission": "ui_view_account_other_users"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_lang_guest_users",
+                        "text": "Guest Users"
+                    },
+                    "Position": "4",
+                    "TabType": "javascript",
+                    "Function": "get_unit_guest_users",
+					"Permission": "ui_view_account_guest_users"
+                },
+				{
+                    "Label": {
+                        "lang_tag": "ui7_unit_settings",
+                        "text": "Unit Settings"
+                    },
+                    "Position": "6",
+                    "TabType": "javascript",
+                    "Function": "unit_settings",
+					"Permission": "ui_view_account_unit_settings"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "users"
+                ]
+            }
+        },
+        {
+            "DeviceType": "services",
+            "name": "Services",
+            "Label": {
+                "lang_tag": "ui7_services",
+                "text": "Services"
+            },
+            "Toolbox": "1",
+			"Permission": "ui_view_top_menu_services",
+            "Icon": "icons/menu_services.png",
+            "DisplayStatus": {},
+            "Tabs": [
+                {
+                    "Label": {
+                        "lang_tag": "ui7_acm",
+                        "text": "ACM"
+                    },
+                    "Position": "0",
+                    "TabType": "javascript",
+                    "Function": "view_acm",
+					"Permission": "ui_view_services_acm"
+                },
+                {
+                    "Label": {
+                        "lang_tag": "ui7_cms",
+                        "text": "CMS"
+                    },
+                    "Position": "1",
+                    "TabType": "javascript",
+                    "Function": "view_cms",
+					"Permission": "ui_view_services_cms"
+                }
+            ],
+            "help_url": {
+                "Function": "help",
+                "Parameters": [
+                    "users"
+                ]
+            }
+        }
+    ],
+    "category_filter": [
+        {
+            "id": 1,
+            "categories": [],
+            "Label": {
+                "lang_tag": "ui7_all",
+                "text": "All"
+            }
+        },
+        {
+            "id": 2,
+            "categories": [
+                "15"
+            ],
+            "Label": {
+                "lang_tag": "ui7_av_devices",
+                "text": "Audio/Video"
+            }
+        },
+        {
+            "id": 3,
+            "categories": [
+                "2",
+                "3"
+            ],
+            "Label": {
+                "lang_tag": "ui7_lights",
+                "text": "Lights"
+            }
+        },
+        {
+            "id": 4,
+            "categories": [
+                "6"
+            ],
+            "Label": {
+                "lang_tag": "ui7_cameras",
+                "text": "Cameras"
+            }
+        },
+        {
+            "id": 5,
+            "categories": [
+                "7"
+            ],
+            "Label": {
+                "lang_tag": "ui7_door_locks",
+                "text": "Door locks"
+            }
+        },
+        {
+            "id": 6,
+            "categories": [
+                "4",
+                "12",
+                "16",
+                "17",
+                "18"
+            ],
+            "Label": {
+                "lang_tag": "ui7_sensors",
+                "text": "Sensors"
+            }
+        },
+        {
+            "id": 7,
+            "categories": [
+                "5"
+            ],
+            "Label": {
+                "lang_tag": "ui7_thermostats",
+                "text": "Thermostats"
+            }
+        }
+    ]

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:ZWaveNetwork:1</deviceType>
+    <friendlyName>ZWave Network</friendlyName>
+    <manufacturer>Mi Casa Verde</manufacturer>
+    <manufacturerURL>http://www.micasaverde.com</manufacturerURL>
+    <modelDescription>ZWave Network</modelDescription>
+    <modelName>GC100</modelName>
+    <modelNumber>1.0</modelNumber>
+    <UDN>uuid:2ff93ec0-c2f8-11dd-ad8b-0800210c9a66</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-org:service:ZWaveNetwork:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:ZWaveNetwork1</serviceId>
+        <controlURL>/upnp/control/ZWaveNetwork1</controlURL>
+        <eventSubURL>/upnp/event/ZWaveNetwork1</eventSubURL>
+        <SCPDURL>S_ZWaveNetwork1.xml</SCPDURL>
+      </service>
+    </serviceList>
+    <implementationList>
+      <implementationFile>I_ZWave.xml</implementationFile>
+    </implementationList>
+  </device>
+</root>

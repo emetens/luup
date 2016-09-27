@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:BluetoothNetwork:1</deviceType>
+    <friendlyName>Bluetooth Network</friendlyName>
+    <manufacturer>Mi Casa Verde</manufacturer>
+    <manufacturerURL>http://www.micasaverde.com</manufacturerURL>
+    <modelDescription>Bluetooth Network</modelDescription>
+    <modelName>GC100</modelName>
+    <modelNumber>1.0</modelNumber>
+    <UDN>uuid:2ff93ec0-c2f8-11dd-ad8b-0800210c9a66</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-org:service:BluetoothNetwork:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:BluetoothNetwork1</serviceId>
+        <controlURL>/upnp/control/BluetoothNetwork1</controlURL>
+        <eventSubURL>/upnp/event/BluetoothNetwork1</eventSubURL>
+        <SCPDURL>S_BluetoothNetwork1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

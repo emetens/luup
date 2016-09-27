@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_SceneActivated</name>
+      <dataType>ui2</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_CentralScene</name>
+      <dataType>ui2</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_SceneDeactivated</name>
+      <dataType>ui2</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>Scenes</name>
+      <dataType>string</dataType>
+    </stateVariable>
+  </serviceStateTable>
+</scpd>

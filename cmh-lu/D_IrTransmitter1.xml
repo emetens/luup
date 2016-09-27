@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:IrTransmitter:1</deviceType>
+    <staticJson>D_IrTransmitter1.json</staticJson>
+    <commProv>ir</commProv>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-com:service:IrTransmitter:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:IrTransmitter1</serviceId>
+        <SCPDURL>S_IrTransmitter1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

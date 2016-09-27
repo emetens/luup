@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <xURLBase>base URL for all relative URLsNot sure what this needs to be but it wont work with it here</xURLBase>
+  <device>
+    <deviceType>urn:schemas-micasaverde-com:device:HomeAutomationGateway:1</deviceType>
+    <friendlyName>MiOS</friendlyName>
+    <manufacturer>MiOS, Ltd.</manufacturer>
+    <manufacturerURL>http://www.mios.com</manufacturerURL>
+    <modelDescription>MiOS Z-Wave home gateway</modelDescription>
+    <modelName>MiOS</modelName>
+    <modelNumber>1.0</modelNumber>
+    <modelURL>http://www.micasaverde.com</modelURL>
+    <serialNumber>1</serialNumber>
+    <UDN>uuid:2ff93ec0-c2f8-11dd-ad8b-0800200c9a66</UDN>
+    <UPC>UPC</UPC>
+    <UpnpDevFilename>vera.xml</UpnpDevFilename>
+    <iconList>
+      <icon>
+        <mimetype>jpeg</mimetype>
+        <width>300</width>
+        <height>200</height>
+        <depth>24</depth>
+        <url>http://bugs.micasaverde.com/images/mantis_logo.gif</url>
+      </icon>
+    </iconList>
+    <presentationURL>URL for presentation</presentationURL>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-micasaverde-org:service:HomeAutomationGateway:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:HomeAutomationGateway1</serviceId>
+        <controlURL>/upnp/control/hag</controlURL>
+        <eventSubURL>/upnp/event/hag</eventSubURL>
+        <SCPDURL>S_HomeAutomationGateway1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

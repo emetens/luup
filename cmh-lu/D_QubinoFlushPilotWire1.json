@@ -1,0 +1,795 @@
+{
+	"default_icon": "qubino_flush_pilot_wire.png",
+	"state_icons": [
+		{
+			"img": "thermostat_mode_off.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+					"variable": "ModeStatus",
+					"operator": "==",
+					"value": "Off",
+					"subcategory_num": 1
+				}
+			]
+		},
+		{
+			"img": "thermostat_mode_auto.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+					"variable": "ModeStatus",
+					"operator": "==",
+					"value": "AutoChangeOver",
+					"subcategory_num": 1
+				}
+			]
+		},
+		{
+			"img": "thermostat_mode_cooling.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+					"variable": "ModeStatus",
+					"operator": "==",
+					"value": "CoolOn",
+					"subcategory_num": 1
+				}
+			]
+		},
+		{
+			"img": "thermostat_mode_heating.png",
+			"conditions": [
+				{
+					"service": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+					"variable": "ModeStatus",
+					"operator": "==",
+					"value": "HeatOn",
+					"subcategory_num": 1
+				}
+			]
+		}
+	],
+	"x": "4",
+	"y": "4",
+	"inScene": "1",
+	"ToggleButton": 1,
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_tabname_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup": [
+				{
+					"id": "7",
+					"scenegroup": "7"
+				},
+				{
+					"id": "6",
+					"scenegroup": "6"
+				}
+			],
+			"SceneGroup": [
+				{
+					"id": "7",
+					"top": "0.5",
+					"left": "0",
+					"x": "2",
+					"y": "0.5"
+				},
+				{
+					"id": "6",
+					"top": "1.5",
+					"left": "0",
+					"x": "2",
+					"y": "1.5"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_stop",
+						"text": "Stop"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "0",
+						"Range": {
+							"Min": "0",
+							"Max": "10"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_stop",
+							"text": "Set Mode Stop"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "0"
+							}
+						]
+					},
+					"ControlCode": "mode_stop"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_frost",
+						"text": "Frost"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "11",
+						"Range": {
+							"Min": "11",
+							"Max": "20"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_frost",
+							"text": "Set Mode Frost"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "11"
+							}
+						]
+					},
+					"ControlCode": "mode_frost"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_eco",
+						"text": "Eco"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "21",
+						"Range": {
+							"Min": "21",
+							"Max": "30"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_eco",
+							"text": "Set Mode Eco"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "21"
+							}
+						]
+					},
+					"ControlCode": "mode_eco"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_comfort_2",
+						"text": "Comfort-2"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "31",
+						"Range": {
+							"Min": "31",
+							"Max": "40"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_comfort_2",
+							"text": "Set Mode Comfort-2"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "31"
+							}
+						]
+					},
+					"ControlCode": "mode_confort_2"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_comfort_1",
+						"text": "Comfort-1"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "41",
+						"Range": {
+							"Min": "41",
+							"Max": "50"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_comfort_1",
+							"text": "Set Mode Comfort-1"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "41"
+							}
+						]
+					},
+					"ControlCode": "mode_confort_1"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.5"
+				},
+				{
+					"ControlGroup": "6",
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "ui7_qubino_mode_comfort",
+						"text": "Comfort"
+					},
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Variable": "LoadLevelStatus",
+						"Value": "51",
+						"Range": {
+							"Min": "51",
+							"Max": "99"
+						}
+					},
+					"Command": {
+						"HumanFriendlyText": {
+							"lang_tag": "ui7_hft_qubino_set_mode_comfort",
+							"text": "Set Mode Comfort"
+						},
+						"Service": "urn:upnp-org:serviceId:Dimming1",
+						"Action": "SetLoadLevelTarget",
+						"Parameters": [
+							{
+								"Name": "newLoadlevelTarget",
+								"Value": "51"
+							}
+						]
+					},
+					"ControlCode": "mode_confort"
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_options",
+				"text": "Device Options"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_zwave_options"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_logs",
+				"text": "Logs"
+			},
+			"Position": "4",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_logs"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_notifications",
+				"text": "Notifications"
+			},
+			"Position": "5",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_device_scenes",
+				"text": "Scenes"
+			},
+			"Position": "6",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_scenes"
+		}
+	],
+	"sceneList": {
+		"group_1": {
+			"cmd_1": {
+				"label": "OFF",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+				"action": "SetModeTarget",
+				"arguments": {
+					"NewModeTarget": "Off"
+				}
+			},
+			"cmd_2": {
+				"label": "COOL",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+				"action": "SetModeTarget",
+				"arguments": {
+					"NewModeTarget": "CoolOn"
+				}
+			},
+			"cmd_3": {
+				"label": "HEAT",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+				"action": "SetModeTarget",
+				"arguments": {
+					"NewModeTarget": "HeatOn"
+				}
+			},
+			"cmd_4": {
+				"label": "AUTO",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+				"action": "SetModeTarget",
+				"arguments": {
+					"NewModeTarget": "AutoChangeOver"
+				}
+			}
+		},
+		"group_2": {
+			"cmd_1": {
+				"label": "Set Heat Setpoint",
+				"serviceId": "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat",
+				"action": "SetCurrentSetpoint",
+				"argumentList": {
+					"argument_1": {
+						"dataType": "ui1",
+						"defaultValue": "",
+						"allowedValueRange": {
+							"minimum": "0",
+							"maximum": "100"
+						},
+						"prefix": "to",
+						"suffix": "&deg;",
+						"name": "NewCurrentSetpoint"
+					}
+				}
+			}
+		},
+		"group_3": {
+			"cmd_1": {
+				"label": "Set Cool Setpoint",
+				"serviceId": "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool",
+				"action": "SetCurrentSetpoint",
+				"argumentList": {
+					"argument_1": {
+						"dataType": "ui1",
+						"defaultValue": "",
+						"allowedValueRange": {
+							"minimum": "0",
+							"maximum": "100"
+						},
+						"prefix": "to",
+						"suffix": "&deg;",
+						"name": "NewCurrentSetpoint"
+					}
+				}
+			}
+		},
+		"group_4": {
+			"cmd_1": {
+				"label": "Set Fan On",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
+				"action": "SetMode",
+				"arguments": {
+					"NewMode": "ContinuousOn"
+				}
+			},
+			"cmd_2": {
+				"label": "Set Fan Auto",
+				"serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
+				"action": "SetMode",
+				"arguments": {
+					"NewMode": "Auto"
+				}
+			}
+		},
+		"group_5": {
+			"cmd_1": {
+				"label": "Normal",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "1"
+				}
+			},
+			"cmd_2": {
+				"label": "Energy",
+				"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+				"action": "SetTarget",
+				"arguments": {
+					"newTargetValue": "0"
+				}
+			}
+		}
+	},
+	"eventList2": [
+		{
+			"id": 18,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_stop",
+				"text": "Device is stopped"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "0|10",
+					"comparisson" : "@"
+				}
+			}
+		},
+		{
+			"id": 19,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_frost",
+				"text": "Device changes to Frost mode"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "11|20",
+					"comparisson" : "@"
+				}
+			}
+		},
+		{
+			"id": 20,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_eco",
+				"text": "Device changes to Eco mode"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "21|30",
+					"comparisson" : "@"
+				}
+			}
+		},
+		{
+			"id": 21,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_comfort_2",
+				"text": "Device changes to Comfort-2 mode"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "31|40",
+					"comparisson" : "@"
+				}
+			},
+			"RequiresCommand": "mode_confort_2"
+		},
+		{
+			"id": 22,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_comfort_1",
+				"text": "Device changes to Comfort-1 mode"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "41|50",
+					"comparisson" : "@"
+				}
+			},
+			"RequiresCommand": "mode_confort_1"
+		},
+		{
+			"id": 23,
+			"label": {
+				"lang_tag": "ui7_qubino_is_in_mode_comfort",
+				"text": "Device changes to Comfort mode"
+			},
+			"serviceId": "urn:upnp-org:serviceId:Dimming1",
+			"serviceStateTable" : {
+				"LoadLevelStatus" : {
+					"value" : "51|100",
+					"comparisson" : "@"
+				}
+			}
+		},
+		{
+			"id": 12,
+			"label": {
+				"lang_tag": "ui7_energy_usage_goes_above",
+				"text": "Energy usage goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "Watts",
+					"comparisson": ">",
+					"prefix":{
+						"lang_tag": "ui7_watts",
+						"text": "Watts"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "hft_energy_usage_goes_above",
+						"text": "Whenever the energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ Watts"
+					}
+				}
+			]
+		},
+		{
+			"id": 13,
+			"label": {
+				"lang_tag": "ui7_energy_usage_goes_below",
+				"text": "Energy usage goes below"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"norepeat": "1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "Watts",
+					"comparisson": "<",
+					"prefix":{
+						"lang_tag": "ui7_watts",
+						"text": "Watts"
+					},
+					"suffix": {},
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_hft_energy_usage_goes_below",
+						"text": "Whenever the energy usage for _DEVICE_NAME_ goes below _ARGUMENT_VALUE_ Watts"
+					}
+				}
+			]
+		},
+		{
+			"id": 3,
+			"label": {
+				"lang_tag": "ui7_normal_mode_changes",
+				"text": "Energy Mode or Normal Mode Changes"
+			},
+			"serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "boolean",
+					"defaultValue": "1",
+					"allowedValueList": [
+						{
+							"Energy": "0",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_thermostat_whenever_energy_energy",
+								"text": "Whenever _DEVICE_NAME_ is set to energy"
+							}
+						},
+						{
+							"Normal": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "ui7_hft_thermostat_whenever_energy_normal",
+								"text": "Whenever _DEVICE_NAME_ is set to normal"
+							}
+						}
+					],
+					"name": "Status",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "ui7_which_mode",
+						"text": "Which mode"
+					},
+					"suffix": {}
+				}
+			]
+		},
+		{
+			"id": 9,
+			"label": {
+				"lang_tag": "ui7_wh_energy_usage_24_goes_above",
+				"text": "Device energy usage for last 24 hours goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "DayKWH",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "kwh",
+						"text": "KWH"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_kwh_usage_goes_above_day_dev",
+						"text": "Total energy usage for _DEVICE_NAME_ goes over _ARGUMENT_VALUE_ KWH in the last day"
+					}
+				}
+			]
+		},
+		{
+			"id": 15,
+			"label": {
+				"lang_tag": "ui7_wh_energy_usage_7_goes_above",
+				"text": "Device energy usage for last week goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "WeekKWH",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "kwh",
+						"text": "KWH"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_kwh_usage_goes_above_day_dev",
+						"text": "Total energy usage for _DEVICE_NAME_ goes over _ARGUMENT_VALUE_ KWH in the last day"
+					}
+				}
+			]
+		},
+		{
+			"id": 10,
+			"label": {
+				"lang_tag": "ui7_wh_energy_usage_30_goes_below",
+				"text": "Device energy usage for last 30 days goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "MonthKWH",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "kwh",
+						"text": "KWH"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_kwh_usage_goes_below_month_dev",
+						"text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last 30 days"
+					},
+					"minValue": 1
+				}
+			]
+		},
+		{
+			"id": 11,
+			"label": {
+				"lang_tag": "ui7_wh_energy_usage_365_goes_below",
+				"text": "Device energy usage for last year goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "YearKWH",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "kwh",
+						"text": "KWH"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_kwh_usage_goes_below_year_dev",
+						"text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last year"
+					}
+				}
+			]
+		},
+		{
+			"id": 16,
+			"label": {
+				"lang_tag": "ui7_wh_energy_usage_life_goes_below",
+				"text": "Lifetime device energy usage goes above"
+			},
+			"serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "i4",
+					"name": "LifeKWH",
+					"comparisson": ">",
+					"prefix": {
+						"lang_tag": "kwh",
+						"text": "KWH"
+					},
+					"suffix": "",
+					"HumanFriendlyText": {
+						"lang_tag": "ui7_kwh_usage_goes_below_year_dev",
+						"text": "Total energy usage for _DEVICE_NAME_ goes above _ARGUMENT_VALUE_ KWH in the last year"
+					}
+				}
+			]
+		}
+	],
+	"device_type": "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1"
+}

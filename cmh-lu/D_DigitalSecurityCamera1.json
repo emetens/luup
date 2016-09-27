@@ -1,0 +1,375 @@
+{
+	"default_icon": "camera_default.png",
+	"x": "2",
+	"y": "4",
+	"inScene": "0",
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "ui7_camera_control",
+				"text": "Camera control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"top_navigation_tab": 1,
+			"ControlGroup":[
+				{
+					"id":"1",
+					"isSingle":"1",
+					"scenegroup":"2"
+				},
+				{
+					"id":"2",
+					"isSingle":"1",
+					"scenegroup":"1"
+				},
+				{
+					"id":"3",
+					"isSingle":"1",
+					"scenegroup":"3"
+				},
+				{
+					"id":"4",
+					"isSingle":"1",
+					"scenegroup":"4"
+				}
+			],
+			"SceneGroup":[
+				{
+					"id":"1",
+					"top": "0",
+					"left": "1",
+					"x":"1",
+					"y":"1"
+				},
+				{
+					"id":"2",
+					"top": "1",
+					"left": "1",
+					"x":"1",
+					"y":"1"
+				},
+				{
+					"id":"3",
+					"top": "0",
+					"left": "0",
+					"x":"1",
+					"y":"1"
+				},
+				{
+					"id":"4",
+					"top": "2",
+					"left": "1",
+					"x":"1",
+					"y":"1"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup":"4",
+					"ControlType": "js_button",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_btn_record",
+						"text": "Record"
+					},
+					"Display": {
+						"Value": "1",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					},
+					"Function": "record_video_device",
+					"no_control_panel":"1"
+				},
+				{
+					"ControlGroup":"2",
+					"ControlType": "js_button",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_btn_view",
+						"text": "View"
+					},
+					"Display": {
+						"Value": "1",
+						"Top": 60,
+						"Left": 145,
+						"Width": 75,
+						"Height": 20
+					},
+					"Function": "view_camera",
+					"no_control_panel":"1"
+				},
+				{
+					"ControlGroup":"1",
+					"ControlType": "js_button",
+					"top": "0",
+					"left": "0",
+					"Label": {
+						"lang_tag": "ui7_archive",
+						"text": "Archive"
+					},
+					"Display": {
+						"Value": "0",
+						"Top": 60,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20
+					},
+					"Function": "view_camera_archive",
+					"no_control_panel":"1"
+				},
+                {
+                    "ControlGroup": "4",
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "ui7_camera_archive_snapshot",
+                        "text": "Take snapshot"
+                    },
+                    "Display": {
+                        "Value": "1"
+                    },
+                    "Command": {
+                        "HumanFriendlyText": {
+                            "lang_tag": "ui7_camera_archive_snapshot",
+                            "text": "Take snapshot"
+                        },
+                        "Service": "urn:micasaverde-com:serviceId:Camera1",
+                        "Action": "ArchiveVideo",
+                        "Parameters": [
+                            {
+                                "Name": "Format",
+                                "Value": "1"
+                            },
+                            {
+                                "Name": "Duration",
+                                "Value": "1"
+                            }
+                        ]
+                    },
+                    "ControlCode": "camera_take_snapshot"
+                },
+                {
+                    "ControlGroup": "4",
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "ui7_camera_archive_video_20",
+                        "text": "Record a 15-20 seconds video"
+                    },
+                    "Display": {
+                        "Value": "1"
+                    },
+                    "Command": {
+                        "HumanFriendlyText": {
+                            "lang_tag": "ui7_camera_archive_video_20",
+                            "text": "Record a 15-20 seconds video"
+                        },
+                        "Service": "urn:micasaverde-com:serviceId:Camera1",
+                        "Action": "ArchiveVideo",
+                        "Parameters": [
+                            {
+                                "Name": "Format",
+                                "Value": "0"
+                            },
+                            {
+                                "Name": "Duration",
+                                "Value": "20"
+                            }
+                        ]
+                    },
+                    "ControlCode": "camera_record_20_sec_video"
+                },
+				{
+					"ControlGroup":"3",
+					"ControlType": "image",
+					"top": "0",
+					"left": "0",
+					"Display": {
+						"url": "?id=request_image&cam=",
+						"Top": 0,
+						"Left": 0,
+						"Width": 320,
+						"Height": 240
+					}
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_up",
+						"text": "Up"
+					},
+					"Display": {
+						"Top": 49,
+						"Left": 466,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "MoveUp",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_up.png",
+					"ControlCode": "camera_up"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_down",
+						"text": "Down"
+					},
+					"Display": {
+						"Top": 133,
+						"Left": 466,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "MoveDown",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_down.png",
+					"ControlCode": "camera_down"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_left",
+						"text": "Left"
+					},
+					"Display": {
+						"Top": 91,
+						"Left": 423,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "MoveLeft",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_left.png",
+					"ControlCode": "camera_left"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_right",
+						"text": "Right"
+					},
+					"Display": {
+						"Top": 91,
+						"Left": 506,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "MoveRight",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_right.png",
+					"ControlCode": "camera_right"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_zoom_in",
+						"text": "Zoom in"
+					},
+					"Display": {
+						"Top": 74,
+						"Left": 447,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "ZoomIn",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_in.png",
+					"ControlCode": "camera_zoom_in"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_zoom_out",
+						"text": "Zoom Out"
+					},
+					"Display": {
+						"Top": 103,
+						"Left": 447,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "ZoomOut",
+						"Parameters": []
+					},
+					"image_src":"images/player/image_control_out.png",
+					"ControlCode": "camera_zoom_out"
+				},
+				{
+					"ControlType": "image_player",
+					"Label": {
+						"lang_tag": "ui7_cmd_fullscreen",
+						"text": "Fullscreen"
+					},
+					"Display": {
+						"Top": 217,
+						"Left": 297,
+						"Width": 75,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:PanTiltZoom1",
+						"Action": "MoveLeft",
+						"Parameters": []
+					},
+					"image_src":"images/player/control_image_fullscreen1.png",
+					"function":"showCameraFullscreen",
+					"ControlCode": "camera_full_screen"
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_settings",
+				"text": "Settings"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "simple_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_advanced",
+				"text": "Advanced"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "ui7_record_video",
+				"text": "Record Video"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "record_video"
+		}
+	],
+	"username":"",
+	"password":"",
+	"device_type": "urn:schemas-upnp-org:device:DigitalSecurityCamera:1"
+}

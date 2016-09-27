@@ -1,0 +1,21 @@
+<scpd>
+   <serviceStateTable>
+      <stateVariable>
+         <name>ModeState</name>
+         <dataType>string</dataType>
+         <defaultValue>Off</defaultValue>
+         <shortCode>hvacstate</shortCode>
+        <allowedValueList>
+            <allowedValue>Idle</allowedValue>
+            <allowedValue>Heating</allowedValue>
+            <allowedValue>Cooling</allowedValue>
+            <allowedValue>FanOnly</allowedValue>
+            <allowedValue>PendingHeat</allowedValue>
+            <allowedValue>PendingCool</allowedValue>
+            <allowedValue>Vent</allowedValue>
+         </allowedValueList>
+      </stateVariable>
+   </serviceStateTable>
+   <actionList>
+   </actionList>
+</scpd>

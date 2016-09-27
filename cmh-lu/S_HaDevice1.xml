@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes">
+      <name>CommFailure</name>
+      <dataType>boolean</dataType>
+      <defaultValue>0</defaultValue>
+      <shortCode>commFailure</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>Configured</name>
+      <dataType>boolean</dataType>
+      <defaultValue>0</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>ID</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>PollingEnabled</name>
+      <dataType>boolean</dataType>
+      <defaultValue>1</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>PollMinDelay</name>
+      <dataType>ui4</dataType>
+      <defaultValue>60</defaultValue>
+      <allowedValueRange>
+        <minimum>0</minimum>
+        <maximum>600</maximum>
+      </allowedValueRange>
+    </stateVariable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_Alarm</name>
+      <dataType>string</dataType>
+      <logCode>SL_ALARM</logCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>BatteryLevel</name>
+      <dataType>i1</dataType>
+      <shortCode>batterylevel</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_BatteryAlarm</name>
+      <dataType>boolean</dataType>
+      <logCode>SL_BATTERYALARM</logCode>
+      <logSeverity>2</logSeverity>
+    </stateVariable>
+    <stateVariable sendEvents="yes" allowRepeats="yes">
+      <name>sl_TamperAlarm</name>
+      <dataType>boolean</dataType>
+      <logCode>SL_TAMPERALARM</logCode>
+      <logSeverity>9</logSeverity>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Commands</name>
+      <dataType>string</dataType>
+      <shortCode>commands</shortCode>
+    </stateVariable>
+    <stateVariable allowRepeats="yes">
+      <name>sl_Hail</name>
+      <dataType>i1</dataType>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+    <action>
+      <name>Reconfigure</name>
+    </action>
+    <action>
+      <name>StressTest</name>
+    </action>
+    <action>
+      <name>Remove</name>
+    </action>
+    <action>
+      <name>Poll</name>
+    </action>
+    <action>
+      <name>ToggleState</name>
+    </action>
+    <action>
+      <name>SetPollFrequency</name>
+      <argumentList>
+        <argument>
+          <name>PollingEnabled</name>
+          <direction>in</direction>
+          <relatedStateVariable>PollingEnabled</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>PollMinDelay</name>
+          <direction>in</direction>
+          <relatedStateVariable>PollMinDelay</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>AllowPairing</name>
+      <argumentList>
+        <argument>
+          <name>Seconds</name>
+          <direction>in</direction>
+          <relatedStateVariable>PollMinDelay</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+  </actionList>
+</scpd>

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>path</name>
+      <sendEventsAttribute>no</sendEventsAttribute>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>baud</name>
+      <sendEventsAttribute>no</sendEventsAttribute> 
+      <dataType>ui4</dataType>
+      <allowedValueList>
+        <allowedValue>300</allowedValue>
+        <allowedValue>1200</allowedValue>
+        <allowedValue>2400</allowedValue>
+        <allowedValue>4800</allowedValue>
+        <allowedValue>9600</allowedValue>
+        <allowedValue>19200</allowedValue>
+        <allowedValue>38400</allowedValue>
+        <allowedValue>57600</allowedValue>
+        <allowedValue>115200</allowedValue>
+        <allowedValue>230400</allowedValue>
+      </allowedValueList>
+      <defaultValue>9600</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>stopbits</name>
+      <dataType>ui1</dataType>
+      <allowedValueList>
+        <allowedValue>0</allowedValue>
+        <allowedValue>1</allowedValue>
+        <allowedValue>2</allowedValue>
+      </allowedValueList>
+      <defaultValue>1</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>databits</name>
+      <dataType>ui1</dataType>
+      <allowedValueList>
+        <allowedValue>7</allowedValue>
+        <allowedValue>8</allowedValue>
+      </allowedValueList>
+      <defaultValue>8</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>parity</name>
+      <dataType>string</dataType>
+      <defaultValue>none</defaultValue>
+      <allowedValueList>
+        <allowedValue>none</allowedValue>
+        <allowedValue>even</allowedValue>
+        <allowedValue>odd</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+  </serviceStateTable>
+</scpd>
