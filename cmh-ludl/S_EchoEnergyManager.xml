@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+
+    <specVersion>
+        <major>2</major>
+        <minor>2</minor>
+    </specVersion>
+
+    <serviceStateTable>
+
+    <!-- deprecated
+        <stateVariable sendEvents="no">
+            <name>MessageWholehouse</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>MessageDeviceTotals</name>
+            <dataType>string</dataType>
+        </stateVariable>
+    -->
+
+        <stateVariable sendEvents="no">
+            <name>GotKey</name>
+            <dataType>boolean</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>GatewayRegistered</name>
+            <dataType>boolean</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>DevicesRegistered</name>
+            <dataType>boolean</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>EMDeviceList</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>WholehouseEM</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>RenewableEM</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>TSDeviceList</name>
+            <dataType>string</dataType>
+        </stateVariable>
+        
+        
+        
+        <stateVariable sendEvents="no">
+            <name>IPMeters</name>
+            <dataType>string</dataType>
+        </stateVariable>
+        
+        <stateVariable sendEvents="no">
+            <name>MeterPairings</name>
+            <dataType>string</dataType>
+        </stateVariable>
+        
+        <stateVariable sendEvents="no">
+            <name>InsideTS</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>OutsideTS</name>
+            <dataType>string</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="no">
+            <name>UserDataVersion</name>
+            <dataType>ui2</dataType>
+        </stateVariable>
+        
+        
+        <stateVariable sendEvents="yes">
+            
+        	<name>SimpleDR</name>
+            
+        	<dataType>string</dataType>
+        
+        </stateVariable>
+		
+    </serviceStateTable>
+    <actionList></actionList>
+</scpd>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<implementation>
+    <settings>
+        <protocol>lf</protocol>
+    </settings>
+	<functions>
+		local fc = 0 -- failure counter
+		function RA2GatewayStartup (lul_device)
+			luup.log( "(Lutron RA2 Gateway PLugin)::(Startup) : Initiating" )
+			package.loaded.L_Lutron1 = nil
+			lutronPlugin = require( "L_LutronRA2Telnet1" )
+
+			-- Callbacks
+			getStatus = lutronPlugin.getStatus
+			getOccupancyStatus = lutronPlugin.getOccupancyStatus
+			handleResponse = lutronPlugin.handleResponse
+			return lutronPlugin.Init( lul_device )
+		end
+	</functions>
+    <startup>RA2GatewayStartup</startup>
+	<incoming>
+		<lua>
+			-- If the 'startup' function hasn't run yet,
+			-- 'lutronPlugin' and 'handleResponse' are not defined.
+			if not lutronPlugin.handleResponse then
+				fc = fc + 1
+				luup.log( "(Lutron RA2 Gateway PLugin)::(incoming) :  fc=".. fc )
+			else
+				local dataLength = 0
+				local data = tostring(lul_data)
+				dataLength = string.len(data)
+				if (dataLength ~= "") then
+					lutronPlugin.handleResponse(data)
+				else
+					luup.log("(Lutron RA2 Gateway PLugin)::(incoming) : No response received.")
+				end
+			end
+		</lua>
+    </incoming>
+    <actionList>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+			<name>SetTarget</name>
+				<job>
+					lutronPlugin.setTarget(lul_device,lul_settings.newTargetValue)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:SecuritySensor1</serviceId>
+			<name>SetArmed</name>
+				<job>
+					lutronPlugin.setArmed(lul_device,lul_settings.newArmedValue)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>SetLoadLevelTarget</name>
+				<job>
+					lutronPlugin.setLoadLevelTarget(lul_device,lul_settings.newLoadlevelTarget)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Up</name>
+				<job>
+					lutronPlugin.blindsUP(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Down</name>
+				<job>
+					lutronPlugin.blindsDown(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Stop</name>
+				<job>
+					lutronPlugin.blindsStop(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1</serviceId>
+			<name>SendCommandButton</name>
+				<job>
+					lutronPlugin.sendCommandButton(lul_settings.CommandList)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1</serviceId>
+			<name>SendCommandKeypad</name>
+				<job>
+					lutronPlugin.sendCommandKeypad(lul_device, lul_settings.CommandKeypad)
+				</job>
+		</action>
+	</actionList>
+</implementation> 

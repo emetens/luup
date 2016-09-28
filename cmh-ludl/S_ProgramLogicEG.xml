@@ -1,0 +1,47 @@
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes">
+      <name>Armed</name>
+      <dataType>boolean</dataType>
+      <defaultValue>0</defaultValue>
+      <shortCode>armed</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>ConditionSatisfied</name>
+      <dataType>string</dataType>
+      <defaultValue></defaultValue>
+      <shortCode>conditionsatisfied</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="yes">
+      <name>LastConditionChanged</name>
+      <dataType>ui4</dataType>
+      <defaultValue>0</defaultValue>
+      <shortCode>lastconditionchanged</shortCode>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <!-- This is set by the Settings Editor -->
+      <!-- Contains the list of conditions -->
+      <!-- {"Condition1"  "Condition1Expression" ... "ConditonN" "ConditonNExpression"} -->
+      <name>ConditonMap</name>
+      <dataType>string</dataType>
+      <defaultValue></defaultValue>
+      <shortCode>conditionmap</shortCode>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+    <action>
+      <name>SetArmed</name>
+      <argumentList>
+        <argument>
+          <name>newArmedValue</name>
+          <direction>in</direction>
+          <relatedStateVariable>Armed</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+  </actionList>
+</scpd>

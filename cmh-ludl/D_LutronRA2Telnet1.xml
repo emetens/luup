@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<device>
+		<deviceType>urn:schemas-micasaverde-com:device:LutronRA2Telnet:1</deviceType>
+		<staticJson>D_LutronRA2Telnet1.json</staticJson>
+		<friendlyName>Lutron RadioRA2 Gateway</friendlyName>
+		<manufacturer>Lutron</manufacturer>
+		<manufacturerURL>http://www.lutron.com</manufacturerURL>
+		<modelDescription>Lutron RA2 over Ethernet </modelDescription>
+		<modelName>Lutron RA2 series</modelName>
+		<modelNumber>1.0</modelNumber>
+		<UDN></UDN>
+		<protocol>lf</protocol>
+		<handleChildren>1</handleChildren>
+
+		<implementationList>
+			<implementationFile>I_LutronRA2Telnet1.xml</implementationFile>
+		</implementationList>
+
+		<serviceList>
+			<service>
+				<serviceType>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet:1</serviceType>
+				<serviceId>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1</serviceId>
+				<SCPDURL>S_LutronRA2Telnet1.xml</SCPDURL>
+			</service>
+		</serviceList>
+	</device>
+</root>
+ 

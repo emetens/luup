@@ -1,0 +1,97 @@
+{
+	"flashicon": "http://download.mios.com/plugin-icons/ra2.png",
+	"default_icon": "http://download.mios.com/plugin-icons/ra2.png",
+	"inScene": "1",
+	"DisplayStatus": {},
+	"doc_url": {
+		"doc_forced_url": {
+			"text": "http://code.mios.com/trac/mios_lutron_radiora2_gateway"
+		}
+	},
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "tab_control",
+				"text": "Control"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"SceneGroup":[
+				{
+					"id": "1",
+					"top": "1",
+					"left": "0",
+					"x": "1",
+					"y": "1"
+				}
+			],
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "0",
+					"scenegroup": "1"
+				}
+			],
+			"Control": [
+				{
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "command_txt",
+						"text": "Enter command :"
+					},
+					"Display": {
+						"Top": 20,
+						"Left": 70,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "input",
+					"ID": "CommandListValue",
+					"Display": {
+						"Top": 40,
+						"Left": 70,
+						"Width": 200,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "send_button",
+						"text": "Send"
+					},
+					"Display": {
+						"Top": 70,
+						"Left": 70,
+						"Width": 60,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandButton",
+						"Parameters": [
+							{
+								"Name": "CommandList",
+								"ID": "CommandListValue"
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		}
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:LutronRA2Telnet:1",
+	"device_type": "urn:schemas-micasaverde-com:device:LutronRA2Telnet:1"
+}

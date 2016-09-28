@@ -1,3 +1,18 @@
+ ls -1 *.lzo | xargs -0 -I file pluto-lzo -d file out/file
+
+
+
+
+
+
+
+
+
+
+
+=====================================
+
+
 Commands:
 
 Set fan speed 1,2,3

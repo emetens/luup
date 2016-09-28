@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<implementation>
+	<files>L_CasetaConnect.lua</files>
+	<startup>Caseta_Startup</startup>
+
+	<incoming>
+		<lua>
+
+--			log("(Caseta_Connect::incoming): RECEIVED DATA ["..(lul_data:byte(1) or "NIL").."] ["..(lul_data or "NIL").."] buf ["..(IO_BUFFER or "NIL").."].",1)
+			if (lul_data ~= nil) then
+				if (PLUGIN.LUUP_IO_MODE == "NONE") then
+					debug("(Caseta_Connect::incoming): RECEIVED SPURIOUS DATA.",1)
+					return false
+				elseif (PLUGIN.LUUP_IO_MODE == "LIP") then
+					IO_BUFFER = IO_BUFFER .. tostring(lul_data)
+					if ((IO_BUFFER == "login: ") or (IO_BUFFER == "password: ")) then
+						local res = do_LIP_Login(((IO_BUFFER == "login: ") and 1 or 2))
+						IO_BUFFER = ""
+						return res
+					elseif (IO_BUFFER:sub(#IO_BUFFER,#IO_BUFFER) == "\n") then
+						local res = handleResponseLIP(IO_BUFFER)
+						IO_BUFFER = ""
+						return res
+					end
+				elseif (PLUGIN.LUUP_IO_MODE == "MQTT") then
+						MQTT_CLIENT:handler(lul_data)
+						return true
+				end
+			end
+			return false
+
+		</lua>
+	</incoming>
+
+	<actionList>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+			<name>SetTarget</name>
+				<job>
+					CASETA_ACTIONS:setTarget(lul_device,lul_settings.newTargetValue)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:SecuritySensor1</serviceId>
+			<name>SetArmed</name>
+				<job>
+					CASETA_ACTIONS:setArmed(lul_device,lul_settings.newArmedValue)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>SetLoadLevelTarget</name>
+				<job>
+					CASETA_ACTIONS:setLoadLevelTarget(lul_device,lul_settings.newLoadLevelTarget or lul_settings.newLoadlevelTarget)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StartRampToLevel</name>
+				<job>
+					CASETA_ACTIONS:StartRampToLevel(lul_device,lul_settings.newLoadLevelTarget or lul_settings.newLoadlevelTarget,lul_settings.newRampTime)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Up</name>
+				<job>
+					CASETA_ACTIONS:blindsUP(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Down</name>
+				<job>
+					CASETA_ACTIONS:blindsDown(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+			<name>Stop</name>
+				<job>
+					CASETA_ACTIONS:blindsStop(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>SetPollPeriod</name>
+				<job>
+					CASETA_ACTIONS:SetPollPeriod(lul_device,lul_settings.pollPeriod)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>ToggleDebugMode</name>
+				<run>
+					CASETA_ACTIONS:ToggleDebugMode(lul_device)
+				</run>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>SetLutronUsername</name>
+				<job>
+					CASETA_ACTIONS:SetLutronUsername(lul_device,lul_settings.LutronUsername)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>SetLutronPassword</name>
+				<job>
+					CASETA_ACTIONS:SetLutronPassword(lul_device,lul_settings.LutronPassword)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:caseta-com:serviceId:CasetaScene1</serviceId>
+			<name>RunScene</name>
+				<job>
+					CASETA_ACTIONS:RunLutronScene(lul_device)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>DimUp</name>
+				<job>
+					CASETA_ACTIONS:DimUpDown(lul_device,"Up",lul_settings.DimPercent)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:CasetaConnect1</serviceId>
+			<name>DimDown</name>
+				<job>
+					CASETA_ACTIONS:DimUpDown(lul_device,"Down",lul_settings.DimPercent)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>SetStepDelta</name>
+				<run>
+					luup.variable_set("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_settings.newStepDelta, lul_device)
+					return true
+				</run>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StepUp</name>
+				<job>
+					local StepDelta = luup.variable_get("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_device)
+					CASETA_ACTIONS:DimUpDown(lul_device,"Up",StepDelta)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StepDown</name>
+				<job>
+					local StepDelta = luup.variable_get("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_device)
+					CASETA_ACTIONS:DimUpDown(lul_device,"Down",StepDelta)
+				</job>
+		</action>
+	</actionList>
+</implementation> 

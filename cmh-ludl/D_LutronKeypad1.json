@@ -1,0 +1,296 @@
+{
+	"flashicon": "http://download.mios.com/plugin-icons/keypad.png",
+	"default_icon": "http://download.mios.com/plugin-icons/keypad.png",
+	"inScene": "1",
+	"DisplayStatus": {},
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "tab_keypad",
+				"text": "Keypad"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"SceneGroup":[
+				{
+					"id": "1",
+					"top": "1",
+					"left": "0",
+					"x": "1",
+					"y": "1"
+				}
+			],
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "0",
+					"scenegroup": "1"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 0,
+					"left": 0,
+					"Label": {
+						"lang_tag": "button_1",
+						"text": "Button 1"
+					},
+					"Display": {
+					"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "1",
+						"Top": 20,
+						"Left": 20,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "1"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 0,
+					"left": 1,
+					"Label": {
+						"lang_tag": "button_2",
+						"text": "Button 2"
+					},
+					"Display": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "2",
+						"Top": 20,
+						"Left": 105,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "2"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 1,
+					"left": 0,
+					"Label": {
+						"lang_tag": "button_3",
+						"text": "Button 3"
+					},
+					"Display": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "3",
+						"Top": 45,
+						"Left": 20,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "3"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 1,
+					"left": 1,
+					"Label": {
+						"lang_tag": "button_4",
+						"text": "Button 4"
+					},
+					"Display": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "4",
+						"Top": 45,
+						"Left": 105,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "4"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 2,
+					"left": 0,
+					"Label": {
+						"lang_tag": "button_5",
+						"text": "Button 5"
+					},
+					"Display": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "5",
+						"Top": 70,
+						"Left": 20,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "5"
+							}
+						]
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "button",
+					"top": 2,
+					"left": 1,
+					"Label": {
+						"lang_tag": "button_6",
+						"text": "Button 6"
+					},
+					"Display": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Variable": "KeypadCommand",
+						"Value": "6",
+						"Top": 70,
+						"Left": 105,
+						"Width": 80,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+						"Action": "SendCommandKeypad",
+						"Parameters": [
+							{
+								"Name": "CommandKeypad",
+								"Value": "6"
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "1",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		},
+		{
+			"Label": {
+				"lang_tag": "notifications",
+				"text": "Notifications"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "device_notifications"
+		}
+	],
+	"eventList2": [
+		{
+			"id": 1,
+			"label": {
+				"lang_tag": "key_pressed",
+				"text": "A key has been pressed"
+			},
+			"serviceId": "urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1",
+			"argumentList": [
+				{
+					"id": 1,
+					"dataType": "string",
+					"allowedValueList": [
+						{
+							"Button1": "1",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_1_pressed",
+								"text": "Button 1 was pressed"
+							}
+						},
+						{
+							"Button2": "2",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_2_pressed",
+								"text": "Button 2 was pressed"
+							}
+						},
+						{
+							"Button3": "3",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_3_pressed",
+								"text": "Button 3 was pressed"
+							}
+						},
+						{
+							"Button4": "4",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_4_pressed",
+								"text": "Button 4 was pressed"
+							}
+						},
+						{
+							"Button5": "5",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_5_pressed",
+								"text": "Button 5 was pressed"
+							}
+						},
+						{
+							"Button6": "6",
+							"HumanFriendlyText": {
+								"lang_tag": "hft_button_6_pressed",
+								"text": "Button 6 was pressed"
+							}
+						}
+					],
+					"name": "KeypadCommand",
+					"comparisson": "=",
+					"prefix": {
+						"lang_tag": "which_button",
+						"text": "Which button"
+					},
+					"suffix": {}
+				}
+			]
+		}
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:LutronKeypad:1"
+}

@@ -1,0 +1,126 @@
+{
+    "flashicon": "icons/Caseta_Scene.png",
+    "default_icon": "Caseta_Scene.png",
+    "x": "2",
+    "y": "4",
+    "inScene": "1",
+    "ToggleButton": 1,
+    "doc_url": {
+        "doc_forced_url": {
+            "text": ""
+        }
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Control"
+            },
+            "Position": "0",
+            "top_navigation_tab": 1,
+            "TabType": "flash",
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "isSingle": "1",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "isSingle": "1",
+                    "scenegroup": "1"
+                }
+            ],
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "2",
+                    "left": "0",
+                    "x": "2",
+                    "y": "1"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlGroup": "2",
+                    "ControlType": "button",
+                    "top": "0",
+                    "left": "1",
+                    "Label": {
+                        "lang_tag": "cmd_on",
+                        "text": "Activate"
+                    },
+                    "Display": {
+                        "Service": "urn:upnp-org:serviceId:SwitchPower1",
+                        "Variable": "Status",
+                        "Value": "1",
+                        "Top": 60,
+                        "Left": 145,
+                        "Width": 75,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:caseta-com:serviceId:CasetaScene1",
+                        "Action": "RunScene"
+                    },
+                    "ControlCode": "run_scene"
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "notifications",
+                "text": "Notifications"
+            },
+            "Position": "5",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+        }
+    ],
+    "eventList2": [
+        {
+            "id": 1,
+            "label": {
+                "lang_tag": "a_device_is_turned_on_off",
+                "text": "A shortcut is turned activated"
+            },
+            "serviceId": "urn:upnp-org:serviceId:SwitchPower1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "boolean",
+                    "defaultValue": "1",
+                    "allowedValueList": [
+                        {
+                            "On": "1",
+                            "HumanFriendlyText": {
+                                "lang_tag": "hft_device_turned_on",
+                                "text": "_DEVICE_NAME_ is turned on"
+                            }
+                        }
+                    ],
+                    "name": "Status",
+                    "comparisson": "=",
+                    "prefix": {
+                        "lang_tag": "which_mode",
+                        "text": "Which mode"
+                    },
+                    "suffix": {}
+                }
+            ]
+        }
+    ],
+    "DeviceType": "urn:schemas-caseta-com:device:CasetaScene:1",
+    "device_type": "urn:schemas-caseta-com:device:CasetaScene:1"
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<device>
+		<deviceType>urn:schemas-micasaverde-com:device:LutronKeypad:1</deviceType>
+		<staticJson>D_LutronKeypad1.json</staticJson>
+		<friendlyName>Lutron Keypad </friendlyName>
+		<manufacturer>Lutron</manufacturer>
+		<manufacturerURL>http://www.lutron.com</manufacturerURL>
+		<modelDescription>Lutron Keypad </modelDescription>
+		<modelName>Lutron Keypad</modelName>
+		<modelNumber>1.0</modelNumber>
+		<serviceList>
+			<service>
+				<serviceType>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet:1</serviceType>
+				<serviceId>urn:schemas-micasaverde-com:serviceId:LutronRA2Telnet1</serviceId>
+				<SCPDURL>S_LutronRA2Telnet1.xml</SCPDURL>
+			</service>
+		</serviceList>
+	</device>
+</root>

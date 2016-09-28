@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+    <specVersion>
+        <major>2</major>
+        <minor>1</minor>
+    </specVersion>
+    <device>
+        <deviceType>urn:schemas-micasaverde-com:device:EnergyCalculator:1</deviceType>
+        <friendlyName>Ergy</friendlyName>
+        <manufacturer>Echolabs</manufacturer>
+        <manufacturerURL>http://www.echolabs.net/</manufacturerURL>
+        <modelDescription>Energy monitoring plugin</modelDescription>
+        <modelName>ECHO Energy Manager</modelName>
+        <modelNumber>1.1</modelNumber>
+        <handleChildren>1</handleChildren>
+        <modelURL>http://www.echolabs.net/page/energy-management</modelURL>
+        <UDN>uuid:c006e701-1ee7-b055-a1fa-da7e10122010</UDN>
+        <serviceList>
+            <service>
+                <serviceType>urn:schemas-micasaverde-com:service:EEM-Plugin:1</serviceType>
+                <serviceId>urn:micasaverde-com:serviceId:EEM-Plugin1</serviceId>
+                <controlURL></controlURL>
+                <eventSubURL></eventSubURL>
+                <SCPDURL>S_EchoEnergyManager.xml</SCPDURL>
+            </service>
+        </serviceList>
+        <implementationList>
+            <implementationFile>I_EchoEnergyManager.xml</implementationFile>
+        </implementationList>
+        <staticJson>J_EchoEnergyManager.json</staticJson>
+    </device>
+</root>
