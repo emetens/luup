@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<implementation>
+	<files>L_SenseMe.lua</files>
+	<startup>SenseMe_Startup</startup>
+
+	<actionList>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+			<name>SetTarget</name>
+				<job>
+					SENSEME_ACTIONS:setTarget(lul_device,lul_settings.newTargetValue)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:FanSpeed1</serviceId>
+			<name>SetFanSpeed</name>
+				<job>
+					SENSEME_ACTIONS:setFanSpeed(lul_device,lul_settings.NewFanSpeedTarget)
+				</job>
+		</action>
+		<action>
+			<serviceId>urn:micasaverde-com:serviceId:SenseMe1</serviceId>
+			<name>ToggleDebugMode</name>
+				<run>
+					SENSEME_ACTIONS:ToggleDebugMode(lul_device)
+				</run>
+		</action>
+	</actionList>
+</implementation> 

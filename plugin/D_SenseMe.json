@@ -1,0 +1,137 @@
+{
+	"flashicon": "icons\/SenseMe.png",
+	"default_icon": "SenseMe.png",
+	"inScene": "1",
+	"DisplayStatus": {},
+	"Tabs": [
+		{
+			"Label": {
+				"lang_tag": "tab_control",
+				"text": "Options"
+			},
+			"Position": "0",
+			"TabType": "flash",
+			"SceneGroup":[
+				{
+					"id": "1",
+					"top": "1",
+					"left": "0",
+					"x": "2",
+					"y": "4"
+				}
+			],
+			"ControlGroup": [
+				{
+					"id": "1",
+					"isSingle": "0",
+					"scenegroup": "1"
+				}
+			],
+			"Control": [
+				{
+					"ControlGroup": 1,
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "plugin_version",
+						"text": "Version:"
+					},
+					"top": 0.5,
+					"left": 0,
+					"text_align": "left",
+					"Display": {
+						"Top": 40,
+						"Left": 20,
+						"Width": 50,
+						"Height": 20
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "variable",
+					"top": 0.5,
+					"left": 0.65,
+					"text_align": "left",
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
+						"Variable": "PLUGIN_VERSION",
+						"Top": 40,
+						"Left": 80,
+						"Width": 60,
+						"Height": 20
+					}
+				},
+
+				{
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "lbl_debug",
+						"text": "Debug Mode:"
+					},
+					"text_align": "left",
+					"Display": {
+						"Top": 122,
+						"Left": 20,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "variable",
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
+						"Variable": "DebugModeText",
+						"Top": 122,
+						"Left": 110,
+						"Width": 75,
+						"Height": 20
+					}
+				},
+				{
+					"ControlType": "button",
+					"Label": {
+						"lang_tag": "set_debug",
+						"text": "DEBUG"
+					},
+					"top": 2,
+					"left": 0,
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
+						"Variable": "DebugMode",
+						"Value": "1",
+						"Top": 120,
+						"Left": 230,
+						"Width": 100,
+						"Height": 20
+					},
+					"Command": {
+						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
+						"Action": "ToggleDebugMode",
+						"Parameters": []
+					}
+				}
+			]
+		},
+		{
+			"Label": {
+				"lang_tag": "showSummary",
+				"text": "Summary"
+			},
+			"Position": "2",
+			"TabType": "javascript",
+			"ScriptName": "J_SenseMe.js",
+			"Function": "showSummary"
+		},
+		{
+			"Label": {
+				"lang_tag": "advanced",
+				"text": "Advanced"
+			},
+			"Position": "3",
+			"TabType": "javascript",
+			"ScriptName": "shared.js",
+			"Function": "advanced_device"
+		}
+	],
+	"DeviceType": "urn:schemas-micasaverde-com:device:SenseMe:1",
+	"device_type": "urn:schemas-micasaverde-com:device:SenseMe:1"
+}
