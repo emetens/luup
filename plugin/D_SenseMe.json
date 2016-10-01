@@ -32,6 +32,39 @@
 					"ControlGroup": 1,
 					"ControlType": "label",
 					"Label": {
+						"lang_tag": "status",
+						"text": "Status:"
+					},
+					"top": 0,
+					"left": 0,
+					"text_align": "left",
+					"Display": {
+						"Top": 20,
+						"Left": 20,
+						"Width": 40,
+						"Height": 20
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "variable",
+					"top": 0,
+					"left": 0.65,
+					"text_align": "left",
+					"Display": {
+						"Service": "urn:micasaverde-com:serviceId:CasetaConnect1",
+						"Variable": "GATEWAY_STATUS",
+						"Top": 20,
+						"Left": 80,
+						"Width": 80,
+						"Height": 20
+					}
+				},
+
+				{
+					"ControlGroup": 1,
+					"ControlType": "label",
+					"Label": {
 						"lang_tag": "plugin_version",
 						"text": "Version:"
 					},

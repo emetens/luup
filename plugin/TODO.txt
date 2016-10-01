@@ -30,7 +30,7 @@ Motion off
 
 - enumerate all fans and create devices for each
 - retries on failures
-
+- listen to incoming data to update state of fans when updated from app
 
 
 

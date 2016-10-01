@@ -30,6 +30,11 @@
 			<sendEventsAttribute>no</sendEventsAttribute>
 			<dataType>string</dataType>
 		</stateVariable>
+		<stateVariable>
+			<name>GATEWAY_STATUS</name>
+			<sendEventsAttribute>no</sendEventsAttribute>
+			<dataType>string</dataType>
+		</stateVariable>
 	</serviceStateTable>
 	<actionList>
 		<action>

@@ -8,7 +8,7 @@
 		<deviceType>urn:schemas-micasaverde-com:device:SenseMe:1</deviceType>
 		<staticJson>D_SenseMe.json</staticJson>
 		<Category_Num>1</Category_Num>
-		<friendlyName>SenseMe Bridge For Big Ass Fans</friendlyName>
+		<friendlyName>SenseMe Gateway For Big Ass Fans</friendlyName>
 		<manufacturer>Big Ass Solutions</manufacturer>
 		<protocol>raw</protocol>
 		<handleChildren>1</handleChildren>
