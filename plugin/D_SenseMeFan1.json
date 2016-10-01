@@ -1,0 +1,20 @@
+{
+  "flashicon": "icons\/SenseMeFan.png",
+  "default_icon": "SenseMeFan.png",
+  "inScene": "1",
+  "DisplayStatus": {},
+  "Tabs": [
+    {
+      "Label": {
+        "lang_tag": "advanced",
+        "text": "Advanced"
+      },
+      "Position": "3",
+      "TabType": "javascript",
+      "ScriptName": "shared.js",
+      "Function": "advanced_device"
+    }
+  ],
+  "DeviceType": "urn:schemas-micasaverde-com:device:SenseMeFan:1",
+  "device_type": "urn:schemas-micasaverde-com:device:SenseMeFan:1"
+}
