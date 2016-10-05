@@ -112,7 +112,7 @@
 					"ControlType": "variable",
 					"Display": {
 						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
-						"Variable": "DebugModeText",
+						"Variable": "DEBUG_MODE_TEXT",
 						"Top": 122,
 						"Left": 110,
 						"Width": 75,
@@ -129,7 +129,7 @@
 					"left": 0,
 					"Display": {
 						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
-						"Variable": "DebugMode",
+						"Variable": "DEBUG_MODE",
 						"Value": "1",
 						"Top": 120,
 						"Left": 230,

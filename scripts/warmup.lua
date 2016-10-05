@@ -2,7 +2,7 @@
 -- local TEMP_SENSOR_ID = 177 -- loft
 
 local THERMOSTAT_ID = 6
-local TEMP_SENSOR_ID = 63
+local TEMP_SENSOR_ID = 177
 local TARGET_TEMP = 70
 
 -- get thermostat temp
