@@ -1,4 +1,5 @@
 -- local TEMP_SENSOR_ID = 63 -- living room
+-- local TEMP_SENSOR_ID = 177 -- loft
 
 local THERMOSTAT_ID = 6
 local TEMP_SENSOR_ID = 63
