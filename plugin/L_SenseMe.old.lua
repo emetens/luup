@@ -1,10 +1,3 @@
-
-local socket = require("socket")
-
-local PROXY = nil
-
-local g_taskHandle = -1
-
 local TASK = {
   ERROR = 2,
   ERROR_PERM = -2,
