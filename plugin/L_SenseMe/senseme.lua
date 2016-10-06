@@ -1,14 +1,18 @@
 local SENSEME = {
   SENSEME_DEVICES = {
     {
+      ID = "1",
       MAC = "20:F8:5E:AB:31:1B",
       NAME = "Spa Room Fan",
       TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
     },
     {
+      ID = "2",
       MAC = "20:F8:5E:AB:31:1B",
       NAME = "Spa Room Fan Light",
       TYPE = "DIMMER",
+      VID = 0, -- will be assigned during matching
     },
   },
   -- compile a list of configured devices and store in upnp variable
@@ -20,20 +24,13 @@ local SENSEME = {
       html = html .. "<h2>Installation error</h2><p>Mismatched Files</p>"
       html = html .. "<ul><li>" .. PLUGIN.mismatched_files_list:gsub(",", "</li><li>") .. "</li></ul><br>"
     end
-    if (self.DEVICES and (#self.DEVICES > 0) and self.DEVICES[1]) then
-      html = html .. "<h2>Bridge:</h2><table>"
-      html = html .. "<tr><td>Model:</td><td>" .. self.DEVICES[1].MODEL .. "</td><td>&nbsp;&nbsp;</td><td>Serial:</td><td>" .. self.DEVICES[1].SERIAL .. "</td></tr>"
-      html = html .. "<tr><td>MAC:</td><td>" .. PLUGIN.BRIDGE_MAC .. "</td><td>&nbsp;&nbsp;</td><td>IP:</td><td>" .. PLUGIN.BRIDGE_IP .. "</td></tr>"
-
-      html = html .. "<tr><td>LIP:</td><td>" .. (((self["LIP"].ENABLED == true) and ((PLUGIN.DISABLE_LIP == false) and "ENABLED" or "FALLBACK") or (self.CONFIG["LIP"] and "DISABLED" or "NOT AVAILABLE")) or "Not Available") .. "</td><td>&nbsp;&nbsp;</td><td>LEAP:</td><td>" .. ((self["LIP"].ENABLED and (PLUGIN.DISABLE_LIP == false)) and "INACTIVE" or "ACTIVE") .. "</td></tr>"
-
-      html = html .. "</table>"
-      -- enumerate by hubs
+    if (self.SENSEME_DEVICES and (#self.SENSEME_DEVICES > 0) and self.SENSEME_DEVICES[1]) then
       html = html .. "<h2>Devices:</h2><ul class='devices'>"
       -- add devices
-      for k, DEV in pairs(self.DEVICES) do
+      for k, DEV in pairs(self.SENSEME_DEVICES) do
+
         -- display the devices
-        debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.ID .. "].")
+        debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.MAC .. "].")
         if (DEV.TYPE == "Gateway") then
         elseif (DEV.TYPE == "KEYPAD") then
           html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
@@ -94,14 +91,20 @@ local SENSEME = {
 
     for idx, dev in pairs(self.SENSEME_DEVICES) do
       debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices):   Processing device [" .. (dev.NAME or "NIL") .. "] type [" .. (dev.TYPE or "NIL") .. "]")
-      local devId = "SenseMe_" .. dev.TYPE .. "_" .. dev.MAC
-      if (VERA.DEVTYPE[dev.TYPE] ~= nil) then
+      local devId = "SenseMe_" .. dev.TYPE .. "_" .. dev.ID
+      if (VERA.DEVTYPE[dev.TYPE] ~= nil) then -- TODO make sure DEVTYPE is set properly
         local devParams = ""
         if (dev.TYPE == "DIMMER") then
           devParams = "urn:upnp-org:serviceId:Dimming1,RampTime=0"
         end
         veraDevices[#veraDevices + 1] = { devId, dev.NAME, VERA.DEVTYPE[dev.TYPE][1], VERA.DEVTYPE[dev.TYPE][2], "", devParams, false }
-        added = true
+        if (dev.VID == 0) then
+          added = true
+        else
+          if (dev.TYPE == "DIMMER") then
+            UTILITIES:setVariableDefault(VERA.SID["DIMMER"],"RampTime",0,dev.VID)
+          end
+        end
       else
         log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): ERROR : Unknown device type [" .. (dev.TYPE or "NIL") .. "]!")
         return false
@@ -129,5 +132,41 @@ local SENSEME = {
       log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) updated", 2)
     end
     return true, added
+  end,
+  findDeviceIndex = function(self, devNum)
+    for idx,dev in pairs(self.SENSEME_DEVICES) do
+     if (tonumber(dev.ID,10) == tonumber(devNum,10)) then
+        return idx
+      end
+    end
+    return  0
+  end,
+  associateDevices = function(self, device)
+
+    debug("("..PLUGIN.NAME.."::SENSEME::associateDevices): Scanning child devices.")
+
+    -- match reported devices to vera devices
+
+    for idx,vDev in pairs(luup.devices) do
+      if (vDev.device_num_parent == lug_device) then
+        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
+        local _,_, devType, devNum = vDev.id:find("Caseta_(%w-)_(%d-)")
+
+        if ((devType == nil) and (devNum == nil)) then
+          _,_,devNum = vDev.id:find("(%d-)")
+          devType = ""
+        end
+        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
+        if ((devType ~= nil) and (devNum ~= nil)) then
+          -- detect a physical device
+          local dIdx = self:findDeviceIndex(devNum)
+          debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
+          if (dIdx > 0) then
+            self.DEVICES[dIdx].VID = idx
+            debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
+          end
+        end
+      end
+    end
   end,
 }
