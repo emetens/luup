@@ -85,14 +85,6 @@ local SENSEME = {
     debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Device summary html [" .. html .. "].")
     UTILITIES:setVariable(VERA.SID["SENSEME"], "DEVICE_SUMMARY", html)
   end,
-  buildButtonMapLIP = function(self, lipButtons)
-    local buttonMap = {}
-    for idx, button in pairs(lipButtons) do
-      local bID = button["Number"]
-      buttonMap[bID] = idx
-    end
-    return buttonMap
-  end,
   appendDevices = function(self, device)
     log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Preparing for update/append of Vera devices...", 2)
     local added = false
@@ -138,22 +130,4 @@ local SENSEME = {
     end
     return true, added
   end,
-  CONFIG_COMMANDS = {
-    -- PROJECT = the smartbridge device name and master device list
-    PROJECT = "{\"CommuniqueType\":\"ReadRequest\",\"Header\":{\"Url\":\"/project\"}}",
-    -- SYSTEM = system settings/state (mode, timezone, time, etc)
-    SYSTEM = "{\"CommuniqueType\":\"ReadRequest\",\"Header\":{\"Url\":\"/system\"}}",
-    -- SERVERS = indicated which servers are available - LEAP(ssh - always enabled) or LIP(telnet - can be enabled on SmartBridge Pro)
-    SERVERS = "{\"CommuniqueType\":\"ReadRequest\",\"Header\":{\"Url\":\"/server\"}}",
-    -- DEVICES = list of individutal devices
-    DEVICES = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/device"}}',
-    ZONES = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/zone"}}',
-    -- BUTTON= individual remote buttons
-    BUTTON = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/button"}}',
-    -- BUTTON_GROUPS = pico (and possibly other) remotes
-    BUTTONS = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/buttongroup"}}',
-    -- VIRTUAL_BUTTONS = scenes
-    VIRTUAL_BUTTONS = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/virtualbutton"}}',
-    LIP_REPORT = '{"CommuniqueType":"ReadRequest","Header":{"Url":"/server/2/id"}}'
-  }
 }
