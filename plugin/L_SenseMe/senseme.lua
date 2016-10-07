@@ -150,7 +150,7 @@ local SENSEME = {
     for idx,vDev in pairs(luup.devices) do
       if (vDev.device_num_parent == lug_device) then
         debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
-        local _,_, devType, devNum = vDev.id:find("Caseta_(%w-)_(%d-)")
+        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
 
         if ((devType == nil) and (devNum == nil)) then
           _,_,devNum = vDev.id:find("(%d-)")

@@ -52,7 +52,7 @@
 					"left": 0.65,
 					"text_align": "left",
 					"Display": {
-						"Service": "urn:micasaverde-com:serviceId:CasetaConnect1",
+						"Service": "urn:micasaverde-com:serviceId:SenseMe1",
 						"Variable": "GATEWAY_STATUS",
 						"Top": 20,
 						"Left": 80,

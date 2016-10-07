@@ -4,11 +4,11 @@
 --  local ret, added = SENSEME:appendDevices(lul_device)
 --
 --  if (ret == false) then
---    return false, "Failed to add devices", "Caseta Connect"
+--    return false, "Failed to add devices", "SenseMe Gateway"
 --  end
 --  if (added == true) then
 --    log("(" .. PLUGIN.NAME .. "::Init): Startup Successful. Restart pending. ", 1)
---    return true, "Devices added. RESTART pending.", "Caseta Connect"
+--    return true, "Devices added. RESTART pending.", "SenseMe Gateway"
 --  end
 --  -- HERE
 --
@@ -76,7 +76,7 @@
 --  end
 --
 --  log("(" .. PLUGIN.NAME .. "::Init) : Startup Successful ")
---  return true, "Startup complete.", "Caseta Connect"
+--  return true, "Startup complete.", "SenseMe Gateway"
 --end
 
 function Startup(lul_device)
