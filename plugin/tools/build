@@ -1,3 +1,15 @@
 #!/bin/bash
 
-cat L_SenseMe/startup.lua > L_SenseMe.lua
+echo "----------------------------------------" > L_SenseMe.lua
+echo "-- Globals" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/globals.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Startup" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/startup.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua

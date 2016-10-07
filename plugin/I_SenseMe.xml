@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <implementation>
 	<files>L_SenseMe.lua</files>
-	<startup>SenseMe_Startup</startup>
-
+	<startup>Startup</startup>
 	<actionList>
 		<action>
 			<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>

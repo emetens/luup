@@ -81,7 +81,8 @@
 
 function Startup(lul_device)
   lug_device = lul_device
-  log("(" .. PLUGIN.NAME .. "::Startup): SenseMe Gateway v" .. VERSION .. " - ************** STARTING **************", 2)
+  log("SenseMe Gateway ************** STARTING **************", 2)
+  return true, "Startup complete.", "SenseMe Gateway"
 
 --  UTILITIES:setStatus("Loading Options...")
 --
