@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat L_SenseMe/startup.lua > L_SenseMe.lua
