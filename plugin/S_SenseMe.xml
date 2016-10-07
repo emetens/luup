@@ -21,11 +21,6 @@
 			<dataType>string</dataType>
 		</stateVariable>
 		<stateVariable>
-			<name>SENSEME_DEVICES</name>
-			<sendEventsAttribute>no</sendEventsAttribute>
-			<dataType>string</dataType>
-		</stateVariable>
-		<stateVariable>
 			<name>DEVICE_SUMMARY</name>
 			<sendEventsAttribute>no</sendEventsAttribute>
 			<dataType>string</dataType>
