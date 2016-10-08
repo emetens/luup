@@ -8,10 +8,24 @@ cat L_SenseMe/globals.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Vera" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/vera.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
 echo "-- Plugin" >> L_SenseMe.lua
 echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 cat L_SenseMe/plugin.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Debug" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/debug.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua

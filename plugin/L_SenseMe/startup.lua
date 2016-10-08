@@ -82,17 +82,19 @@
 function Startup(lul_device)
   lug_device = lul_device
   log("(" .. PLUGIN.NAME .. "::Startup): ************** STARTING SENSEME GATEWAY **************", 2)
-  return true, "Startup complete.", "SenseMe Gateway"
 
---  UTILITIES:setStatus("Loading Options...")
---
---  UTILITIES:getMiosVersion()
---  if (PLUGIN.MIOS_VERSION == "unknown") then
---    log("(" .. PLUGIN.NAME .. "::Startup): Unsupported MIOS version - EXITING!!.", 1)
---    task("UNSUPPORTED MIOS VERSION.", TASK.ERROR_PERM)
---    return false, "UNSUPPORTED MIOS VERSION.", PLUGIN.NAME
---  end
---
+  UTILITIES:setStatus("Loading Options...")
+
+  UTILITIES:getMiosVersion()
+  if (PLUGIN.MIOS_VERSION == "unknown") then
+    log("(" .. PLUGIN.NAME .. "::Startup): Unsupported MIOS version - EXITING!!.", 1)
+    task("UNSUPPORTED MIOS VERSION.", TASK.ERROR_PERM)
+    return false, "UNSUPPORTED MIOS VERSION.", PLUGIN.NAME
+  end
+
+  return true, "Startup complete.", PLUGIN.NAME
+
+  --
 --  local isDisabled = luup.attr_get("disabled", lul_device)
 --  log("(" .. PLUGIN.NAME .. "::Startup): SenseMe Gateway - Plugin version [" .. (VERSION or "NIL") .. "] - isDisabled [" .. (isDisabled or "NIL") .. "] MIOS_VERSION [" .. (PLUGIN.MIOS_VERSION or "NIL") .. "]")
 --  if ((isDisabled == 1) or (isDisabled == "1")) then
