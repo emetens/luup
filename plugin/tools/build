@@ -8,6 +8,20 @@ cat L_SenseMe/globals.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Plugin" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/plugin.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Utilities" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/utilities.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
 echo "-- Startup" >> L_SenseMe.lua
 echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua

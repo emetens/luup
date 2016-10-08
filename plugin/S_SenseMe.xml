@@ -30,6 +30,11 @@
 			<sendEventsAttribute>no</sendEventsAttribute>
 			<dataType>string</dataType>
 		</stateVariable>
+		<stateVariable>
+			<name>pollPeriod</name>
+			<sendEventsAttribute>no</sendEventsAttribute>
+			<dataType>UI4</dataType>
+		</stateVariable>
 	</serviceStateTable>
 	<actionList>
 		<action>
