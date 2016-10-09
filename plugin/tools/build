@@ -29,10 +29,24 @@ cat L_SenseMe/debug.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Task" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/task.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
 echo "-- Utilities" >> L_SenseMe.lua
 echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 cat L_SenseMe/utilities.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Settings" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/settings.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua

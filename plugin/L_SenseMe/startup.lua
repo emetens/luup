@@ -92,26 +92,26 @@ function Startup(lul_device)
     return false, "UNSUPPORTED MIOS VERSION.", PLUGIN.NAME
   end
 
+  local isDisabled = luup.attr_get("disabled", lul_device)
+  log("(" .. PLUGIN.NAME .. "::Startup): SenseMe Gateway - Plugin version [" .. (VERSION or "NIL") .. "] - isDisabled [" .. (isDisabled or "NIL") .. "] MIOS_VERSION [" .. (PLUGIN.MIOS_VERSION or "NIL") .. "]")
+  if ((isDisabled == 1) or (isDisabled == "1")) then
+    log("(" .. PLUGIN.NAME .. "::Startup):Plugin version " .. (VERSION or "NIL") .. " - DISABLED", 2)
+    PLUGIN.PLUGIN_DISABLED = true
+    -- mark device as disabled
+    UTILITIES:setStatus("DISABLED")
+    log("(" .. PLUGIN.NAME .. "::Startup): Marking SenseMe device: " .. (lul_device or "NIL") .. " as disabled.", 2)
+    task("Plugin DISABLED.", TASK.ERROR)
+    return true, "Plugin Disabled.", PLUGIN.NAME
+  end
+
+  UTILITIES:setStatus("Validating...")
+--  FILE_MANIFEST:Validate()
+  getPluginSettings()
+  UTILITIES:setStatus("Creating Icons...")
+--  ICONS:CreateIcons()
+
   return true, "Startup complete.", PLUGIN.NAME
 
-  --
---  local isDisabled = luup.attr_get("disabled", lul_device)
---  log("(" .. PLUGIN.NAME .. "::Startup): SenseMe Gateway - Plugin version [" .. (VERSION or "NIL") .. "] - isDisabled [" .. (isDisabled or "NIL") .. "] MIOS_VERSION [" .. (PLUGIN.MIOS_VERSION or "NIL") .. "]")
---  if ((isDisabled == 1) or (isDisabled == "1")) then
---    log("(" .. PLUGIN.NAME .. "::Startup):Plugin version " .. (VERSION or "NIL") .. " - DISABLED", 2)
---    PLUGIN.PLUGIN_DISABLED = true
---    -- mark device as disabled
---    UTILITIES:setStatus("DISABLED")
---    log("(" .. PLUGIN.NAME .. "::Startup): Marking SenseMe device: " .. (lul_device or "NIL") .. " as disabled.", 2)
---    task("Plugin DISABLED.", TASK.ERROR)
---    return true, "Plugin Disabled.", PLUGIN.NAME
---  end
---
---  UTILITIES:setStatus("Validating...")
---  FILE_MANIFEST:Validate()
---  getPluginSettings()
---  UTILITIES:setStatus("Creating Icons...")
---  ICONS:CreateIcons()
 --
 --  -- need to get the list of devices dynamically. for now, we can configure by hand
 --
