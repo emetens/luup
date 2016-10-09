@@ -1,4 +1,4 @@
---function Init(lul_device)
+function Init(lul_device)
 --  UTILITIES:setStatus("Initializing devices...")
 --  SENSEME:associateDevices(lul_device)
 --  local ret, added = SENSEME:appendDevices(lul_device)
@@ -75,9 +75,9 @@
 --    end
 --  end
 --
---  log("(" .. PLUGIN.NAME .. "::Init) : Startup Successful ")
---  return true, "Startup complete.", "SenseMe Gateway"
---end
+  log("(" .. PLUGIN.NAME .. "::Init) : Startup Successful ")
+  return true, "Startup complete.", "SenseMe Gateway"
+end
 
 function Startup(lul_device)
   lug_device = lul_device
@@ -105,27 +105,24 @@ function Startup(lul_device)
   end
 
   UTILITIES:setStatus("Validating...")
---  FILE_MANIFEST:Validate()
+--  FILE_MANIFEST:Validate() -- TODO need to finish this
   getPluginSettings()
   UTILITIES:setStatus("Creating Icons...")
---  ICONS:CreateIcons()
+--  ICONS:CreateIcons() -- TODO need proper icons
 
-  return true, "Startup complete.", PLUGIN.NAME
+  -- need to get the list of devices dynamically. for now, we can configure by hand
 
---
---  -- need to get the list of devices dynamically. for now, we can configure by hand
---
---  debug("(" .. PLUGIN.NAME .. "::Startup): found Devices [" .. UTILITIES:print_r(SENSEME_DEVICES) .. "]")
---  local ret, msg, modname = Init(lul_device)
---  if (ret == true) then
---    log("(" .. PLUGIN.NAME .. "::Startup): \n*************************\n** Startup sucessful  **\n*************************\n", 2)
---    UTILITIES:setStatus("Ready")
---  else
---    UTILITIES:setStatus("Startup Failed!")
---    log("(" .. PLUGIN.NAME .. "::Startup): Startup FAILED", 1)
---    -- build device summary to display installation errors
---    SENSEME:buildDeviceSummary()
---    task("Could not initialize plugin.", TASK.ERROR_PERM)
---  end
---  return true, msg, modname
+  debug("(" .. PLUGIN.NAME .. "::Startup): found Devices [" .. UTILITIES:print_r(SENSEME_DEVICES) .. "]")
+  local ret, msg, modname = Init(lul_device)
+  if (ret == true) then
+    log("(" .. PLUGIN.NAME .. "::Startup): \n*************************\n** Startup sucessful  **\n*************************\n", 2)
+    UTILITIES:setStatus("Ready")
+  else
+    UTILITIES:setStatus("Startup Failed!")
+    log("(" .. PLUGIN.NAME .. "::Startup): Startup FAILED", 1)
+    -- build device summary to display installation errors
+    SENSEME:buildDeviceSummary()
+    task("Could not initialize plugin.", TASK.ERROR_PERM)
+  end
+  return true, msg, modname
 end
