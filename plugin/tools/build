@@ -50,6 +50,13 @@ cat L_SenseMe/settings.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- SenseMe" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/senseme.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
 echo "-- Startup" >> L_SenseMe.lua
 echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua

@@ -1,17 +1,24 @@
 local SENSEME = {
   SENSEME_DEVICES = {
     {
-      ID = "1",
-      MAC = "20:F8:5E:AB:31:1B",
-      NAME = "Spa Room Fan",
+      ID = "1", -- TODO do we need this ID at all? what is this used for
+      MAC = "20:f8:5e:d9:13:e1",
+      NAME = "Master Bedroom Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
     {
       ID = "2",
-      MAC = "20:F8:5E:AB:31:1B",
-      NAME = "Spa Room Fan Light",
+      MAC = "20:f8:5e:d9:13:e1",
+      NAME = "Master Bedroom Fan Light",
       TYPE = "DIMMER",
+      VID = 0, -- will be assigned during matching
+    },
+    {
+      ID = "3",
+      MAC = "20:f8:5e:e0:6f:d9",
+      NAME = "Living Room Fan",
+      TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
   },
@@ -20,10 +27,11 @@ local SENSEME = {
     debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): building device summary.", 2)
 
     local html = ""
-    if ((PLUGIN.FILES_VALIDATED == false) and (PLUGIN.OPENLUUP == false)) then
-      html = html .. "<h2>Installation error</h2><p>Mismatched Files</p>"
-      html = html .. "<ul><li>" .. PLUGIN.mismatched_files_list:gsub(",", "</li><li>") .. "</li></ul><br>"
-    end
+-- TODO reactivate this
+--    if ((PLUGIN.FILES_VALIDATED == false) and (PLUGIN.OPENLUUP == false)) then
+--      html = html .. "<h2>Installation error</h2><p>Mismatched Files</p>"
+--      html = html .. "<ul><li>" .. PLUGIN.mismatched_files_list:gsub(",", "</li><li>") .. "</li></ul><br>"
+--    end
     if (self.SENSEME_DEVICES and (#self.SENSEME_DEVICES > 0) and self.SENSEME_DEVICES[1]) then
       html = html .. "<h2>Devices:</h2><ul class='devices'>"
       -- add devices
@@ -32,51 +40,33 @@ local SENSEME = {
         -- display the devices
         debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.MAC .. "].")
         if (DEV.TYPE == "Gateway") then
-        elseif (DEV.TYPE == "KEYPAD") then
-          html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-          html = html .. "<table><tr><td>Model:</td><td>" .. DEV.MODEL .. "</td><td>&nbsp;&nbsp;</td><td>Serial:</td><td>" .. DEV.SERIAL .. "</td></tr>"
-          html = html .. "<tr><td>LEAP/LIP ID:</td><td>" .. DEV.ID .. "/" .. DEV.LIPid .. "</td><td>&nbsp;&nbsp;</td><td>Button Group:</td><td>" .. DEV.BUTTON .. "</td></tr></table>"
-          html = html .. "</li>"
-        elseif ((DEV.TYPE == "DIMMER") or (DEV.TYPE == "SWITCH")) then
-          html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-          html = html .. "<table><tr><td>Model:</td><td>" .. DEV.MODEL .. "</td><td>&nbsp;&nbsp;</td><td>Serial:</td><td>" .. DEV.SERIAL .. "</td></tr>"
-          html = html .. "<tr><td>LEAP/LIP ID:</td><td>" .. DEV.ID .. "/" .. DEV.LIPid .. "</td><td>&nbsp;&nbsp;</td><td>Zone: </td><td>" .. DEV.ZONE .. "</td></tr></table>"
-          html = html .. "</li>"
         else
           html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-          html = html .. "<table><tr><td>Model:</td><td>" .. DEV.MODEL .. "</td><td>&nbsp;&nbsp;</td><td>Serial:</td><td>" .. DEV.SERIAL .. "</td></tr>"
-          html = html .. "<tr><td>LEAP/LIP ID:</td><td>" .. DEV.ID .. "/" .. DEV.LIPid .. "</td><td>&nbsp;&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>"
+          html = html .. "<table><tr><td>MAC:</td><td>" .. DEV.MAC .. "</td></tr>"
+          html = html .. "<tr><td>Internal ID:</td><td>" .. DEV.ID .. "</td></tr></table>"
           html = html .. "</li>"
         end
-      end
-      html = html .. "</ul><br>"
-      -- add scenes
-      html = html .. "<h2>Scenes:</h2><ul class='scenes'>"
-      for k, DEV in pairs(self.SCENES) do
-        -- display the scenes
-        debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning scene [" .. DEV.ID .. "].")
-        html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-        html = html .. "<table><tr><td>ID:</td><td>" .. DEV.ID .. "</td><td>&nbsp;&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>"
-        html = html .. "</li>"
       end
       html = html .. "</ul><br>"
     else
-      -- error with installation
-      if (PLUGIN.BRIDGE_STATUS == "User Intervention Required...") then
-        html = html .. "<h2>Bridge device not selected.</h2>"
-      elseif (PLUGIN.BRIDGE_STATUS == "No Bridge Found") then
-        if (PLUGIN.mqttParameters == nil) then
-          html = html .. "<h2>Bridge not found.</h2>"
-        else
-          html = html .. "<h2>Bridge specified by Lutron Account not found on local network.</h2>"
-        end
-      elseif (PLUGIN.BRIDGE_STATUS == "Failed to load bridge config") then
-        html = html .. "<h2>Could not load Bridge Configuration.</h2>"
-      elseif (PLUGIN.BRIDGE_STATUS == "Startup Failed!") then
-        html = html .. "<h2>Could not process Bridge Configuration.</h2>"
-      else
-        html = html .. "<h2>An unspecified error occurred.</h2>"
-      end
+      html = html .. "<h2>Issue building device summary.</h2>"
+      -- TODO complete this
+--      -- error with installation
+--      if (PLUGIN.BRIDGE_STATUS == "User Intervention Required...") then
+--        html = html .. "<h2>Bridge device not selected.</h2>"
+--      elseif (PLUGIN.BRIDGE_STATUS == "No Bridge Found") then
+--        if (PLUGIN.mqttParameters == nil) then
+--          html = html .. "<h2>Bridge not found.</h2>"
+--        else
+--          html = html .. "<h2>Bridge specified by Lutron Account not found on local network.</h2>"
+--        end
+--      elseif (PLUGIN.BRIDGE_STATUS == "Failed to load bridge config") then
+--        html = html .. "<h2>Could not load Bridge Configuration.</h2>"
+--      elseif (PLUGIN.BRIDGE_STATUS == "Startup Failed!") then
+--        html = html .. "<h2>Could not process Bridge Configuration.</h2>"
+--      else
+--        html = html .. "<h2>An unspecified error occurred.</h2>"
+--      end
     end
 
     debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Device summary html [" .. html .. "].")
@@ -147,27 +137,27 @@ local SENSEME = {
 
     -- match reported devices to vera devices
 
-    for idx,vDev in pairs(luup.devices) do
-      if (vDev.device_num_parent == lug_device) then
-        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
-        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
-
-        if ((devType == nil) and (devNum == nil)) then
-          _,_,devNum = vDev.id:find("(%d-)")
-          devType = ""
-        end
-        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
-        if ((devType ~= nil) and (devNum ~= nil)) then
-          -- detect a physical device
-          local dIdx = self:findDeviceIndex(devNum)
-          debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
-          if (dIdx > 0) then
-            self.DEVICES[dIdx].VID = idx
-            debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
-          end
-        end
-      end
-    end
+--    for idx,vDev in pairs(luup.devices) do
+--      if (vDev.device_num_parent == lug_device) then
+--        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
+--        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
+--
+--        if ((devType == nil) and (devNum == nil)) then
+--          _,_,devNum = vDev.id:find("(%d-)")
+--          devType = ""
+--        end
+--        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
+--        if ((devType ~= nil) and (devNum ~= nil)) then
+--          -- detect a physical device
+--          local dIdx = self:findDeviceIndex(devNum)
+--          debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
+--          if (dIdx > 0) then
+--            self.DEVICES[dIdx].VID = idx
+--            debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
+--          end
+--        end
+--      end
+--    end
   end,
 }
 
