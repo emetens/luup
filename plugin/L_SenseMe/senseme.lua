@@ -82,7 +82,7 @@ local SENSEME = {
     for idx, dev in pairs(self.SENSEME_DEVICES) do
       debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices):   Processing device [" .. (dev.NAME or "NIL") .. "] type [" .. (dev.TYPE or "NIL") .. "]")
       local devId = "SenseMe_" .. dev.TYPE .. "_" .. dev.ID
-      if (VERA.DEVTYPE[dev.TYPE] ~= nil) then -- TODO make sure DEVTYPE is set properly
+      if (VERA.DEVTYPE[dev.TYPE] ~= nil) then
         local devParams = ""
         if (dev.TYPE == "DIMMER") then
           devParams = "urn:upnp-org:serviceId:Dimming1,RampTime=0"
@@ -102,25 +102,27 @@ local SENSEME = {
     end
 
     -- scan is complete - do the actual updates
-    log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): veraDevices count [" .. #veraDevices .. "] veraDevices [" .. UTILITIES:print_r(veraDevices) .. "].", 2)
-    if (#veraDevices > 0) then
-      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
-      local ptr = luup.chdev.start(device)
-      for idx, params in pairs(veraDevices) do
-        luup.chdev.append(device, ptr, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
-      end
-      luup.chdev.sync(device, ptr)
-      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Updated/Appended Vera devices...", 2)
-    else
-      debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Configuration error - No devices to process.", 1)
-      return false, false
-    end
 
-    if (added) then
-      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) added. RESTART pending!", 1)
-    else
-      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) updated", 2)
-    end
+    log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): veraDevices count [" .. #veraDevices .. "] veraDevices [" .. UTILITIES:print_r(veraDevices) .. "].", 2)
+--    if (#veraDevices > 0) then
+--      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
+--      local ptr = luup.chdev.start(device)
+--      for idx, params in pairs(veraDevices) do
+--        luup.chdev.append(device, ptr, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
+--      end
+--      luup.chdev.sync(device, ptr)
+--      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Updated/Appended Vera devices...", 2)
+--    else
+--      debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Configuration error - No devices to process.", 1)
+--      return false, false
+--    end
+--
+--    if (added) then
+--      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) added. RESTART pending!", 1)
+--    else
+--      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) updated", 2)
+--    end
+
     return true, added
   end,
   findDeviceIndex = function(self, devNum)
@@ -137,27 +139,27 @@ local SENSEME = {
 
     -- match reported devices to vera devices
 
---    for idx,vDev in pairs(luup.devices) do
---      if (vDev.device_num_parent == lug_device) then
---        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
---        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
---
---        if ((devType == nil) and (devNum == nil)) then
---          _,_,devNum = vDev.id:find("(%d-)")
---          devType = ""
---        end
---        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
---        if ((devType ~= nil) and (devNum ~= nil)) then
---          -- detect a physical device
---          local dIdx = self:findDeviceIndex(devNum)
---          debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
---          if (dIdx > 0) then
---            self.DEVICES[dIdx].VID = idx
---            debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
---          end
---        end
---      end
---    end
+    for idx,vDev in pairs(luup.devices) do
+      if (vDev.device_num_parent == lug_device) then
+        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
+        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
+
+        if ((devType == nil) and (devNum == nil)) then
+          _,_,devNum = vDev.id:find("(%d-)")
+          devType = ""
+        end
+        debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
+        if ((devType ~= nil) and (devNum ~= nil)) then
+          -- detect a physical device
+          local dIdx = self:findDeviceIndex(devNum)
+          debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
+          if (dIdx > 0) then
+            self.DEVICES[dIdx].VID = idx
+            debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
+          end
+        end
+      end
+    end
   end,
 }
 

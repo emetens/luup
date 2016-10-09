@@ -1,7 +1,8 @@
 function Init(lul_device)
   UTILITIES:setStatus("Initializing devices...")
   SENSEME:associateDevices(lul_device)
---  local ret, added = SENSEME:appendDevices(lul_device)
+  local ret, added = SENSEME:appendDevices(lul_device)
+  SENSEME:associateDevices(lul_device)
 
   SENSEME:buildDeviceSummary()
 
