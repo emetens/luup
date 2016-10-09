@@ -1,6 +1,7 @@
 local function debug(text, level, forced)
   if (forced == nil) then forced = false end
-  if (PLUGIN.DEBUG_MODE or (forced == true)) then
+  if true then -- TODO remove this and use condition on line 2
+--  if (PLUGIN.DEBUG_MODE or (forced == true)) then
     if (#text < 7000) then
       if (level == nil) then
         luup.log((text or "NIL"))

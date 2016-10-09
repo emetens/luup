@@ -41,7 +41,7 @@ local SENSEME = {
         debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.MAC .. "].")
         if (DEV.TYPE == "Gateway") then
         else
-          html = html .. "<li class='wDevice'><b>Vera ID:" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
+          html = html .. "<li class='wDevice'><b>Vera ID (VID):" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
           html = html .. "<table><tr><td>MAC:</td><td>" .. DEV.MAC .. "</td></tr>"
           html = html .. "<tr><td>Internal ID:</td><td>" .. DEV.ID .. "</td></tr></table>"
           html = html .. "</li>"
@@ -102,7 +102,7 @@ local SENSEME = {
     end
 
     -- scan is complete - do the actual updates
-
+--TODO: reactivate device creation
     log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): veraDevices count [" .. #veraDevices .. "] veraDevices [" .. UTILITIES:print_r(veraDevices) .. "].", 2)
 --    if (#veraDevices > 0) then
 --      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
@@ -142,10 +142,10 @@ local SENSEME = {
     for idx,vDev in pairs(luup.devices) do
       if (vDev.device_num_parent == lug_device) then
         debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):  Processing device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."].")
-        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d-)")
+        local _,_, devType, devNum = vDev.id:find("SenseMe_(%w-)_(%d+)")
 
         if ((devType == nil) and (devNum == nil)) then
-          _,_,devNum = vDev.id:find("(%d-)")
+          _,_,devNum = vDev.id:find("(%d+)")
           devType = ""
         end
         debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):    Scanned device ["..(idx or "NIL").."] id ["..(vDev.id or "NIL").."] - type ["..(devType or "NIL").."] num ["..(devNum or "NIL").."].")
@@ -154,7 +154,7 @@ local SENSEME = {
           local dIdx = self:findDeviceIndex(devNum)
           debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Found SenseMe device ["..(dIdx or "NIL").."].")
           if (dIdx > 0) then
-            self.DEVICES[dIdx].VID = idx
+            self.SENSEME_DEVICES[dIdx].VID = idx
             debug("("..PLUGIN.NAME.."::SENSEME::associateDevices):        Updated SenseMe device ["..(dIdx or "NIL").."] with Vera id ["..(idx or "NIL").."].")
           end
         end
