@@ -9,14 +9,19 @@
 		<Category_Num>1</Category_Num>
 		<serviceList>
 			<service>
-				<serviceType>urn:schemas-micasaverde-com:service:SenseMeFan:1</serviceType>
-				<serviceId>urn:micasaverde-com:serviceId:SenseMeFan1</serviceId>
-				<SCPDURL>S_FanSpeed1.xml</SCPDURL>
-			</service>
-			<service>
 				<serviceType>urn:schemas-upnp-org:service:SwitchPower:1</serviceType>
 				<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
 				<SCPDURL>S_SwitchPower1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:Dimming:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+				<SCPDURL>S_Dimming1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-micasaverde-com:service:EnergyMetering:1</serviceType>
+				<serviceId>urn:micasaverde-com:serviceId:EnergyMetering1</serviceId>
+				<SCPDURL>S_EnergyMetering1.xml</SCPDURL>
 			</service>
 			<service>
 				<serviceType>urn:schemas-micasaverde-com:service:HaDevice:1</serviceType>

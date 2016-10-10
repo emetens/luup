@@ -62,3 +62,10 @@ echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 cat L_SenseMe/startup.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- Actions" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/actions.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua

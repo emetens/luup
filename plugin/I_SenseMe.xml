@@ -11,18 +11,49 @@
 				</job>
 		</action>
 		<action>
-			<serviceId>urn:upnp-org:serviceId:FanSpeed1</serviceId>
-			<name>SetFanSpeed</name>
-				<job>
-					SENSEME_ACTIONS:setFanSpeed(lul_device,lul_settings.NewFanSpeedTarget)
-				</job>
-		</action>
-		<action>
 			<serviceId>urn:micasaverde-com:serviceId:SenseMe1</serviceId>
 			<name>ToggleDebugMode</name>
 				<run>
 					SENSEME_ACTIONS:ToggleDebugMode(lul_device)
 				</run>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>SetLoadLevelTarget</name>
+			<job>
+				SENSEME_ACTIONS:setLoadLevelTarget(lul_device,lul_settings.newLoadLevelTarget or lul_settings.newLoadlevelTarget)
+			</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StartRampToLevel</name>
+			<job>
+				SENSEME_ACTIONS:StartRampToLevel(lul_device,lul_settings.newLoadLevelTarget or lul_settings.newLoadlevelTarget,lul_settings.newRampTime)
+			</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>SetStepDelta</name>
+			<run>
+				luup.variable_set("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_settings.newStepDelta, lul_device)
+				return true
+			</run>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StepUp</name>
+			<job>
+				local StepDelta = luup.variable_get("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_device)
+				SENSEME_ACTIONS:DimUpDown(lul_device,"Up",StepDelta)
+			</job>
+		</action>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+			<name>StepDown</name>
+			<job>
+				local StepDelta = luup.variable_get("urn:upnp-org:serviceId:Dimming1","StepDelta", lul_device)
+				SENSEME_ACTIONS:DimUpDown(lul_device,"Down",StepDelta)
+			</job>
 		</action>
 	</actionList>
 </implementation> 
