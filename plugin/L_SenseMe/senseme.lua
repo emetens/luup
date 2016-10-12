@@ -22,6 +22,11 @@ local SENSEME = {
       VID = 0, -- will be assigned during matching
     },
   },
+
+  startPolling = function(self)
+    SENSEME_UDP:startPolling()
+  end,
+
   -- compile a list of configured devices and store in upnp variable
   buildDeviceSummary = function(self)
     debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): building device summary.", 2)

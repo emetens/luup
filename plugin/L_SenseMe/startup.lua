@@ -5,6 +5,7 @@ function Init(lul_device)
   SENSEME:associateDevices(lul_device)
 
   SENSEME:buildDeviceSummary()
+  SENSEME:startPolling()
 
   --
 --  if (ret == false) then

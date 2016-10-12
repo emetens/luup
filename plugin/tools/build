@@ -50,6 +50,13 @@ cat L_SenseMe/settings.lua >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua
 
 echo "----------------------------------------" >> L_SenseMe.lua
+echo "-- UDP" >> L_SenseMe.lua
+echo "----------------------------------------" >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+cat L_SenseMe/udp.lua >> L_SenseMe.lua
+echo "" >> L_SenseMe.lua
+
+echo "----------------------------------------" >> L_SenseMe.lua
 echo "-- SenseMe" >> L_SenseMe.lua
 echo "----------------------------------------" >> L_SenseMe.lua
 echo "" >> L_SenseMe.lua

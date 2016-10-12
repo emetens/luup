@@ -1,7 +1,6 @@
-SENSEME_UDP = {
+local SENSEME_UDP = {
   localIpAddress = "",
   sendCommand = function(self,command)
-    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : sending command [\n"..(command or "NIL").."].",2)
 
     local socket = require "socket"
     if self.localIpAddress == "" then
@@ -9,33 +8,38 @@ SENSEME_UDP = {
       udp:settimeout(2)
       udp:setpeername("8.8.8.8", 31415) -- TODO put port, put google dns server in constant to get address
       self.localIpAddress = udp:getsockname()
-      debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : local ip address initialized [\n"..(self.localIpAddress or "NIL").."].",2)
+      debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : local ip address initialized ["..(self.localIpAddress or "NIL").."].",2)
       udp:close()
     end
 
     local udp = socket.udp()
     udp:setsockname(self.localIpAddress, 31415)
-    udp:setoption("broadcast",true))
-    udp:sendto("<" .. command .. ">", "255.255.255.255", 31415)) -- TODO put as constants
---    udp:sendto("<Living Room Fan;FAN;SPD;GET;ACTUAL>", "255.255.255.255", 31415))
+    udp:setoption("broadcast",true)
+    udp:sendto("<" .. command .. ">", "255.255.255.255", 31415) -- TODO put as constants
+--    udp:sendto("<Living Room Fan;FAN;SPD;GET;ACTUAL>", "255.255.255.255", 31415)
     local response = udp:receive()
     udp:close()
-
-    -- TO poll on a regular basis:
-    luup.call_delay("getStatusLIP", 5, PLUGIN.pollPeriod)
-
-    then in the function
-
-    function getStatusLIP(value)
-      debug("("..PLUGIN.NAME.."::getStatusLIP): Checking Status")
-      local period = tonumber(value)
-      if (period > 0) then
-        luup.call_delay("getStatusLIP", period, value)
-      end
-      debug("("..PLUGIN.NAME.."::getStatusLIP): Status command sent")
-    end
-
-
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand): Command: " .. command .. " Response: " .. response)
     return response
   end,
- }
+
+  startPolling = function(self)
+    luup.call_delay("poll", 5, PLUGIN.POLL_PERIOD)
+  end,
+}
+
+poll = function(value)
+  debug("("..PLUGIN.NAME.."::SENSEME_UDP::poll): Checking status")
+
+  -- get status for all devices
+  -- TODO iterate over all commands
+  local response = SENSEME_UDP:sendCommand("Living Room Fan;FAN;SPD;GET;ACTUAL")
+
+  -- schedule next call
+
+      local period = tonumber(value)
+      if (period > 0) then
+         luup.call_delay("poll", period, value)
+      end
+      debug("("..PLUGIN.NAME.."::SENSEME_UDP::poll): Status command sent")
+end
