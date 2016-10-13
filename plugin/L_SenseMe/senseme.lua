@@ -23,10 +23,6 @@ local SENSEME = {
     },
   },
 
-  startPolling = function(self)
-    SENSEME_UDP:startPolling()
-  end,
-
   -- compile a list of configured devices and store in upnp variable
   buildDeviceSummary = function(self)
     debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): building device summary.", 2)
@@ -166,5 +162,144 @@ local SENSEME = {
       end
     end
   end,
+  startPolling = function(self)
+    luup.call_delay("poll", 5, PLUGIN.POLL_PERIOD)
+  end,
+
+  setUI = function(self,parameters, cmdType)
+        debug("("..PLUGIN.NAME.."::SENSEME::setUI): Proceesing UI update - command type ["..(cmdType or "NIL").."] params [\n"..UTILITIES:print_r(parameters).."].")
+        local devType = ""
+        local devName = ""
+        local devIdx = -1
+        local id = -1
+        local index = 1
+        for idx,dev in pairs(self.SENSEME_DEVICES) do
+          local devID = dev.ID
+          if (tonumber(devID,10) == tonumber(parameters[index],10)) then
+            devType = dev.TYPE
+            devName = dev.NAME
+            devIdx = idx
+            id = dev.VID
+            break
+          end
+        end
+        if (id == -1) then
+          debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR : Could not find Vera device for SenseMe ID ["..(parameters[index] or "NIL").."].",1)
+          return
+        end
+        debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing index ["..(index or "NIL").."] device ID ["..(parameters[1] or "NIL").."] TYPE ["..(devType or "NIL").."] VID ["..id.."] NAME ["..(devName or "NIL").."].")
+        if cmdType == "OUTPUT" then
+          index = index + 1
+          debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing OUTPUT command - index ["..(index or "NIL").."]...")
+          if (tonumber(parameters[index],10) == 1) then -- TODO what does this mean?
+            if (devType == "DIMMER") then
+              if (parameters and parameters[index + 1]) then
+                local var = math.floor(tonumber(parameters[index + 1],10))
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting DIMMER - VAR ["..(var or "NIL").."].")
+                if (var == 0) then
+                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", "0", id)
+                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","0",id)
+                else
+                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", var, id)
+                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","1",id)
+                  debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : Vera device has been updated.")
+                end
+              else
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : ERROR processing parameters.",1)
+              end
+--            elseif (devType == "FAN") then
+--              if (parameters and parameters[index + 1]) then
+--                local var = math.floor(tonumber(parameters[index + 1],10))
+--                debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
+--                if (var == 0) then
+--                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", "0", id)
+--                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","0",id)
+--                else
+--                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", var, id)
+--                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","1",id)
+--                  debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : Vera device has been updated.")
+--                end
+--              else
+--                debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : ERROR processing parameters.",1)
+--              end
+            else
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR! : Unknown command type! ")
+            end
+          end
+        end
+
+    --    elseif cmdType == "SHADEGRP" then
+    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing SHADEGRP command...")
+    --      index = index + 1
+    --      if (parameters and parameters[index] and (parameters[index] == "1")) then
+    --        if devType == "SHADEGRP" then
+    --          UTILITIES:setVariable(VERA.SID["SHADEGRP"],"LoadLevelStatus", parameters[index + 1], id)
+    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): SHADEGROUP : Vera device has been set.")
+    --        end
+    --      end
+    --    elseif cmdType == "AREA" then
+    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing AREA command...")
+    --      if (parameters and parameters[3] and (parameters[3] == "3")) then
+    --        UTILITIES:setVariable(VERA.SID["AREA"], "Tripped", "1", id)
+    --        if not g_lastTripFlag then
+    --          UTILITIES:setVariable(VERA.SID["AREA"], "LastTrip", os.time(), id)
+    --          g_lastTripFlag = true
+    --        end
+    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Device " .. id .. " has been tripped!")
+    --      elseif (parameters and parameters[3] and (parameters[3] == "4")) then
+    --        UTILITIES:setVariable(VERA.SID["AREA"], "Tripped", "0", id)
+    --        if g_lastTripFlag then
+    --          g_lastTripFlag = false
+    --        end
+    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Device " .. id .. "is not tripped!")
+    --      else
+    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Unknown parameters received!!! " .. tostring(parameters[3] or "NIL"))
+    --      end
+    --    else
+    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing KEYPAD command...")
+    --      index = index + 1
+    --      if (parameters and parameters[index] and parameters[index + 1]) then
+    --        local button = parameters[index] and tonumber(parameters[index],10) or 0
+    --        local event = parameters[index + 1] and tonumber(parameters[index + 1],10) or 0
+    --        if (devIdx ~= 1) then	-- ignore device 1 (virtual buttons (scenes) )
+    --        if ((event == 3) or (event == 4)) then
+    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing KEYPAD event - device ["..(devIdx or "NIL").."] button ["..(button or "NIL").."] event ["..(event or "NIL").."].")
+    --          createSceneControllerEvent(devIdx, button,event)
+    --        else
+    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Received unrecognized KEYPAD command - device ["..(devIdx or "NIL").."] button ["..(button or "NIL").."] event ["..(event or "NIL").."].",1)
+    --        end
+    --        end
+    --      else
+    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Error processing KEYPAD command parameters.",1)
+    --      end
+    --    end
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing COMPLETE.")
+  end,
 }
 
+poll = function(value)
+  debug("("..PLUGIN.NAME.."::SENSEME::poll): Checking status")
+
+  -- get status for all devices
+  -- TODO iterate over all devices
+
+  local devID = -1
+  for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
+    local devID = dev.ID
+    if (dev.TYPE == "DIMMER") then
+      local response = SENSEME_UDP:sendCommand("Living Room Fan;FAN;SPD;GET;ACTUAL")
+      local level = 70
+      local params = {devID,1,level}
+        SENSEME:setUI(params,"OUTPUT")
+      break
+    end
+  end
+
+  -- schedule next call
+
+  local period = tonumber(value)
+  if (period > 0) then
+    luup.call_delay("poll", period, value)
+  end
+  debug("("..PLUGIN.NAME.."::SENSEME::poll): Status command sent")
+end
