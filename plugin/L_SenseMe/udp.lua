@@ -1,4 +1,7 @@
 local SENSEME_UDP = {
+
+  FAN_SPEED_INDEX = 5,
+
   localIpAddress = "",
 
   sendCommand = function(self,command)

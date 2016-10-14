@@ -275,20 +275,39 @@ local SENSEME = {
     --    end
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing COMPLETE.")
   end,
+
+  loadLevelForFanSpeed = function(self,fanSpeed)
+    local loadLevel = fanSpeed * 100 / 7
+    if loadLevel < 0 then
+      loadLevel = 0
+    end
+    if loadLevel > 100 then
+      loadLevel = 100
+    end
+    return loadLevel
+  end,
+
+  respponseElements = function(self, response)
+    local responseTrimmed = response:sub(2, -2)
+    local responseElements = UTILITIES:string_split(responseTrimmed,";")
+    return responseElements
+  end,
 }
 
 poll = function(value)
   debug("("..PLUGIN.NAME.."::SENSEME::poll): Checking status")
 
   -- get status for all devices
-  -- TODO iterate over all devices
 
   local devID = -1
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
-    if (dev.TYPE == "DIMMER") then
+    if (dev.TYPE == "DIMMER") then -- TODO handle other device type (fan)
       local response = SENSEME_UDP:sendCommand("Living Room Fan;FAN;SPD;GET;ACTUAL")
-      local level = 70
+      local responseElements = SENSEME:respponseElements(response)
+-- TODO check if it is the same device name
+      local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
+      local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
       local params = {devID,1,level}
         SENSEME:setUI(params,"OUTPUT")
       break

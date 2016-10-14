@@ -7,7 +7,7 @@ local PLUGIN = {
   DEBUG_MODE = true, -- TODO set this back to false
   PLUGIN_DISABLED = false,
   FILES_VALIDATED = false,
-  POLL_PERIOD = "1000"
+  POLL_PERIOD = "10"
 }
 
 local function checkVersion()
