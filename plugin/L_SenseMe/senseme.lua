@@ -307,6 +307,7 @@ poll = function(value)
       local responseElements = SENSEME:respponseElements(response)
 -- TODO check if it is the same device name
       local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
+-- TODO cache the value to avoid setting the UI at every poll
       local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
       local params = {devID,1,level}
         SENSEME:setUI(params,"OUTPUT")
