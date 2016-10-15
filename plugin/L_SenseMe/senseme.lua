@@ -2,25 +2,25 @@ local SENSEME = {
   SENSEME_DEVICES = {
 --    {
 --      ID = "1", -- TODO do we need this ID at all? what is this used for
---      MAC = "20:f8:5e:d9:13:e1",
+--      SENSEME_NAME = "Master Bedroom Fan",
 --      NAME = "Master Bedroom Fan",
 --      TYPE = "FAN",
 --      VID = 0, -- will be assigned during matching
 --    },
     {
       ID = "2",
-      MAC = "20:f8:5e:d9:13:e1",
+      SENSEME_NAME = "Master Bedroom Fan",
       NAME = "Master Bedroom Fan Light",
       TYPE = "DIMMER",
       VID = 0, -- will be assigned during matching
     },
---    {
---      ID = "3",
---      MAC = "20:f8:5e:e0:6f:d9",
---      NAME = "Living Room Fan",
---      TYPE = "FAN",
---      VID = 0, -- will be assigned during matching
---    },
+    {
+      ID = "3",
+      SENSEME_NAME = "Living Room Fan",
+      NAME = "Living Room Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
   },
 
   -- compile a list of configured devices and store in upnp variable
@@ -39,11 +39,11 @@ local SENSEME = {
       for k, DEV in pairs(self.SENSEME_DEVICES) do
 
         -- display the devices
-        debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.MAC .. "].")
+        debug("(" .. PLUGIN.NAME .. "::buildDeviceSummary): Scanning device [" .. DEV.SENSEME_NAME .. "].")
         if (DEV.TYPE == "Gateway") then
         else
           html = html .. "<li class='wDevice'><b>Vera ID (VID):" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-          html = html .. "<table><tr><td>MAC:</td><td>" .. DEV.MAC .. "</td></tr>"
+          html = html .. "<table><tr><td>MAC:</td><td>" .. DEV.SENSEME_NAME .. "</td></tr>"
           html = html .. "<tr><td>Internal ID:</td><td>" .. DEV.ID .. "</td></tr></table>"
           html = html .. "</li>"
         end
@@ -309,7 +309,7 @@ poll = function(value)
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
     if (dev.TYPE == "DIMMER") then -- TODO handle other device type (fan)
-      local response = SENSEME_UDP:sendCommand("Living Room Fan;FAN;SPD;GET;ACTUAL")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
   -- TODO check if it is the same device name
