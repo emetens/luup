@@ -109,7 +109,7 @@ local SENSEME = {
     end
 
     -- scan is complete - do the actual updates
---TODO: reactivate device creation
+
     log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): veraDevices count [" .. #veraDevices .. "] veraDevices [" .. UTILITIES:print_r(veraDevices) .. "].", 2)
     if (#veraDevices > 0) then
       log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
