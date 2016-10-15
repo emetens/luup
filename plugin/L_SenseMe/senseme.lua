@@ -1,12 +1,12 @@
 local SENSEME = {
   SENSEME_DEVICES = {
-    {
-      ID = "1", -- TODO do we need this ID at all? what is this used for
-      MAC = "20:f8:5e:d9:13:e1",
-      NAME = "Master Bedroom Fan",
-      TYPE = "FAN",
-      VID = 0, -- will be assigned during matching
-    },
+--    {
+--      ID = "1", -- TODO do we need this ID at all? what is this used for
+--      MAC = "20:f8:5e:d9:13:e1",
+--      NAME = "Master Bedroom Fan",
+--      TYPE = "FAN",
+--      VID = 0, -- will be assigned during matching
+--    },
     {
       ID = "2",
       MAC = "20:f8:5e:d9:13:e1",
@@ -14,13 +14,13 @@ local SENSEME = {
       TYPE = "DIMMER",
       VID = 0, -- will be assigned during matching
     },
-    {
-      ID = "3",
-      MAC = "20:f8:5e:e0:6f:d9",
-      NAME = "Living Room Fan",
-      TYPE = "FAN",
-      VID = 0, -- will be assigned during matching
-    },
+--    {
+--      ID = "3",
+--      MAC = "20:f8:5e:e0:6f:d9",
+--      NAME = "Living Room Fan",
+--      TYPE = "FAN",
+--      VID = 0, -- will be assigned during matching
+--    },
   },
 
   -- compile a list of configured devices and store in upnp variable
@@ -88,6 +88,9 @@ local SENSEME = {
         if (dev.TYPE == "DIMMER") then
           devParams = "urn:upnp-org:serviceId:Dimming1,RampTime=0"
         end
+        if (dev.TYPE == "FAN") then
+          devParams = "urn:upnp-org:serviceId:Dimming1,RampTime=0"
+        end
         veraDevices[#veraDevices + 1] = { devId, dev.NAME, VERA.DEVTYPE[dev.TYPE][1], VERA.DEVTYPE[dev.TYPE][2], "", devParams, false }
         if (dev.VID == 0) then
           added = true
@@ -95,34 +98,37 @@ local SENSEME = {
           if (dev.TYPE == "DIMMER") then
             UTILITIES:setVariableDefault(VERA.SID["DIMMER"],"RampTime",0,dev.VID)
           end
+          if (dev.TYPE == "FAN") then
+            UTILITIES:setVariableDefault(VERA.SID["DIMMER"],"RampTime",0,dev.VID)
+          end
         end
       else
         log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): ERROR : Unknown device type [" .. (dev.TYPE or "NIL") .. "]!")
-        return false
+        return false, false
       end
     end
 
     -- scan is complete - do the actual updates
 --TODO: reactivate device creation
     log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): veraDevices count [" .. #veraDevices .. "] veraDevices [" .. UTILITIES:print_r(veraDevices) .. "].", 2)
---    if (#veraDevices > 0) then
---      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
---      local ptr = luup.chdev.start(device)
---      for idx, params in pairs(veraDevices) do
---        luup.chdev.append(device, ptr, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
---      end
---      luup.chdev.sync(device, ptr)
---      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Updated/Appended Vera devices...", 2)
---    else
---      debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Configuration error - No devices to process.", 1)
---      return false, false
---    end
---
---    if (added) then
---      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) added. RESTART pending!", 1)
---    else
---      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) updated", 2)
---    end
+    if (#veraDevices > 0) then
+      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Attempting to update/append Vera devices...", 2)
+      local ptr = luup.chdev.start(device)
+      for idx, params in pairs(veraDevices) do
+        luup.chdev.append(device, ptr, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
+      end
+      luup.chdev.sync(device, ptr)
+      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Updated/Appended Vera devices...", 2)
+    else
+      debug("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Configuration error - No devices to process.", 1)
+      return false, false
+    end
+
+    if (added) then
+      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) added. RESTART pending!", 1)
+    else
+      log("(" .. PLUGIN.NAME .. "::SENSEME::appendDevices): Device(s) updated", 2)
+    end
 
     return true, added
   end,
