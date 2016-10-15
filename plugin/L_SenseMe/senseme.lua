@@ -304,14 +304,17 @@ poll = function(value)
     local devID = dev.ID
     if (dev.TYPE == "DIMMER") then -- TODO handle other device type (fan)
       local response = SENSEME_UDP:sendCommand("Living Room Fan;FAN;SPD;GET;ACTUAL")
-      local responseElements = SENSEME:respponseElements(response)
--- TODO check if it is the same device name
-      local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
--- TODO cache the value to avoid setting the UI at every poll
-      local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
-      local params = {devID,1,level}
-        SENSEME:setUI(params,"OUTPUT")
-      break
+      if not UTILITIES:string_empty(response) then
+        local responseElements = SENSEME:respponseElements(response)
+  -- TODO check if it is the same device name
+  -- TODO better error management so we can skip updates when we miss
+        local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
+  -- TODO cache the value to avoid setting the UI at every poll
+        local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
+        local params = {devID,1,level}
+          SENSEME:setUI(params,"OUTPUT")
+        break
+      end
     end
   end
 

@@ -84,6 +84,9 @@ local UTILITIES = {
       return false
     end
   end,
+  string_empty = function(self, string)
+    return string == nil or string == ""
+  end,
   string_split = function(self, str, sep)
     local array = {}
     local reg = string.format("([^%s]+)", sep) or ""
