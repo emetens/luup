@@ -346,7 +346,6 @@ poll = function(value)
 --      local level = SENSEME:loadLevelForDimmer(fanSpeed)
 --      local params = {devID,1,level}
 --      SENSEME:setUI(params,"OUTPUT")
---      break
 --    end
     if (dev.TYPE == "FAN") then
       local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
@@ -358,8 +357,7 @@ poll = function(value)
   -- TODO cache the value to avoid setting the UI at every poll
         local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
         local params = {devID,1,level}
-          SENSEME:setUI(params,"OUTPUT")
-        break
+        SENSEME:setUI(params,"OUTPUT")
       end
     end
   end

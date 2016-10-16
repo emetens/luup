@@ -27,7 +27,6 @@ local SENSEME_UDP = {
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : setting options",2)
     udp:sendto("<" .. command .. ">", "255.255.255.255", 31415) -- TODO put as constants
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : sending",2)
---    udp:sendto("<Living Room Fan;FAN;SPD;GET;ACTUAL>", "255.255.255.255", 31415)
     local response, msg = udp:receive()
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : received",2)
     udp:close()

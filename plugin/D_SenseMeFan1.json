@@ -336,6 +336,36 @@
             }
           },
           "ControlCode": "dim"
+        },
+        {
+          "ControlGroup": 1,
+          "ControlType": "button",
+          "ControlCode": "my_button",
+          "top": 200,
+          "left": 0,
+          "Label": {
+            "lang_tag": "my_first_button",
+            "text": "My First Button"
+          },
+          "Display": {
+            "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+            "Variable": "Status",
+            "Value": "1",
+            "Top": 200,
+            "Left": 50,
+            "Width": 100,
+            "Height": 20
+          },
+          "Command": {
+            "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+            "Action": "SetStatus",
+            "Parameters": [
+              {
+                "Name": "Status",
+                "Value": "1"
+              }
+            ]
+          }
         }
       ],
       "Conditions": [
