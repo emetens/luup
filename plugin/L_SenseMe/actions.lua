@@ -11,7 +11,27 @@ SENSEME_ACTIONS = {
       debug("(" .. PLUGIN.NAME .. "::SENSEME_ACTIONS::setLoadLevelTarget): newLoadLevelTarget not specified.", 1)
       return 2, 0
     end
-    -- TODO Depending on the type of device (fan speed or dimmer, we will need to send different commands
+
+    for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
+      if dev.VID == lul_device then
+        if (dev.TYPE == "FAN") then
+          local fanSpeed = SENSEME:fanSpeedForLoadLevel(newLoadLevelTarget)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed)
+--          if not UTILITIES:string_empty(response) then
+--            local responseElements = SENSEME:respponseElements(response)
+--            -- TODO check if it is the same device name
+--            -- TODO better error management so we can skip updates when we miss
+--            local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
+--            -- TODO cache the value to avoid setting the UI at every poll
+--            local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
+--            local params = {devID,1,level}
+--            SENSEME:setUI(params,"OUTPUT")
+--            break
+--          end
+        end
+      end
+    end
+
     debug("(" .. PLUGIN.NAME .. "::SENSEME_ACTIONS::setLoadLevelTarget): " .. newLoadLevelTarget, 2)
     return 4, 0
   end,

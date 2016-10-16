@@ -282,6 +282,17 @@ local SENSEME = {
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing COMPLETE.")
   end,
 
+  fanSpeedForLoadLevel = function(self, loadLevel)
+    local fanSpeed = loadLevel * 7 / 100
+    if fanSpeed < 0 then
+      fanSpeed = 0
+    end
+    if fanSpeed > 7 then
+      fanSpeed = 7
+    end
+    return fanSpeed
+  end,
+
   loadLevelForFanSpeed = function(self,fanSpeed)
     local loadLevel = fanSpeed * 100 / 7
     if loadLevel < 0 then
