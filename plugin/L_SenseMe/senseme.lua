@@ -213,21 +213,21 @@ local SENSEME = {
               else
                 debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : ERROR processing parameters.",1)
               end
---            elseif (devType == "FAN") then
---              if (parameters and parameters[index + 1]) then
---                local var = math.floor(tonumber(parameters[index + 1],10))
---                debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
---                if (var == 0) then
---                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", "0", id)
---                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","0",id)
---                else
---                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", var, id)
---                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","1",id)
---                  debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : Vera device has been updated.")
---                end
---              else
---                debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : ERROR processing parameters.",1)
---              end
+            elseif (devType == "FAN") then
+              if (parameters and parameters[index + 1]) then
+                local var = math.floor(tonumber(parameters[index + 1],10))
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
+                if (var == 0) then
+                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", "0", id)
+                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","0",id)
+                else
+                  UTILITIES:setVariable(VERA.SID["DIMMER"],"LoadLevelStatus", var, id)
+                  UTILITIES:setVariable(VERA.SID["SWITCH"],"Status","1",id)
+                  debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : Vera device has been updated.")
+                end
+              else
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): DIMMER : ERROR processing parameters.",1)
+              end
             else
               debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR! : Unknown command type! ")
             end
@@ -293,6 +293,17 @@ local SENSEME = {
     return loadLevel
   end,
 
+  loadLevelForDimmer = function(self,lightLevel)
+    local loadLevel = lightLevel * 100 / 16
+    if loadLevel < 0 then
+      loadLevel = 0
+    end
+    if loadLevel > 100 then
+      loadLevel = 100
+    end
+    return loadLevel
+  end,
+
   respponseElements = function(self, response)
     local responseTrimmed = response:sub(2, -2)
     local responseElements = UTILITIES:string_split(responseTrimmed,";")
@@ -308,7 +319,25 @@ poll = function(value)
   local devID = -1
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
-    if (dev.TYPE == "DIMMER") then -- TODO handle other device type (fan)
+--    if (dev.TYPE == "DIMMER") then
+--    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL")
+--    if not UTILITIES:string_empty(response) then
+--      local responseElements = SENSEME:respponseElements(response)
+--      -- TODO check if it is the same device name
+--      -- TODO better error management so we can skip updates when we miss
+--      (Livin
+--      0x0030:  6720 526f 6f6d 2046 616e 3b44 4556 4943  g.Room.Fan;DEVIC
+--      0x0040:  453b 4c49 4748 543b 4e4f 5420 5052 4553  E;LIGHT;NOT.PRES
+--      0x0050:  454e 5429                                ENT
+--
+--      local fanSpeed = responseElements[SENSEME_UDP.LIGHT_LEVEL_INDEX]
+--      -- TODO cache the value to avoid setting the UI at every poll
+--      local level = SENSEME:loadLevelForDimmer(fanSpeed)
+--      local params = {devID,1,level}
+--      SENSEME:setUI(params,"OUTPUT")
+--      break
+--    end
+    if (dev.TYPE == "FAN") then
       local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)

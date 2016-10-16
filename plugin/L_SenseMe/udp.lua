@@ -1,6 +1,7 @@
 local SENSEME_UDP = {
 
   FAN_SPEED_INDEX = 5,
+  LIGHT_LEVEL_INDEX = 5,
 
   localIpAddress = "",
 
