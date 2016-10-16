@@ -1,12 +1,12 @@
 local SENSEME = {
   SENSEME_DEVICES = {
---    {
---      ID = "1", -- TODO do we need this ID at all? what is this used for
---      SENSEME_NAME = "Master Bedroom Fan",
---      NAME = "Master Bedroom Fan",
---      TYPE = "FAN",
---      VID = 0, -- will be assigned during matching
---    },
+    {
+      ID = "1", -- TODO do we need this ID at all? what is this used for
+      SENSEME_NAME = "Master Bedroom Fan",
+      NAME = "Master Bedroom Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
     {
       ID = "2",
       SENSEME_NAME = "Master Bedroom Fan",
