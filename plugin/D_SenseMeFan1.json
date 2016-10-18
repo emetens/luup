@@ -279,7 +279,7 @@
           ]
         },
         {
-          "ControlGroup": "3",
+          "ControlGroup": "1",
           "ControlType": "slider",
           "top": "0",
           "left": "0",
@@ -305,9 +305,9 @@
             "Variable": "LoadLevelStatus",
             "MinValue": "0",
             "MaxValue": "100",
-            "Top": 100,
-            "Left": 50,
-            "Width": 100,
+            "Top": 25,
+            "Left": 90,
+            "Width": 160,
             "Height": 25,
             "ID": "newLoadlevelTarget"
           },
@@ -338,10 +338,14 @@
           "ControlCode": "dim"
         },
         {
+          "ControlGroup": 1,
+          "ControlType": "line_break"
+        },
+        {
           "ControlGroup": "1",
           "ControlType": "multi_state_button",
-          "top": "0",
-          "left": "1",
+          "top": "70",
+          "left": "0",
           "states": [
             {
               "Label": {
