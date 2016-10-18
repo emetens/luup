@@ -1,7 +1,7 @@
 local VERA = {
   SID = {
     ["SENSEME"] = "urn:micasaverde-com:serviceId:SenseMe1",
-    ["FAN"]     = "urn:upnp-org:serviceId:FanSpeed1",
+    ["FAN"]     = "urn:micasaverde-com:serviceId:SenseMeFan1",
     ["DIMMER"]  = "urn:upnp-org:serviceId:Dimming1",
     ["SWITCH"]	= "urn:upnp-org:serviceId:SwitchPower1",
   },

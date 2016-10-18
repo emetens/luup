@@ -194,6 +194,23 @@ local SENSEME = {
           return
         end
         debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing index ["..(index or "NIL").."] device ID ["..(parameters[1] or "NIL").."] TYPE ["..(devType or "NIL").."] VID ["..id.."] NAME ["..(devName or "NIL").."].")
+        if cmdType == "MOTION" then
+          index = index + 1
+          debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing MOTION command - index ["..(index or "NIL").."]...")
+          if (tonumber(parameters[index],10) == 1) then -- TODO what does this mean?
+            if (devType == "FAN") then
+              if (parameters and parameters[index + 1]) then
+                local var = parameters[index + 1]
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
+                UTILITIES:setVariable(VERA.SID["FAN"],"Motion", var, id)
+              else
+                debug("("..PLUGIN.NAME.."::SENSEME::setUI): FAN : ERROR processing parameters.",1)
+              end
+            else
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR! : Unknown command type! ")
+            end
+          end
+        end
         if cmdType == "OUTPUT" then
           index = index + 1
           debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing OUTPUT command - index ["..(index or "NIL").."]...")
@@ -304,6 +321,17 @@ local SENSEME = {
     return loadLevel
   end,
 
+  dimmerForLoadLevel = function(self, loadLevel)
+    local lightLevel = loadLevel * 16 / 100
+    if lightLevel < 0 then
+      lightLevel = 0
+    end
+    if lightLevel > 16 then
+      lightLevel = 16
+    end
+    return lightLevel
+  end,
+
   loadLevelForDimmer = function(self,lightLevel)
     local loadLevel = lightLevel * 100 / 16
     if loadLevel < 0 then
@@ -313,6 +341,22 @@ local SENSEME = {
       loadLevel = 100
     end
     return loadLevel
+  end,
+
+  varValueFromSenseMe = function(self, senseMe)
+    local varValue = "1"
+    if senseMe == "OFF" then
+      varValue = "0"
+    end
+    return varValue
+  end,
+
+  senseMeValueFromVar = function(self, varValue)
+    local senseMeValue = "ON"
+    if varValue == "0" then
+      senseMeValue = "OFF"
+    end
+    return senseMeValue
   end,
 
   respponseElements = function(self, response)
@@ -351,13 +395,19 @@ poll = function(value)
       local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
-  -- TODO check if it is the same device name
-  -- TODO better error management so we can skip updates when we miss
         local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
-  -- TODO cache the value to avoid setting the UI at every poll
         local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
         local params = {devID,1,level}
         SENSEME:setUI(params,"OUTPUT")
+      end
+
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET")
+      if not UTILITIES:string_empty(response) then
+        local responseElements = SENSEME:respponseElements(response)
+        local senseMeValue = responseElements[SENSEME_UDP.MOTION_VALUE_INDEX]
+        local motion = SENSEME:varValueFromSenseMe(senseMeValue)
+        local params = {devID,1,motion}
+        SENSEME:setUI(params,"MOTION")
       end
     end
   end

@@ -338,34 +338,58 @@
           "ControlCode": "dim"
         },
         {
-          "ControlGroup": 1,
-          "ControlType": "button",
-          "ControlCode": "my_button",
-          "top": 200,
-          "left": 0,
-          "Label": {
-            "lang_tag": "my_first_button",
-            "text": "My First Button"
-          },
-          "Display": {
-            "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
-            "Variable": "Status",
-            "Value": "1",
-            "Top": 200,
-            "Left": 50,
-            "Width": 100,
-            "Height": 20
-          },
-          "Command": {
-            "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
-            "Action": "SetStatus",
-            "Parameters": [
-              {
-                "Name": "Status",
+          "ControlGroup": "1",
+          "ControlType": "multi_state_button",
+          "top": "0",
+          "left": "1",
+          "states": [
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_motion_on",
+                "text": "M.Sensor On"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "Motion",
                 "Value": "1"
-              }
-            ]
-          }
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetMotion",
+                "Parameters": [
+                  {
+                    "Name": "newMotionValue",
+                    "Value": "1"
+                  }
+                ]
+              },
+              "ControlCode": "motion_on"
+            },
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_motion_off",
+                "text": "M.Sensor Off"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "Motion",
+                "Value": "0"
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetMotion",
+                "Parameters": [
+                  {
+                    "Name": "newMotionValue",
+                    "Value": "0"
+                  }
+                ]
+              },
+              "ControlCode": "motion_off"
+            }
+          ]
         }
       ],
       "Conditions": [

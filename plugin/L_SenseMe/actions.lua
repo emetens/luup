@@ -1,4 +1,19 @@
 SENSEME_ACTIONS = {
+  SetMotion = function(self, lul_device, motionOnOrOff)
+    debug("(" .. PLUGIN.NAME .. "::SENSEME_ACTIONS::SetMotion): device [" .. (lul_device or "NIL") .. "] motionOnOrOff [" .. (motionOnOrOff or "NIL") .. "]", 1)
+    for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
+      if dev.VID == lul_device then
+        if (dev.TYPE == "FAN") then
+           local motionValue = SENSEME:senseMeValueFromVar(motionOnOrOff)
+           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+           local params = {dev.ID,1,motionOnOrOff}
+           SENSEME:setUI(params,"MOTION")
+           break
+        end
+      end
+    end
+    return 4, 0
+  end,
   setTarget = function(self, lul_device, newTargetValue)
     return 4, 0
   end,
@@ -12,22 +27,22 @@ SENSEME_ACTIONS = {
       return 2, 0
     end
 
+    -- TODO add support for dimmer as well
     for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local fanSpeed = SENSEME:fanSpeedForLoadLevel(newLoadLevelTarget)
           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed)
---          if not UTILITIES:string_empty(response) then
---            local responseElements = SENSEME:respponseElements(response)
---            -- TODO check if it is the same device name
---            -- TODO better error management so we can skip updates when we miss
---            local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
---            -- TODO cache the value to avoid setting the UI at every poll
---            local level = SENSEME:loadLevelForFanSpeed(fanSpeed)
---            local params = {devID,1,level}
---            SENSEME:setUI(params,"OUTPUT")
---            break
---          end
+          local params = {dev.ID,1,newLoadLevelTarget}
+          SENSEME:setUI(params,"OUTPUT")
+          break
+        end
+        if (dev.TYPE == "DIMMER") then
+          local lightLevel = SENSEME:dimmerForLoadLevel(newLoadLevelTarget)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;SET;" .. lightLevel)
+          local params = {dev.ID,1,newLoadLevelTarget}
+          SENSEME:setUI(params,"OUTPUT")
+          break
         end
       end
     end
