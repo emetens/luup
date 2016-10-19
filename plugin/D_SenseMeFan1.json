@@ -2,166 +2,13 @@
   "default_icon": "dimmable_light_default.png",
   "state_icons": [
     {
-      "img": "dimmable_light_100.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 91
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 100
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_90.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 81
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 90
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_80.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 71
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 80
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_70.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 61
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 70
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_60.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 51
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 60
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_50.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 41
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 50
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_40.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 31
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 40
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_30.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 21
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 30
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_20.png",
-      "conditions": [
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": ">=",
-          "value": 11
-        },
-        {
-          "service": "urn:upnp-org:serviceId:Dimming1",
-          "variable": "LoadLevelStatus",
-          "operator": "<=",
-          "value": 20
-        }
-      ]
-    },
-    {
-      "img": "dimmable_light_10.png",
+      "img": "haiku_fan_on.png",
       "conditions": [
         {
           "service": "urn:upnp-org:serviceId:Dimming1",
           "variable": "LoadLevelStatus",
           "operator": "<=",
-          "value": 10
+          "value": 7
         },
         {
           "service": "urn:upnp-org:serviceId:Dimming1",
@@ -172,7 +19,7 @@
       ]
     },
     {
-      "img": "dimmable_light_off.png",
+      "img": "haiku_fan_off.png",
       "conditions": [
         {
           "service": "urn:upnp-org:serviceId:Dimming1",
@@ -239,7 +86,7 @@
               "Display": {
                 "Service": "urn:upnp-org:serviceId:Dimming1",
                 "Variable": "LoadLevelStatus",
-                "Value": "100"
+                "Value": "7"
               },
               "Command": {
                 "Service": "urn:upnp-org:serviceId:Dimming1",
@@ -247,7 +94,7 @@
                 "Parameters": [
                   {
                     "Name": "newLoadlevelTarget",
-                    "Value": "100"
+                    "Value": "7"
                   }
                 ]
               },
@@ -298,13 +145,13 @@
           },
           "LabelSymbol": {
             "lang_tag": "ui7_dimmable_light_label_symbol",
-            "text": "%"
+            "text": "#"
           },
           "Display": {
             "Service": "urn:upnp-org:serviceId:Dimming1",
             "Variable": "LoadLevelStatus",
             "MinValue": "0",
-            "MaxValue": "100",
+            "MaxValue": "7",
             "Top": 25,
             "Left": 90,
             "Width": 160,
@@ -324,15 +171,15 @@
               "lang_tag": "ui7_cmd_dimmable_light_level",
               "text": "Level"
             },
-            "Sufix": "%",
+            "Suffix": "#",
             "Validation": {
               "Type": "number",
               "Min": "0",
-              "Max": "100"
+              "Max": "7"
             },
             "Description": {
               "lang_tag": "ui7_cmd_dimmable_light_level_description",
-              "text": "Enter a value between 0 and 100"
+              "text": "Enter a value between 0 and 7"
             }
           },
           "ControlCode": "dim"
@@ -405,7 +252,7 @@
                 "Variable": "LoadLevelStatus",
                 "Value": {
                   "Min": "1",
-                  "Max": "100"
+                  "Max": "7"
                 }
               }
             ]
@@ -413,7 +260,7 @@
           "Actions": [
             {
               "Action": "set_value",
-              "ActionArgument": "100",
+              "ActionArgument": "7",
               "Target": "power_on"
             }
           ]
@@ -488,12 +335,12 @@
         "serviceId": "urn:upnp-org:serviceId:Dimming1",
         "action": "SetLoadLevelTarget",
         "arguments": {
-          "newLoadlevelTarget": "100"
+          "newLoadlevelTarget": "7"
         },
         "display": {
           "service": "urn:upnp-org:serviceId:Dimming1",
           "variable": "LoadLevelStatus",
-          "value": "100"
+          "value": "7"
         }
       },
       "cmd_2": {
@@ -519,10 +366,10 @@
             "defaultValue": "",
             "allowedValueRange": {
               "minimum": "0",
-              "maximum": "100"
+              "maximum": "7"
             },
             "prefix": "to",
-            "suffix": "%",
+            "suffix": "#",
             "name": "newLoadlevelTarget"
           }
         },

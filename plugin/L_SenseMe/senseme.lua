@@ -300,7 +300,8 @@ local SENSEME = {
   end,
 
   fanSpeedForLoadLevel = function(self, loadLevel)
-    local fanSpeed = loadLevel * 7 / 100
+--    local fanSpeed = loadLevel * 7 / 100
+    local fanSpeed = tonumber(loadLevel)
     if fanSpeed < 0 then
       fanSpeed = 0
     end
@@ -311,12 +312,13 @@ local SENSEME = {
   end,
 
   loadLevelForFanSpeed = function(self,fanSpeed)
-    local loadLevel = fanSpeed * 100 / 7
+--    local loadLevel = fanSpeed * 100 / 7
+    local loadLevel = tonumber(fanSpeed)
     if loadLevel < 0 then
       loadLevel = 0
     end
-    if loadLevel > 100 then
-      loadLevel = 100
+    if loadLevel > 7 then
+      loadLevel = 7
     end
     return loadLevel
   end,
