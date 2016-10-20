@@ -21,6 +21,13 @@ local SENSEME = {
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
+    {
+      ID = "4",
+      SENSEME_NAME = "Cafe Fan",
+      NAME = "Cafe Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
   },
 
   -- compile a list of configured devices and store in upnp variable
