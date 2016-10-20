@@ -7,13 +7,13 @@ local SENSEME = {
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
-    {
-      ID = "2",
-      SENSEME_NAME = "Master Bedroom Fan",
-      NAME = "Master Bedroom Fan Light",
-      TYPE = "DIMMER",
-      VID = 0, -- will be assigned during matching
-    },
+--    {
+--      ID = "2",
+--      SENSEME_NAME = "Master Bedroom Fan",
+--      NAME = "Master Bedroom Fan Light",
+--      TYPE = "DIMMER",
+--      VID = 0, -- will be assigned during matching
+--    },
     {
       ID = "3",
       SENSEME_NAME = "Living Room Fan",
