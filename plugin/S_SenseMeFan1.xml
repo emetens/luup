@@ -10,6 +10,16 @@
             <dataType>boolean</dataType>
             <defaultValue>0</defaultValue>
         </stateVariable>
+        <stateVariable>
+            <name>LightSensor</name>
+            <dataType>boolean</dataType>
+            <defaultValue>0</defaultValue>
+        </stateVariable>
+        <stateVariable>
+            <name>Whoosh</name>
+            <dataType>boolean</dataType>
+            <defaultValue>0</defaultValue>
+        </stateVariable>
     </serviceStateTable>
     <actionList>
         <action>
@@ -19,6 +29,26 @@
                     <name>newMotionValue</name>
                     <direction>out</direction>
                     <relatedStateVariable>Motion</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+        <action>
+            <name>SetLightSensor</name>
+            <argumentList>
+                <argument>
+                    <name>newLightSensorValue</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>LightSensor</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+        <action>
+            <name>SetWhoosh</name>
+            <argumentList>
+                <argument>
+                    <name>newWhooshValue</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>Whoosh</relatedStateVariable>
                 </argument>
             </argumentList>
         </action>

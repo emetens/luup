@@ -241,6 +241,114 @@
               "ControlCode": "motion_off"
             }
           ]
+        },
+        {
+          "ControlGroup": "1",
+          "ControlType": "multi_state_button",
+          "top": "70",
+          "left": "80",
+          "states": [
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_light_sensor_on",
+                "text": "L.Sensor On"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "LightSensor",
+                "Value": "1"
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetLightSensor",
+                "Parameters": [
+                  {
+                    "Name": "newLightSensorValue",
+                    "Value": "1"
+                  }
+                ]
+              },
+              "ControlCode": "light_sensor_on"
+            },
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_light_sensor_off",
+                "text": "L.Sensor Off"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "LightSensor",
+                "Value": "0"
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetLightSensor",
+                "Parameters": [
+                  {
+                    "Name": "newLightSensorValue",
+                    "Value": "0"
+                  }
+                ]
+              },
+              "ControlCode": "light_sensor_off"
+            }
+          ]
+        },
+        {
+          "ControlGroup": "1",
+          "ControlType": "multi_state_button",
+          "top": "70",
+          "left": "160",
+          "states": [
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_whoosh_on",
+                "text": "Whoosh On"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "Whoosh",
+                "Value": "1"
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetWhoosh",
+                "Parameters": [
+                  {
+                    "Name": "newWhooshValue",
+                    "Value": "1"
+                  }
+                ]
+              },
+              "ControlCode": "whoosh_on"
+            },
+            {
+              "Label": {
+                "lang_tag": "ui7_cmd_whoosh_off",
+                "text": "Whoosh Off"
+              },
+              "ControlGroup": "1",
+              "Display": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Variable": "Whoosh",
+                "Value": "0"
+              },
+              "Command": {
+                "Service": "urn:micasaverde-com:serviceId:SenseMeFan1",
+                "Action": "SetWhoosh",
+                "Parameters": [
+                  {
+                    "Name": "newWhooshValue",
+                    "Value": "0"
+                  }
+                ]
+              },
+              "ControlCode": "whoosh_off"
+            }
+          ]
         }
       ],
       "Conditions": [

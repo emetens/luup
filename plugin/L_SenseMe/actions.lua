@@ -14,6 +14,36 @@ SENSEME_ACTIONS = {
     end
     return 4, 0
   end,
+  SetLightSensor = function(self, lul_device, lightSensorOnOrOff)
+    debug("(" .. PLUGIN.NAME .. "::SENSEME_ACTIONS::SetLightSensor): device [" .. (lul_device or "NIL") .. "] lightSensorOnOrOff [" .. (lightSensorOnOrOff or "NIL") .. "]", 1)
+    for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
+      if dev.VID == lul_device then
+        if (dev.TYPE == "FAN") then
+          local motionValue = SENSEME:senseMeValueFromVar(lightSensorOnOrOff)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+          local params = {dev.ID,1,lightSensorOnOrOff}
+          SENSEME:setUI(params,"LIGHT_SENSOR")
+          break
+        end
+      end
+    end
+    return 4, 0
+  end,
+  SetWhoosh = function(self, lul_device, whooshOnOrOff)
+    debug("(" .. PLUGIN.NAME .. "::SENSEME_ACTIONS::SetWhoosh): device [" .. (lul_device or "NIL") .. "] whooshOnOrOff [" .. (whooshOnOrOff or "NIL") .. "]", 1)
+    for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
+      if dev.VID == lul_device then
+        if (dev.TYPE == "FAN") then
+          local whooshValue = SENSEME:senseMeValueFromVar(whooshOnOrOff)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;" .. whooshValue)
+          local params = {dev.ID,1,whooshOnOrOff}
+          SENSEME:setUI(params,"WHOOSH")
+          break
+        end
+      end
+    end
+    return 4, 0
+  end,
   setTarget = function(self, lul_device, newTargetValue)
     return 4, 0
   end,

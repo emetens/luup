@@ -10,6 +10,20 @@
                 SENSEME_ACTIONS:SetMotion(lul_device, lul_settings.newMotionValue)
             </job>
         </action>
+        <action>
+            <serviceId>urn:micasaverde-com:serviceId:SenseMeFan1</serviceId>
+            <name>SetLightSensor</name>
+            <job>
+                SENSEME_ACTIONS:SetLightSensor(lul_device, lul_settings.newLightSensorValue)
+            </job>
+        </action>
+        <action>
+            <serviceId>urn:micasaverde-com:serviceId:SenseMeFan1</serviceId>
+            <name>SetWhoosh</name>
+            <job>
+                SENSEME_ACTIONS:SetWhoosh(lul_device, lul_settings.newWhooshValue)
+            </job>
+        </action>
 		<action>
 			<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
 			<name>SetTarget</name>

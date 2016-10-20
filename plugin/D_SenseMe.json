@@ -1,6 +1,6 @@
 {
-	"flashicon": "icons\/SenseMe.png",
-	"default_icon": "SenseMe.png",
+	"flashicon": "haiku.png",
+	"default_icon": "haiku.png",
 	"inScene": "1",
 	"DisplayStatus": {},
 	"Tabs": [

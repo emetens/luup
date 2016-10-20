@@ -1,4 +1,4 @@
-local VERSION = "0.10"
+local VERSION = "0.60"
 
 local PLUGIN = {
   -- PLUGIN_ID = 8588,

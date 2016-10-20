@@ -43,7 +43,7 @@ local SENSEME = {
         if (DEV.TYPE == "Gateway") then
         else
           html = html .. "<li class='wDevice'><b>Vera ID (VID):" .. DEV.VID .. " [" .. DEV.TYPE .. "] " .. DEV.NAME .. "</b><br>"
-          html = html .. "<table><tr><td>MAC:</td><td>" .. DEV.SENSEME_NAME .. "</td></tr>"
+          html = html .. "<table><tr><td>SenseMe Name:</td><td>" .. DEV.SENSEME_NAME .. "</td></tr>"
           html = html .. "<tr><td>Internal ID:</td><td>" .. DEV.ID .. "</td></tr></table>"
           html = html .. "</li>"
         end
@@ -197,7 +197,7 @@ local SENSEME = {
         if cmdType == "MOTION" then
           index = index + 1
           debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing MOTION command - index ["..(index or "NIL").."]...")
-          if (tonumber(parameters[index],10) == 1) then -- TODO what does this mean?
+          if (tonumber(parameters[index],10) == 1) then
             if (devType == "FAN") then
               if (parameters and parameters[index + 1]) then
                 local var = parameters[index + 1]
@@ -211,10 +211,44 @@ local SENSEME = {
             end
           end
         end
+        if cmdType == "LIGHT_SENSOR" then
+          index = index + 1
+          debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing LIGHT_SENSOR command - index ["..(index or "NIL").."]...")
+          if (tonumber(parameters[index],10) == 1) then
+          if (devType == "FAN") then
+            if (parameters and parameters[index + 1]) then
+              local var = parameters[index + 1]
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
+              UTILITIES:setVariable(VERA.SID["FAN"],"LightSensor", var, id)
+            else
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): FAN : ERROR processing parameters.",1)
+            end
+          else
+            debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR! : Unknown command type! ")
+          end
+          end
+        end
+        if cmdType == "WHOOSH" then
+          index = index + 1
+          debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing WHOOSH command - index ["..(index or "NIL").."]...")
+          if (tonumber(parameters[index],10) == 1) then
+          if (devType == "FAN") then
+            if (parameters and parameters[index + 1]) then
+              local var = parameters[index + 1]
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): Setting FAN - VAR ["..(var or "NIL").."].")
+              UTILITIES:setVariable(VERA.SID["FAN"],"Whoosh", var, id)
+            else
+              debug("("..PLUGIN.NAME.."::SENSEME::setUI): FAN : ERROR processing parameters.",1)
+            end
+          else
+            debug("("..PLUGIN.NAME.."::SENSEME::setUI): ERROR! : Unknown command type! ")
+          end
+          end
+        end
         if cmdType == "OUTPUT" then
           index = index + 1
           debug("("..PLUGIN.NAME.."::SENSEME::setUI): Processing OUTPUT command - index ["..(index or "NIL").."]...")
-          if (tonumber(parameters[index],10) == 1) then -- TODO what does this mean?
+          if (tonumber(parameters[index],10) == 1) then
             if (devType == "DIMMER") then
               if (parameters and parameters[index + 1]) then
                 local var = math.floor(tonumber(parameters[index + 1],10))
@@ -250,52 +284,6 @@ local SENSEME = {
             end
           end
         end
-
-    --    elseif cmdType == "SHADEGRP" then
-    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing SHADEGRP command...")
-    --      index = index + 1
-    --      if (parameters and parameters[index] and (parameters[index] == "1")) then
-    --        if devType == "SHADEGRP" then
-    --          UTILITIES:setVariable(VERA.SID["SHADEGRP"],"LoadLevelStatus", parameters[index + 1], id)
-    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): SHADEGROUP : Vera device has been set.")
-    --        end
-    --      end
-    --    elseif cmdType == "AREA" then
-    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing AREA command...")
-    --      if (parameters and parameters[3] and (parameters[3] == "3")) then
-    --        UTILITIES:setVariable(VERA.SID["AREA"], "Tripped", "1", id)
-    --        if not g_lastTripFlag then
-    --          UTILITIES:setVariable(VERA.SID["AREA"], "LastTrip", os.time(), id)
-    --          g_lastTripFlag = true
-    --        end
-    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Device " .. id .. " has been tripped!")
-    --      elseif (parameters and parameters[3] and (parameters[3] == "4")) then
-    --        UTILITIES:setVariable(VERA.SID["AREA"], "Tripped", "0", id)
-    --        if g_lastTripFlag then
-    --          g_lastTripFlag = false
-    --        end
-    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Device " .. id .. "is not tripped!")
-    --      else
-    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): AREA : Unknown parameters received!!! " .. tostring(parameters[3] or "NIL"))
-    --      end
-    --    else
-    --      debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing KEYPAD command...")
-    --      index = index + 1
-    --      if (parameters and parameters[index] and parameters[index + 1]) then
-    --        local button = parameters[index] and tonumber(parameters[index],10) or 0
-    --        local event = parameters[index + 1] and tonumber(parameters[index + 1],10) or 0
-    --        if (devIdx ~= 1) then	-- ignore device 1 (virtual buttons (scenes) )
-    --        if ((event == 3) or (event == 4)) then
-    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing KEYPAD event - device ["..(devIdx or "NIL").."] button ["..(button or "NIL").."] event ["..(event or "NIL").."].")
-    --          createSceneControllerEvent(devIdx, button,event)
-    --        else
-    --          debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Received unrecognized KEYPAD command - device ["..(devIdx or "NIL").."] button ["..(button or "NIL").."] event ["..(event or "NIL").."].",1)
-    --        end
-    --        end
-    --      else
-    --        debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Error processing KEYPAD command parameters.",1)
-    --      end
-    --    end
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::setUI): Processing COMPLETE.")
   end,
 
@@ -376,6 +364,7 @@ poll = function(value)
   local devID = -1
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
+    -- TODO reactivate code below
 --    if (dev.TYPE == "DIMMER") then
 --    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL")
 --    if not UTILITIES:string_empty(response) then
@@ -394,6 +383,9 @@ poll = function(value)
 --      SENSEME:setUI(params,"OUTPUT")
 --    end
     if (dev.TYPE == "FAN") then
+
+      -- get speed
+
       local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
@@ -403,6 +395,8 @@ poll = function(value)
         SENSEME:setUI(params,"OUTPUT")
       end
 
+      -- get motion
+
       local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET")
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
@@ -411,6 +405,33 @@ poll = function(value)
         local params = {devID,1,motion}
         SENSEME:setUI(params,"MOTION")
       end
+
+      -- get light sensor
+
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;AUTO;GET")
+      if not UTILITIES:string_empty(response) then
+        local responseElements = SENSEME:respponseElements(response)
+
+        local senseMeValue = responseElements[SENSEME_UDP.LIGHT_SENSOR_VALUE_INDEX]
+        if senseMeValue ~= "NOT PRESENT" then
+          local lightSensor = SENSEME:varValueFromSenseMe(senseMeValue)
+          local params = {devID,1,lightSensor}
+          SENSEME:setUI(params,"LIGHT_SENSOR")
+        end
+      end
+
+      -- get whoosh
+
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;GET;STATUS")
+      if not UTILITIES:string_empty(response) then
+        local responseElements = SENSEME:respponseElements(response)
+
+        local senseMeValue = responseElements[SENSEME_UDP.WHOOSH_VALUE_INDEX]
+        local whoosh = SENSEME:varValueFromSenseMe(senseMeValue)
+        local params = {devID,1,whoosh}
+        SENSEME:setUI(params,"WHOOSH")
+      end
+
     end
   end
 
