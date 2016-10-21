@@ -1,78 +1,78 @@
 #!/bin/bash
 
-echo "----------------------------------------" > L_SenseMe.lua
-echo "-- Globals" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/globals.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" > package/L_SenseMe.lua
+echo "-- Globals" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/globals.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Vera" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/vera.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Vera" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/vera.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Plugin" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/plugin.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Plugin" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/plugin.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Debug" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/debug.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Debug" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/debug.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Task" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/task.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Task" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/task.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Utilities" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/utilities.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Utilities" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/utilities.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Settings" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/settings.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Settings" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/settings.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- UDP" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/udp.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- UDP" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/udp.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- SenseMe" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/senseme.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- SenseMe" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/senseme.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Startup" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/startup.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Startup" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/startup.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
 
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "-- Actions" >> L_SenseMe.lua
-echo "----------------------------------------" >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
-cat L_SenseMe/actions.lua >> L_SenseMe.lua
-echo "" >> L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "-- Actions" >> package/L_SenseMe.lua
+echo "----------------------------------------" >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua
+cat L_SenseMe/actions.lua >> package/L_SenseMe.lua
+echo "" >> package/L_SenseMe.lua

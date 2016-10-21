@@ -1,7 +1,7 @@
 local SENSEME = {
   SENSEME_DEVICES = {
     {
-      ID = "1", -- TODO do we need this ID at all? what is this used for
+      ID = "1",
       SENSEME_NAME = "Master Bedroom Fan",
       NAME = "Master Bedroom Fan",
       TYPE = "FAN",
