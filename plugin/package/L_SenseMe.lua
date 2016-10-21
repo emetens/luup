@@ -456,7 +456,7 @@ local SENSEME_UDP = {
 
   localIpAddress = "",
 
-  sendCommand = function(self,command)
+  sendCommand = function(self,command,senseMeIp)
 
     local socket = require "socket"
     if self.localIpAddress == "" then
@@ -471,15 +471,22 @@ local SENSEME_UDP = {
     end
 
     local udp = socket.udp()
-    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : getting socket",2)
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : getting socket", 2)
     udp:settimeout(2)
     udp:setsockname(self.localIpAddress, 31415)
     udp:setoption("broadcast",true)
-    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : setting options",2)
-    udp:sendto("<" .. command .. ">", "255.255.255.255", 31415) -- TODO put as constants
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : setting options", 2)
+    local ipAddress = senseMeIp
+    if ipAddress == "" then
+      ipAddress = "255.255.255.255"
+    end
+    debug("sendto: " .. udp:sendto("<" .. command .. ">", ipAddress, 31415)) -- TODO put as constants
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : sending",2)
     local response, msg = udp:receive()
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : received",2)
+    if msg then
+      debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand): Message:" .. msg)
+    end
     udp:close()
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand): Command: " .. command .. " Response: " .. (response or "NIL"))
     return response
@@ -494,6 +501,7 @@ local SENSEME = {
     {
       ID = "1",
       SENSEME_NAME = "Master Bedroom Fan",
+      SENSEME_IP = "192.168.1.132",
       NAME = "Master Bedroom Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
@@ -508,6 +516,7 @@ local SENSEME = {
     {
       ID = "3",
       SENSEME_NAME = "Living Room Fan",
+      SENSEME_IP = "192.168.1.133",
       NAME = "Living Room Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
@@ -515,7 +524,16 @@ local SENSEME = {
     {
       ID = "4",
       SENSEME_NAME = "Cafe Fan",
+      SENSEME_IP = "192.168.1.134",
       NAME = "Cafe Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
+    {
+      ID = "5",
+      SENSEME_NAME = "Spa Fan",
+      SENSEME_IP = "192.168.1.139",
+      NAME = "Spa Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
@@ -864,7 +882,7 @@ poll = function(value)
     local devID = dev.ID
     -- TODO reactivate code below
 --    if (dev.TYPE == "DIMMER") then
---    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL")
+--    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
 --    if not UTILITIES:string_empty(response) then
 --      local responseElements = SENSEME:respponseElements(response)
 --      -- TODO check if it is the same device name
@@ -884,7 +902,7 @@ poll = function(value)
 
       -- get speed
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
         local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
@@ -895,7 +913,7 @@ poll = function(value)
 
       -- get motion
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
         local senseMeValue = responseElements[SENSEME_UDP.MOTION_VALUE_INDEX]
@@ -906,7 +924,7 @@ poll = function(value)
 
       -- get light sensor
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;AUTO;GET")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;AUTO;GET", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
 
@@ -920,7 +938,7 @@ poll = function(value)
 
       -- get whoosh
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;GET;STATUS")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;GET;STATUS", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
 
@@ -1091,7 +1109,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
            local motionValue = SENSEME:senseMeValueFromVar(motionOnOrOff)
-           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue, dev.SENSEME_IP)
            local params = {dev.ID,1,motionOnOrOff}
            SENSEME:setUI(params,"MOTION")
            break
@@ -1106,7 +1124,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local motionValue = SENSEME:senseMeValueFromVar(lightSensorOnOrOff)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue, dev.SENSEME_IP)
           local params = {dev.ID,1,lightSensorOnOrOff}
           SENSEME:setUI(params,"LIGHT_SENSOR")
           break
@@ -1121,7 +1139,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local whooshValue = SENSEME:senseMeValueFromVar(whooshOnOrOff)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;" .. whooshValue)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;" .. whooshValue, dev.SENSEME_IP)
           local params = {dev.ID,1,whooshOnOrOff}
           SENSEME:setUI(params,"WHOOSH")
           break
@@ -1148,14 +1166,14 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local fanSpeed = SENSEME:fanSpeedForLoadLevel(newLoadLevelTarget)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed, dev.SENSEME_IP)
           local params = {dev.ID,1,newLoadLevelTarget}
           SENSEME:setUI(params,"OUTPUT")
           break
         end
         if (dev.TYPE == "DIMMER") then
           local lightLevel = SENSEME:dimmerForLoadLevel(newLoadLevelTarget)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;SET;" .. lightLevel)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;SET;" .. lightLevel, dev.SENSEME_IP)
           local params = {dev.ID,1,newLoadLevelTarget}
           SENSEME:setUI(params,"OUTPUT")
           break

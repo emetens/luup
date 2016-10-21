@@ -3,6 +3,7 @@ local SENSEME = {
     {
       ID = "1",
       SENSEME_NAME = "Master Bedroom Fan",
+      SENSEME_IP = "192.168.1.132",
       NAME = "Master Bedroom Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
@@ -17,6 +18,7 @@ local SENSEME = {
     {
       ID = "3",
       SENSEME_NAME = "Living Room Fan",
+      SENSEME_IP = "192.168.1.133",
       NAME = "Living Room Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
@@ -24,7 +26,16 @@ local SENSEME = {
     {
       ID = "4",
       SENSEME_NAME = "Cafe Fan",
+      SENSEME_IP = "192.168.1.134",
       NAME = "Cafe Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
+    {
+      ID = "5",
+      SENSEME_NAME = "Spa Fan",
+      SENSEME_IP = "192.168.1.139",
+      NAME = "Spa Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
@@ -373,7 +384,7 @@ poll = function(value)
     local devID = dev.ID
     -- TODO reactivate code below
 --    if (dev.TYPE == "DIMMER") then
---    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL")
+--    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
 --    if not UTILITIES:string_empty(response) then
 --      local responseElements = SENSEME:respponseElements(response)
 --      -- TODO check if it is the same device name
@@ -393,7 +404,7 @@ poll = function(value)
 
       -- get speed
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;GET;ACTUAL", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
         local fanSpeed = responseElements[SENSEME_UDP.FAN_SPEED_INDEX]
@@ -404,7 +415,7 @@ poll = function(value)
 
       -- get motion
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;GET", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
         local senseMeValue = responseElements[SENSEME_UDP.MOTION_VALUE_INDEX]
@@ -415,7 +426,7 @@ poll = function(value)
 
       -- get light sensor
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;AUTO;GET")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;AUTO;GET", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
 
@@ -429,7 +440,7 @@ poll = function(value)
 
       -- get whoosh
 
-      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;GET;STATUS")
+      local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;GET;STATUS", dev.SENSEME_IP)
       if not UTILITIES:string_empty(response) then
         local responseElements = SENSEME:respponseElements(response)
 

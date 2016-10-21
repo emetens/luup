@@ -30,10 +30,13 @@ Download all the files in the [paxckage](plugin/package) directory
 In your local copy, update the file  `L_SenseMe.lua`. This file contains the core behaviors of the plugin and its configuration.
 Look for the lua array `SENSEME_DEVICES` and create an entry for each of your fans. If your fan has the light module, create one entry for the fan using the "FAN" type and create one entry for the light using the "DIMMER" type. Use the same `SENSEME_NAME` for both entries.
 
+If your network has issues with UDP broadcast, you will need to set the `SENSEME_IP` field with the ip address of each fan. Also I've noticed a better responsiveness when specifying the ip address. 
+
 ```
     {
       ID = "1", -- this needs to be unique. start with "1" and increase value for each new fan
       SENSEME_NAME = "Master Bedroom Fan", -- this is the name as it appears in your haiku app
+      SENSEME_IP = "", -- this is the ip address of the fan. Leave blank to use broadcasting
       NAME = "Master Bedroom Fan", -- this is the name you want to see in your controller
       TYPE = "FAN", -- this must be "FAN" or "DIMMER"
       VID = 0, -- will be assigned during matching

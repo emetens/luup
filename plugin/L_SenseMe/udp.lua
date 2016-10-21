@@ -8,7 +8,7 @@ local SENSEME_UDP = {
 
   localIpAddress = "",
 
-  sendCommand = function(self,command)
+  sendCommand = function(self,command,senseMeIp)
 
     local socket = require "socket"
     if self.localIpAddress == "" then
@@ -23,15 +23,22 @@ local SENSEME_UDP = {
     end
 
     local udp = socket.udp()
-    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : getting socket",2)
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : getting socket", 2)
     udp:settimeout(2)
     udp:setsockname(self.localIpAddress, 31415)
     udp:setoption("broadcast",true)
-    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : setting options",2)
-    udp:sendto("<" .. command .. ">", "255.255.255.255", 31415) -- TODO put as constants
+    debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : setting options", 2)
+    local ipAddress = senseMeIp
+    if ipAddress == "" then
+      ipAddress = "255.255.255.255"
+    end
+    debug("sendto: " .. udp:sendto("<" .. command .. ">", ipAddress, 31415)) -- TODO put as constants
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : sending",2)
     local response, msg = udp:receive()
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand) : received",2)
+    if msg then
+      debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand): Message:" .. msg)
+    end
     udp:close()
     debug("("..PLUGIN.NAME.."::SENSEME_UDP::sendCommand): Command: " .. command .. " Response: " .. (response or "NIL"))
     return response

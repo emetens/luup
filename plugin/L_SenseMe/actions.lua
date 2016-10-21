@@ -5,7 +5,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
            local motionValue = SENSEME:senseMeValueFromVar(motionOnOrOff)
-           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+           local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue, dev.SENSEME_IP)
            local params = {dev.ID,1,motionOnOrOff}
            SENSEME:setUI(params,"MOTION")
            break
@@ -20,7 +20,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local motionValue = SENSEME:senseMeValueFromVar(lightSensorOnOrOff)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;AUTO;" .. motionValue, dev.SENSEME_IP)
           local params = {dev.ID,1,lightSensorOnOrOff}
           SENSEME:setUI(params,"LIGHT_SENSOR")
           break
@@ -35,7 +35,7 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local whooshValue = SENSEME:senseMeValueFromVar(whooshOnOrOff)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;" .. whooshValue)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;WHOOSH;" .. whooshValue, dev.SENSEME_IP)
           local params = {dev.ID,1,whooshOnOrOff}
           SENSEME:setUI(params,"WHOOSH")
           break
@@ -62,14 +62,14 @@ SENSEME_ACTIONS = {
       if dev.VID == lul_device then
         if (dev.TYPE == "FAN") then
           local fanSpeed = SENSEME:fanSpeedForLoadLevel(newLoadLevelTarget)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";FAN;SPD;SET;" .. fanSpeed, dev.SENSEME_IP)
           local params = {dev.ID,1,newLoadLevelTarget}
           SENSEME:setUI(params,"OUTPUT")
           break
         end
         if (dev.TYPE == "DIMMER") then
           local lightLevel = SENSEME:dimmerForLoadLevel(newLoadLevelTarget)
-          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;SET;" .. lightLevel)
+          local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;SET;" .. lightLevel, dev.SENSEME_IP)
           local params = {dev.ID,1,newLoadLevelTarget}
           SENSEME:setUI(params,"OUTPUT")
           break
