@@ -57,10 +57,10 @@ local UTILITIES = {
       log("(" .. PLUGIN.NAME .. "::getMiosVersion): PLUGIN is running under openluup.", 2)
       PLUGIN.OPENLUUP = true
       -- verify the openluup.io version and enable LIP if newer that 2016.01.26
-      INITversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/init.lua |grep -e "revisionDate ="')
+      INITversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/init.lua |grep -e "VERSION       ="')
       _, _, init_year, init_month, init_day = INITversion:find("(%d+)\.(%d+)\.(%d+)")
       init_datestamp = (init_year * 372) + ((init_month - 1) * 31) + init_day
-      IOversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/io.lua |grep -e "revisionDate ="')
+      IOversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/io.lua |grep -e "VERSION       ="')
       _, _, io_year, io_month, io_day = IOversion:find("(%d+)\.(%d+)\.(%d+)")
       io_datestamp = (io_year * 372) + ((io_month - 1) * 31) + io_day
       log("(" .. PLUGIN.NAME .. "::getMiosVersion): openluup.io datestamp [" .. (io_year or "NIL") .. "." .. (io_month or "NIL") .. "." .. (io_day or "NIL") .. "] [" .. (io_datestamp or "NIL") .. "]", 2)
