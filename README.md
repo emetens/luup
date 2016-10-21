@@ -74,8 +74,18 @@ If you need to add a new fan. You can just add your fans to `L_SenseMe.lua` - as
 
 Delete the device directly in your controller. Then update `L_SenseMe.lua` to remove the fan configuration and re-upload that file. The luup engine will restart and the plugin should pickup the changes.
 
+### openLuup
+
+[openLuup](https://github.com/akbooer/openLuup) is a pure-Lua open-source emulation of the Vera Luup environment.
+[altUI](https://github.com/amg0/ALTUI) is an alternative user interface for MCV Vera Home Automation controllers. 
+
+Initial testing has been done. Here is a view on altUI:
+
+![Alt](docs/openluup.jpg "openLuup")
+
 ## Thanks
 
+ - CudaNet on forum.micasaverde.com for his help with openLuup support
  - https://github.com/sean9keenan/BigAssFansAPI - for all the SenseMe messages
  - http://bruce.pennypacker.org/2015/07/17/hacking-bigass-fans-with-senseme/ - for the great intro to SenseMe
  - http://www.lutron.com/en-US/Pages/default.aspx - This source code is based on the Caseta plugin 
