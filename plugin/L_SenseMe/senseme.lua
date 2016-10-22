@@ -39,6 +39,14 @@ local SENSEME = {
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
+    {
+      ID = "6",
+      SENSEME_NAME = "Guest Fan",
+      SENSEME_IP = "192.168.1.141",
+      NAME = "Guest Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
   },
 
   -- compile a list of configured devices and store in upnp variable
@@ -374,7 +382,7 @@ local SENSEME = {
   end,
 }
 
-poll = function(value)
+pollSafe = function(value)
   debug("("..PLUGIN.NAME.."::SENSEME::poll): Checking status")
 
   -- get status for all devices
@@ -383,23 +391,23 @@ poll = function(value)
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
     -- TODO reactivate code below
---    if (dev.TYPE == "DIMMER") then
---    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
---    if not UTILITIES:string_empty(response) then
---      local responseElements = SENSEME:respponseElements(response)
---      -- TODO check if it is the same device name
---      -- TODO better error management so we can skip updates when we miss
---      (Livin
---      0x0030:  6720 526f 6f6d 2046 616e 3b44 4556 4943  g.Room.Fan;DEVIC
---      0x0040:  453b 4c49 4748 543b 4e4f 5420 5052 4553  E;LIGHT;NOT.PRES
---      0x0050:  454e 5429                                ENT
---
---      local fanSpeed = responseElements[SENSEME_UDP.LIGHT_LEVEL_INDEX]
---      -- TODO cache the value to avoid setting the UI at every poll
---      local level = SENSEME:loadLevelForDimmer(fanSpeed)
---      local params = {devID,1,level}
---      SENSEME:setUI(params,"OUTPUT")
---    end
+    --    if (dev.TYPE == "DIMMER") then
+    --    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
+    --    if not UTILITIES:string_empty(response) then
+    --      local responseElements = SENSEME:respponseElements(response)
+    --      -- TODO check if it is the same device name
+    --      -- TODO better error management so we can skip updates when we miss
+    --      (Livin
+    --      0x0030:  6720 526f 6f6d 2046 616e 3b44 4556 4943  g.Room.Fan;DEVIC
+    --      0x0040:  453b 4c49 4748 543b 4e4f 5420 5052 4553  E;LIGHT;NOT.PRES
+    --      0x0050:  454e 5429                                ENT
+    --
+    --      local fanSpeed = responseElements[SENSEME_UDP.LIGHT_LEVEL_INDEX]
+    --      -- TODO cache the value to avoid setting the UI at every poll
+    --      local level = SENSEME:loadLevelForDimmer(fanSpeed)
+    --      local params = {devID,1,level}
+    --      SENSEME:setUI(params,"OUTPUT")
+    --    end
     if (dev.TYPE == "FAN") then
 
       -- get speed
@@ -452,6 +460,17 @@ poll = function(value)
 
     end
   end
+end
+
+poll = function(value)
+
+  -- call actual function
+
+  if pcall(pollSafe) then
+    debug("("..PLUGIN.NAME.."::SENSEME::poll): Status commands sent")
+  else
+    debug("("..PLUGIN.NAME.."::SENSEME::poll): Error while polling devices")
+  end
 
   -- schedule next call
 
@@ -459,5 +478,4 @@ poll = function(value)
   if (period > 0) then
     luup.call_delay("poll", period, value)
   end
-  debug("("..PLUGIN.NAME.."::SENSEME::poll): Status command sent")
 end
