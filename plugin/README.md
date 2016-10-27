@@ -23,7 +23,7 @@ Install and config is pretty manual.
 
 ### Download the necessary files
 
-Download all the files in the [/plugin/package](plugin/package) directory
+Download all the files in the [/plugin/package](/plugin/package) directory
 
 ### Update the configs
 
