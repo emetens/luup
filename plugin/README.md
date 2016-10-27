@@ -9,11 +9,11 @@ This is how your fans will display on the vera dashboard:
  
 Fan lights display as a regular dimmer:
 
-![Alt](docs/dimmer.png "Dimmer")
+![Alt](/docs/dimmer.png "Dimmer")
 
 The SenseMe gateway device will display like this:
 
-![Alt](docs/gateway.png "Gateway")
+![Alt](/docs/gateway.png "Gateway")
  
 Currently the plugin fully support the lights and in addition to setting the fan speed, it allows switching the motion sensor, light sensor and whoosh mode. 
  
@@ -23,7 +23,7 @@ Install and config is pretty manual.
 
 ### Download the necessary files
 
-Download all the files in the [paxckage](plugin/package) directory
+Download all the files in the [/plugin/package](plugin/package) directory
 
 ### Update the configs
 
@@ -47,7 +47,7 @@ If your network has issues with UDP broadcast, you will need to set the `SENSEME
 
 Go to the "Develop Apps" page on your controller and upload all the files you downloaded, except the `.png`. These are for icons and need to be uploaded to a different location,
 
-![Alt](docs/upload.png "Develop Apps")
+![Alt](/docs/upload.png "Develop Apps")
   
 ### Upload the fan and device icons to your vera
   
@@ -64,7 +64,7 @@ scp haiku.png  root@192.168.1.108:/www/cmh/skins/default/img/devices/device_stat
 
 Create the top level device. See below for the data points to enter. Once the device has been created, the luup engine should restart and your devices should appear. It takes a couple of minutes for the process to complete, be patient. 
 
-![Alt](docs/device.png "Create Device")
+![Alt](/docs/device.png "Create Device")
 
 ### Adding a new fan
 
@@ -81,7 +81,7 @@ Delete the device directly in your controller. Then update `L_SenseMe.lua` to re
 
 Initial testing has been done. Here is a view on altUI:
 
-![Alt](docs/openluup.jpg "openLuup")
+![Alt](/docs/openluup.jpg "openLuup")
 
 ## Thanks
 
