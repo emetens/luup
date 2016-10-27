@@ -5,7 +5,7 @@ Plugin supports fans and lights with SenseMe enabled. This is for UI7.
  
 This is how your fans will display on the vera dashboard:
 
-![Alt](docs/fans.png "Fans")
+![Alt](/docs/fans.png "Fans")
  
 Fan lights display as a regular dimmer:
 

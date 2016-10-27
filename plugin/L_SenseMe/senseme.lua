@@ -2,9 +2,9 @@ local SENSEME = {
   SENSEME_DEVICES = {
     {
       ID = "1",
-      SENSEME_NAME = "Master Bedroom Fan",
+      SENSEME_NAME = "Bedroom Fan",
       SENSEME_IP = "192.168.1.132",
-      NAME = "Master Bedroom Fan",
+      NAME = "Bedroom Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },

@@ -59,7 +59,7 @@ local PLUGIN = {
   DEBUG_MODE = true, -- TODO set this back to false
   PLUGIN_DISABLED = false,
   FILES_VALIDATED = false,
-  POLL_PERIOD = "10"
+  POLL_PERIOD = "300"
 }
 
 local function checkVersion()
@@ -208,10 +208,10 @@ local UTILITIES = {
       log("(" .. PLUGIN.NAME .. "::getMiosVersion): PLUGIN is running under openluup.", 2)
       PLUGIN.OPENLUUP = true
       -- verify the openluup.io version and enable LIP if newer that 2016.01.26
-      INITversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/init.lua |grep -e "revisionDate ="')
+      INITversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/init.lua |grep -e "VERSION       ="')
       _, _, init_year, init_month, init_day = INITversion:find("(%d+)\.(%d+)\.(%d+)")
       init_datestamp = (init_year * 372) + ((init_month - 1) * 31) + init_day
-      IOversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/io.lua |grep -e "revisionDate ="')
+      IOversion = self:shellExecute('head -n 3 /etc/cmh-ludl/openLuup/io.lua |grep -e "VERSION       ="')
       _, _, io_year, io_month, io_day = IOversion:find("(%d+)\.(%d+)\.(%d+)")
       io_datestamp = (io_year * 372) + ((io_month - 1) * 31) + io_day
       log("(" .. PLUGIN.NAME .. "::getMiosVersion): openluup.io datestamp [" .. (io_year or "NIL") .. "." .. (io_month or "NIL") .. "." .. (io_day or "NIL") .. "] [" .. (io_datestamp or "NIL") .. "]", 2)
@@ -500,9 +500,9 @@ local SENSEME = {
   SENSEME_DEVICES = {
     {
       ID = "1",
-      SENSEME_NAME = "Master Bedroom Fan",
+      SENSEME_NAME = "Bedroom Fan",
       SENSEME_IP = "192.168.1.132",
-      NAME = "Master Bedroom Fan",
+      NAME = "Bedroom Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
@@ -534,6 +534,14 @@ local SENSEME = {
       SENSEME_NAME = "Spa Fan",
       SENSEME_IP = "192.168.1.139",
       NAME = "Spa Fan",
+      TYPE = "FAN",
+      VID = 0, -- will be assigned during matching
+    },
+    {
+      ID = "6",
+      SENSEME_NAME = "Guest Fan",
+      SENSEME_IP = "192.168.1.141",
+      NAME = "Guest Fan",
       TYPE = "FAN",
       VID = 0, -- will be assigned during matching
     },
@@ -872,7 +880,7 @@ local SENSEME = {
   end,
 }
 
-poll = function(value)
+pollSafe = function(value)
   debug("("..PLUGIN.NAME.."::SENSEME::poll): Checking status")
 
   -- get status for all devices
@@ -881,23 +889,23 @@ poll = function(value)
   for idx,dev in pairs(SENSEME.SENSEME_DEVICES) do
     local devID = dev.ID
     -- TODO reactivate code below
---    if (dev.TYPE == "DIMMER") then
---    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
---    if not UTILITIES:string_empty(response) then
---      local responseElements = SENSEME:respponseElements(response)
---      -- TODO check if it is the same device name
---      -- TODO better error management so we can skip updates when we miss
---      (Livin
---      0x0030:  6720 526f 6f6d 2046 616e 3b44 4556 4943  g.Room.Fan;DEVIC
---      0x0040:  453b 4c49 4748 543b 4e4f 5420 5052 4553  E;LIGHT;NOT.PRES
---      0x0050:  454e 5429                                ENT
---
---      local fanSpeed = responseElements[SENSEME_UDP.LIGHT_LEVEL_INDEX]
---      -- TODO cache the value to avoid setting the UI at every poll
---      local level = SENSEME:loadLevelForDimmer(fanSpeed)
---      local params = {devID,1,level}
---      SENSEME:setUI(params,"OUTPUT")
---    end
+    --    if (dev.TYPE == "DIMMER") then
+    --    local response = SENSEME_UDP:sendCommand(dev.SENSEME_NAME .. ";LIGHT;LEVEL;GET;ACTUAL", dev.SENSEME_IP)
+    --    if not UTILITIES:string_empty(response) then
+    --      local responseElements = SENSEME:respponseElements(response)
+    --      -- TODO check if it is the same device name
+    --      -- TODO better error management so we can skip updates when we miss
+    --      (Livin
+    --      0x0030:  6720 526f 6f6d 2046 616e 3b44 4556 4943  g.Room.Fan;DEVIC
+    --      0x0040:  453b 4c49 4748 543b 4e4f 5420 5052 4553  E;LIGHT;NOT.PRES
+    --      0x0050:  454e 5429                                ENT
+    --
+    --      local fanSpeed = responseElements[SENSEME_UDP.LIGHT_LEVEL_INDEX]
+    --      -- TODO cache the value to avoid setting the UI at every poll
+    --      local level = SENSEME:loadLevelForDimmer(fanSpeed)
+    --      local params = {devID,1,level}
+    --      SENSEME:setUI(params,"OUTPUT")
+    --    end
     if (dev.TYPE == "FAN") then
 
       -- get speed
@@ -950,6 +958,17 @@ poll = function(value)
 
     end
   end
+end
+
+poll = function(value)
+
+  -- call actual function
+
+  if pcall(pollSafe) then
+    debug("("..PLUGIN.NAME.."::SENSEME::poll): Status commands sent")
+  else
+    debug("("..PLUGIN.NAME.."::SENSEME::poll): Error while polling devices")
+  end
 
   -- schedule next call
 
@@ -957,7 +976,6 @@ poll = function(value)
   if (period > 0) then
     luup.call_delay("poll", period, value)
   end
-  debug("("..PLUGIN.NAME.."::SENSEME::poll): Status command sent")
 end
 
 ----------------------------------------
