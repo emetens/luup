@@ -23,14 +23,25 @@ if (prev == nil or prev == "0") and current == "1" then
   allStates[FAN_ID].prevTimeMin = currentTime.hour * 60 - (-currentTime.min)
 end
 if current == "1" then
+
   local currentTime = os.date("*t")
   local currentTimeMin = currentTime.hour * 60 - (-currentTime.min)
-  local deltaTime = currentTimeMin - allStates[FAN_ID].prevTimeMin
-  luup.log(FAN_ID .. "### delta time minutes " .. deltaTime)
-  if deltaTime > TIMER_DURATION then
-   luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "0"}, FAN_ID)
-   luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "0"}, SECOND_LIGHT_ID)
-   luup.log(FAN_ID .. "### turning off light")
+
+  -- turn off once per 10m to avoid race condition when user turn light back on
+  local timeLastTurnedOffMin = allStates[FAN_ID].timeLastTurnedOffMin
+  local deltaTimeLastTurnedOff = TIMER_DURATION
+  if timeLastTurnedOffMin ~= nil then
+    deltaTimeLastTurnedOff = currentTimeMin - timeLastTurnedOffMin
+  end
+  if deltaTimeLastTurnedOff >= TIMER_DURATION then
+    local deltaTime = currentTimeMin - allStates[FAN_ID].prevTimeMin
+    luup.log(FAN_ID .. "### delta time minutes " .. deltaTime)
+    if deltaTime > TIMER_DURATION then
+     allStates[FAN_ID].timeLastTurnedOffMin = currentTimeMin
+     luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "0"}, FAN_ID)
+     luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "0"}, SECOND_LIGHT_ID)
+     luup.log(FAN_ID .. "### turning off light")
+    end
   end
 end
 allStates[FAN_ID].prev=current
